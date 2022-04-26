@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<meta name="author" content="Arne Vandamme">
+<title>SpringSecurityAclModule</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>SpringSecurityAclModule</h1>
+<div class="details">
+<span id="author" class="author">Arne Vandamme</span><br>
+<span id="revnumber">version 3.0.1.RELEASE,</span>
+<span id="revdate">3.0.1.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#general-information">1. General information</a>
+<ul class="sectlevel2">
+<li><a href="#artifact">1.1. Artifact</a></li>
+<li><a href="#module-dependencies">1.2. Module dependencies</a></li>
+<li><a href="#module-settings">1.3. Module settings</a></li>
+</ul>
+</li>
+<li><a href="#what-s-new-in-this-version">2. What&#8217;s new in this version?</a>
+<ul class="sectlevel2">
+<li><a href="#3-0-1-release">3.0.1.RELEASE</a></li>
+<li><a href="#2-0-1-release">2.0.1.RELEASE</a></li>
+</ul>
+</li>
+<li><a href="#about-the-springsecurityaclmodule">3. About the SpringSecurityAclModule</a>
+<ul class="sectlevel2">
+<li><a href="#default-parent-acl">3.1. Default parent ACL</a></li>
+<li><a href="#acl-security-entities">3.2. ACL security entities</a></li>
+<li><a href="#global-permissions">3.3. Global permissions</a></li>
+</ul>
+</li>
+<li><a href="#known-acl-permissions">4. Known ACL permissions</a>
+<ul class="sectlevel2">
+<li><a href="#creating-custom-acl-permissions">4.1. Creating custom ACL permissions</a></li>
+<li><a href="#managing-acls">4.2. Managing ACLs</a></li>
+<li><a href="#configuring-an-acl-form">4.3. Configuring an ACL form</a></li>
+</ul>
+</li>
+<li><a href="#message-codes">5. Message codes</a>
+<ul class="sectlevel2">
+<li><a href="#acl-permissions-form-message-codes">5.1. ACL permissions form</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="openblock copyright">
+<div class="content">
+<div class="paragraph">
+<p>Copyright &#169; 2014-2017<br>
+<span class="small">Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies and further provided that each copy contains this Copyright Notice, whether distributed in print or electronically.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="general-information"><a class="anchor" href="#general-information"></a>1. General information</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="artifact"><a class="anchor" href="#artifact"></a>1.1. Artifact</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependencies&gt;</span>
+        <span class="tag">&lt;dependency&gt;</span>
+                <span class="tag">&lt;groupId&gt;</span>com.foreach.across.modules<span class="tag">&lt;/groupId&gt;</span>
+                <span class="tag">&lt;artifactId&gt;</span>spring-security-acl-module<span class="tag">&lt;/artifactId&gt;</span>
+                <span class="tag">&lt;version&gt;</span>3.0.1.RELEASE<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;/dependency&gt;</span>
+<span class="tag">&lt;/dependencies&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="module-dependencies"><a class="anchor" href="#module-dependencies"></a>1.2. Module dependencies</h3>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Module dependencies</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Module</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SpringSecurityModule</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Provides the basic security infrastructure.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AcrossHibernateJpaModule</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Activates support for ACL security entities.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EntityModule</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enables the management forms for ACL security entities.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="module-settings"><a class="anchor" href="#module-settings"></a>1.3. Module settings</h3>
+<div class="paragraph">
+<p>This module has no specific settings.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="what-s-new-in-this-version"><a class="anchor" href="#what-s-new-in-this-version"></a>2. What&#8217;s new in this version?</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="3-0-1-release"><a class="anchor" href="#3-0-1-release"></a>3.0.1.RELEASE</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>SpringSecurityAclModule now uses a single <code>AclPermissionFactory</code> for the actual permission management</p>
+<div class="ulist">
+<ul>
+<li>
+<p>custom permissions can be registered on this factory and made available for use in security expressions</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>the first 10 permission positions (bit flags) are now reserved for Across internal use</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the 5 default permissions take up half of these positions</p>
+</li>
+<li>
+<p>applications or non-shared modules should create custom permissions on the positions &gt; 10</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>AclPermission</code> has some helper methods for easily creating custom permissions: <code>create()</code> and <code>combine()</code>, with validation regarding the reserved bit range</p>
+</li>
+<li>
+<p>TODO: AclPermissionForm</p>
+<div class="ulist">
+<ul>
+<li>
+<p>registry for registration</p>
+</li>
+<li>
+<p>ObjectIdentity.class.getName() attribute for custom identity resolver</p>
+</li>
+<li>
+<p>the auto generated ACL permissions management view uses several <a href="#acl-permissions-form-message-codes">message codes</a> for its labels</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="2-0-1-release"><a class="anchor" href="#2-0-1-release"></a>2.0.1.RELEASE</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>added support for H2 database</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="about-the-springsecurityaclmodule"><a class="anchor" href="#about-the-springsecurityaclmodule"></a>3. About the SpringSecurityAclModule</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>SpringSecurityAclModule</code> enables Access Control Lists for managing permissions.  The core service for working
+with the ACLs is the <code>AclSecurityService</code> and supports management of ACLs attached to <code>IdBasedEntity</code> instances,
+seamlessly integrating with other standard modules.</p>
+</div>
+<div class="paragraph">
+<p>ACLs define which security entities have access to a certain object or type through the use of Access Control Entries (ACE).
+An ACE defines access for a single <a href="#known-acl-permissions">acl permission</a> for a certain <code>Sid</code>, which represents the security entity.
+SpringSecurityAclModule provides an <code>Sid</code> implementation for working with <code>GrantedAuthority</code> and <code>SecurityPrincipal</code>, which are <code>GrantedAuthoritySid</code> and <code>SecurityPrincipalSid</code> respectively.
+When creating an ACL, the current authentication will be set as it&#8217;s owner and will be the default manager of the ACL for that object.</p>
+</div>
+<div class="sect2">
+<h3 id="default-parent-acl"><a class="anchor" href="#default-parent-acl"></a>3.1. Default parent ACL</h3>
+<div class="paragraph">
+<p>The <a href="#acl-security-service"><code>AclSecurityService</code></a> optionally allows setting a default parent ACL (in the form of the <code>IdBasedEntity</code>
+that owns the ACL).  The default parent is attached to any newly created ACL that does not have an explicit parent
+specified.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="acl-security-entities"><a class="anchor" href="#acl-security-entities"></a>3.2. ACL security entities</h3>
+<div class="paragraph">
+<p>The <code>SpringSecurityAclModule</code> packs a domain model for ACL security entities.  These are abstract database entities
+that serve no other purpose than attaching an ACL to them.  They optionally take another security entity as parent,
+whose ACL will then also be the parent ACL.</p>
+</div>
+<div class="paragraph">
+<p>The ACL security entity hierarchy exactly represents the backing ACL hierarchy.  ACL security entities are usually
+only developer managed and by default require the <strong>acl take ownership</strong> permissions to manage them through the
+administrative interface.</p>
+</div>
+<div class="paragraph">
+<p>The standard <code>UserModule</code> provides a default installation of security entities, and sets the <strong>system</strong> security entity
+for the default parent ACL.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="global-permissions"><a class="anchor" href="#global-permissions"></a>3.3. Global permissions</h3>
+<div class="paragraph">
+<p>The <code>SpringSecurityAclModule</code> defines 3 global permissions, these are available as constants in the <code>AclAuthorities</code> interface.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Global permission overview</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Permission</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>acl take ownership</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allows the authenticated principal to take ownership of any ACL. Also the required permission to be able
+to manage ACL security entities.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>acl modify</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allows the authenticated principal to modify any ACL.  This includes adding and removing ACE records but
+excludes changing ownership.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>acl audit</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allows the authenticated principal to modify the auditing settings of an ACL.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="known-acl-permissions"><a class="anchor" href="#known-acl-permissions"></a>4. Known ACL permissions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following lists the known/used ACL permissions from shared modules.</p>
+</div>
+<div class="paragraph">
+<p>An ACL permission:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>takes a single bit position (total range is numbered from 0 to 31)</p>
+</li>
+<li>
+<p>optionally has a single character code that is used when displaying a permission pattern (eg. <code>............................D.WR</code>)</p>
+</li>
+<li>
+<p>has a unique name that can be used in expression based security (eg. <code>hasPermission(#object,'my-permission')</code>)</p>
+</li>
+</ul>
+</div>
+<h3 id="reserved-bit-range" class="discrete">Reserved bit range</h3>
+<div class="paragraph">
+<p>The first 10 bit positions are reserved for use by Across standard modules.
+To avoid conflicts with this range, use <code>AclPermission.create()</code> for defining your custom permissions.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Bit position</th>
+<th class="tableblock halign-left valign-top">Permission name</th>
+<th class="tableblock halign-left valign-top">Code</th>
+<th class="tableblock halign-left valign-top">Module</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">read</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">R</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SpringSecurityAclModule</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">write</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">W</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SpringSecurityAclModule</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">C</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SpringSecurityAclModule</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">D</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SpringSecurityAclModule</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">administration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SpringSecurityAclModule</p></td>
+</tr>
+</tbody>
+</table>
+<h3 id="open-bit-range" class="discrete">Open bit range</h3>
+<div class="paragraph">
+<p>The open bit range (&gt; position 10) is meant for custom applications or modules.</p>
+</div>
+<div class="sect2">
+<h3 id="creating-custom-acl-permissions"><a class="anchor" href="#creating-custom-acl-permissions"></a>4.1. Creating custom ACL permissions</h3>
+<div class="paragraph">
+<p>To create your own ACL permission, simply use the AclPermission#create method, which accepts an integer definition it&#8217;s bit position.
+After creating your custom permissions, you register them to the AclPermissionFactory and you&#8217;re set to use them in your application.</p>
+</div>
+<div class="paragraph">
+<p>In general it&#8217;s a good idea to keep your custom ACL permissions in a single location within your application.</p>
+</div>
+<div class="listingblock">
+<div class="title">Registering a custom ACL permission</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Configuration</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyApplicationPermissions</span> {
+
+    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> AclPermission MY_CUSTOM_PERMISSION = AclPermission.create(<span class="integer">10</span>);
+
+    <span class="annotation">@Autowired</span>
+    <span class="type">void</span> registerPermissions(AclPermissionFactory permissionFactory){
+        permissionFactory.registerPermission( MY_CUSTOM_PERMISSION, <span class="string"><span class="delimiter">&quot;</span><span class="content">my-custom-permission</span><span class="delimiter">&quot;</span></span> );
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="managing-acls"><a class="anchor" href="#managing-acls"></a>4.2. Managing ACLs</h3>
+<div class="sect3">
+<h4 id="acl-security-service"><a class="anchor" href="#acl-security-service"></a>4.2.1. AclSecurityService</h4>
+<div class="paragraph">
+<p>The <a href="https://across-docs.foreach.be/across-standard-modules/SpringSecurityAclModule/3.0.1.RELEASE/javadoc/com/foreach/across/modules/spring/security/acl/services/AclSecurityService.html"><code>AclSecurityService</code></a> provides an abstraction layer for working with ACLs for IdBasedEntities.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="idbasedentityaclinterceptor"><a class="anchor" href="#idbasedentityaclinterceptor"></a>4.2.2. IdBasedEntityAclInterceptor</h4>
+<div class="paragraph">
+<p>SpringSecurityAclModule provides a custom interceptor that provides a few utility methods to handle ACLs for <code>IdBasedEntity</code> types.
+These are primarily used to create an ACL when an object of a certain type is created, as well as providing access to the object for the necessary security entities by defaul.</p>
+</div>
+<div class="listingblock">
+<div class="title">Creating a custom Acl interceptor.</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Component</span>
+<span class="type">class</span> <span class="class">ProjectAclInterceptor</span> <span class="directive">extends</span> IdBasedEntityAclInterceptor&lt;Project&gt; {
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="type">boolean</span> handles( <span class="predefined-type">Class</span>&lt;?&gt; entityClass ) {
+        <span class="keyword">return</span> Project.class.isAssignableFrom( entityClass );
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="type">void</span> afterCreate( Project entity ) {
+        <span class="keyword">if</span> ( aclSecurityService().getAcl( entity ) == <span class="predefined-constant">null</span> ) {
+            aclSecurityService().createAcl( entity );
+            <span class="comment">// All users that have the MANAGE_USERS authority, will have the READ and WRITE permissions for the project instance.</span>
+            aclSecurityService().allow( UserAuthorities.MANAGE_USERS, entity, AclPermission.READ, AclPermission.WRITE );
+        }
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="type">void</span> beforeDelete( Project entity ) {
+        <span class="predefined-type">Acl</span> acl = aclSecurityService().getAcl( entity );
+        <span class="keyword">if</span> ( acl != <span class="predefined-constant">null</span> ) {
+            aclSecurityService().deleteAcl( entity, <span class="predefined-constant">true</span> );
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-an-acl-form"><a class="anchor" href="#configuring-an-acl-form"></a>4.3. Configuring an ACL form</h3>
+<div class="paragraph">
+<p>To create an ACL form through which users can manage ACL&#8217;s from the back-end of the application, one has to register a form on the AclPermissionFormRegistry and add that form to the EntityConfigurationBuilder of your entity.
+The ACL form allows to split up the handling of permissions in logical sections and groups.
+This will not affect on how permissions are handled underlying, but offers a clearer user interface.
+When creating `AclPermissionsFormSection`s, most options can be left open and sensible defaults will be generated.</p>
+</div>
+<div class="listingblock">
+<div class="title">Registering an AclPermissionsForm</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Autowired</span>
+<span class="type">void</span> registerAclPermissionsForm(AclPermissionsFormRegistry formRegistry){
+    <span class="comment">// Create a section that defines access to the object for users.</span>
+    AclPermissionsFormSection userSection = AclPermissionsForm
+        .section(<span class="string"><span class="delimiter">&quot;</span><span class="content">user</span><span class="delimiter">&quot;</span></span>) <span class="comment">// name of the section</span>
+        .entityType(User.class) <span class="comment">// the entity type for which access will be defined</span>
+        .permissionGroups( <span class="comment">// define the logical grouping of permissions</span>
+            permissionGroup( <span class="string"><span class="delimiter">&quot;</span><span class="content">general</span><span class="delimiter">&quot;</span></span> ) <span class="comment">// name of the group</span>
+                <span class="comment">// permissions that should be shown in this group</span>
+                .permissions(AclPermission.CREATE, AclPermission.READ, AclPermission.WRITE, AclPermission.DELETE)
+                .build(),
+            permissionsGroup(<span class="string"><span class="delimiter">&quot;</span><span class="content">administration</span><span class="delimiter">&quot;</span></span>)
+                .permissions(AclPermission.ADMINISTRATION)
+                .build()
+        ).build();
+
+    <span class="comment">// register the form under the name 'project'</span>
+    formRegistry.put(<span class="string"><span class="delimiter">&quot;</span><span class="content">project</span><span class="delimiter">&quot;</span></span>, AclPermissionsForm.builder()
+                                                  .name(<span class="string"><span class="delimiter">&quot;</span><span class="content">project</span><span class="delimiter">&quot;</span></span>) <span class="comment">// name of the form</span>
+                                                  .section(userSection) <span class="comment">// registering the section on the form</span>
+                                                  .build()
+    );
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Registering the form on an EntityConfigurationBuilder</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">void</span> configure(EntitiesConfigurationBuilder entities){
+    entities.withType(Project.class)
+            <span class="comment">// register the 'project' AclPermissionsForm on the Project EntityConfiguration</span>
+            .attribute(AclPermissionsForm.ATTR_PROFILE_NAME, <span class="string"><span class="delimiter">&quot;</span><span class="content">project</span><span class="delimiter">&quot;</span></span>);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="message-codes"><a class="anchor" href="#message-codes"></a>5. Message codes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following lists the common message codes that SpringSecurityAclModule uses.</p>
+</div>
+<div class="sect2">
+<h3 id="acl-permissions-form-message-codes"><a class="anchor" href="#acl-permissions-form-message-codes"></a>5.1. ACL permissions form</h3>
+<div class="paragraph">
+<p>Message codes for ACL permissions form that can be configured if EntityModule is active.
+The default created ACL permissions form view name is <strong>aclPermissions</strong>.</p>
+</div>
+<div class="paragraph">
+<p>The following parameters are used in the generated message code:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>ViewPrefix</strong></dt>
+<dd>
+<p>Is the message code prefix for the ACL permissions view.
+Usually of the form <strong>EntityPrefix</strong>.views[<strong>viewName</strong>].<br></p>
+<div class="paragraph">
+<p>The <strong>viewName</strong> is the name of the ACL permissions form view.
+Usually this is <code>aclPermissions</code> when using the <code>AclPermissionsFormRegistry</code>.<br></p>
+</div>
+<div class="paragraph">
+<p>Please refer to the <a href="https://across.foreach.be/modules/EntityModule">EntityModule</a> documentation for the generated values of <strong>EntityPrefix</strong>.</p>
+</div>
+</dd>
+<dt class="hdlist1"><strong>formName</strong></dt>
+<dd>
+<p>Value of the <code>name</code> property configured on the <code>AclPermissionsForm</code>.
+If you did not explicitly set one, the value will be <code>default</code>.</p>
+</dd>
+<dt class="hdlist1"><strong>sectionName</strong></dt>
+<dd>
+<p>Name of the <code>AclPermissionsFormSection</code> that the message is for.
+Should always be set.</p>
+</dd>
+<dt class="hdlist1"><strong>FormPrefix</strong></dt>
+<dd>
+<p>Represents the combination: <strong>ViewPrefix</strong>.aclForm[<strong>formName</strong>]</p>
+</dd>
+<dt class="hdlist1"><strong>SectionPrefix</strong></dt>
+<dd>
+<p>Represents the combination: <strong>ViewPrefix</strong>.aclSection[<strong>sectionName</strong>]</p>
+</dd>
+<dt class="hdlist1"><strong>SectionInFormPrefix</strong></dt>
+<dd>
+<p>Represents the combination: <strong>ViewPrefix</strong>.aclForm[<strong>formName</strong>].aclSection[<strong>sectionName</strong>]</p>
+</dd>
+<dt class="hdlist1"><strong>permissionName</strong></dt>
+<dd>
+<p>Name of the <code>AclPermission</code> under which it is registered in the <code>AclPermissionFactory</code>, for example <code>read</code>.
+See the <a href="#known-acl-permissions">known ACL permissions</a> for all default permissions.</p>
+</dd>
+<dt class="hdlist1"><strong>permissionGroup</strong></dt>
+<dd>
+<p>Name of the permission group on a form section.</p>
+</dd>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 3. ACL Permission form message codes (in resolving order)</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Message code</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.title<br>
+<strong>SectionPrefix</strong>.title</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Title of the section.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].title</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.description<br>
+<strong>SectionPrefix</strong>.description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description of the section.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].description</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.permissionGroup[<strong>permissionGroup</strong>]<br>
+<strong>SectionPrefix</strong>.permissionGroup[<strong>permissionGroup</strong>]
+<strong>FormPrefix</strong>.permissionGroup[<strong>permissionGroup</strong>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Label for that permission group.
+Only if the permission group had a name assigned.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].permissionGroup[projects]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.permissionGroup[<strong>permissionGroup</strong>].tooltip<br>
+<strong>SectionPrefix</strong>.permissionGroup[<strong>permissionGroup</strong>].tooltip
+<strong>FormPrefix</strong>.permissionGroup[<strong>permissionGroup</strong>].tooltip</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description (optional tooltip) for that permission group.
+Only if the permission group had a name assigned.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].permissionGroup[projects].description</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.permission[<strong>permissionName</strong>]<br>
+<strong>SectionPrefix</strong>.permission[<strong>permissionName</strong>]
+<strong>FormPrefix</strong>.permission[<strong>permissionName</strong>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Label for that permission.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].permission[create]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.permission[<strong>permissionName</strong>].tooltip<br>
+<strong>SectionPrefix</strong>.permission[<strong>permissionName</strong>].tooltip
+<strong>FormPrefix</strong>.permission[<strong>permissionName</strong>].tooltip</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description (optional tooltip) for that permission.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].permission[create].description</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.removeEntry<br>
+<strong>SectionPrefix</strong>.removeEntry
+<strong>FormPrefix</strong>.removeEntry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Title of the button to remove an entry.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].removeEntry</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.noEntries<br>
+<strong>SectionPrefix</strong>.noEntries
+<strong>FormPrefix</strong>.noEntries</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Text shown if there are no specific entries with permissions.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].noEntries</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>ViewPrefix</strong>.properties.<strong>propertyName</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Label for the property that represents the new item selector.
+This is usually the entity name of the type of entity that would be selected.<br>
+<br>
+Example: <code>(EntityPrefix).views[aclPermissions].properties.user</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>ViewPrefix</strong>.feedback.permissionsUpdated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message shown after permissions have been saved.<br>
+<br>
+Example: <code>(EntityPrefix).views[aclPermissions].feedback.permissionsUpdated</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 3.0.1.RELEASE<br>
+Last updated 2018-03-30 15:15:21 CEST
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>Across Platform BOM</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 82.9 95.7" width="40" style="margin-right: 10px"><path fill="#3CA873" d="M0 23.9l15.9-9.2 41.5 23.9-16 9.2"></path><path fill="#0093D8" d="M25.5 9.2L41.4 0l41.5 23.9-16 9.2"></path><path fill="#53DD99" d="M41.4 95.7l16-9.3V38.6l-16 9.2"></path><path fill="#22CEFA" d="M66.9 80.9l16-9.2V23.9l-16 9.2"></path><path fill="#257A50" d="M12.5 64.5L28.9 55l-16.4-9.4"></path><path fill="#4DBC86" d="M12.5 64.5L28.9 74V55"></path></svg>  Across Platform BOM</h1>
+<div class="details">
+<span id="revnumber">version 2.1.0.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Across Platform BOM</div>
+<ul class="sectlevel1">
+<li><a href="#about">About</a></li>
+<li><a href="#using-the-platform-bom">Using the Platform BOM</a></li>
+<li><a href="#what-s-new-in-this-version">What&#8217;s new in this version</a>
+<ul class="sectlevel2">
+<li><a href="#2-1-0-release">2.1.0.RELEASE</a></li>
+<li><a href="#2-0-2-release">2.0.2.RELEASE</a></li>
+<li><a href="#2-0-1-release">2.0.1.RELEASE</a></li>
+</ul>
+</li>
+<li><a href="#dependency-versions">Dependency versions</a></li>
+<li><a href="#migration-guides">Migration guides</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="openblock copyright">
+<div class="content">
+<div class="paragraph">
+<p>Copyright &#169; 2014-2018<br>
+<span class="small">Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies and further provided that each copy contains this Copyright Notice, whether distributed in print or electronically.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="about"><a class="anchor" href="#about"></a>About</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Across Platform BOM is a so called <strong>bill of material</strong> POM that provides a curated list of Across related dependencies, including all standard modules.
+Using this BOM pom is advised as it helps you to avoid dependency conflicts and gives you the confidence that dependency versions work together correctly.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="using-the-platform-bom"><a class="anchor" href="#using-the-platform-bom"></a>Using the Platform BOM</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using the BOM can be done by including it in the <code>dependencyManagement</code> section of your Maven build file.
+Dependencies known in the platform BOM do not need a version element to be specified.
+If a version is omitted, the version from the BOM will be used.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="comment">&lt;!-- Include the platform BOM with scope import --&gt;</span>
+<span class="tag">&lt;dependencyManagement&gt;</span>
+    <span class="tag">&lt;dependencies&gt;</span>
+        <span class="tag">&lt;dependency&gt;</span>
+            <span class="tag">&lt;groupId&gt;</span>com.foreach.across<span class="tag">&lt;/groupId&gt;</span>
+            <span class="tag">&lt;artifactId&gt;</span>platform-bom<span class="tag">&lt;/artifactId&gt;</span>
+            <span class="tag">&lt;version&gt;</span>2.1.0.RELEASE<span class="tag">&lt;/version&gt;</span>
+            <span class="tag">&lt;type&gt;</span>pom<span class="tag">&lt;/type&gt;</span>
+            <span class="tag">&lt;scope&gt;</span>import<span class="tag">&lt;/scope&gt;</span>
+        <span class="tag">&lt;/dependency&gt;</span>
+    <span class="tag">&lt;/dependencies&gt;</span>
+<span class="tag">&lt;/dependencyManagement&gt;</span>
+
+<span class="comment">&lt;!-- Specific dependencies do not need a version --&gt;</span>
+<span class="tag">&lt;dependencies&gt;</span>
+    <span class="tag">&lt;dependency&gt;</span>
+        <span class="tag">&lt;groupId&gt;</span>across<span class="tag">&lt;/groupId&gt;</span>
+        <span class="tag">&lt;artifactId&gt;</span>across-web<span class="tag">&lt;/artifactId&gt;</span>
+    <span class="tag">&lt;/dependency&gt;</span>
+    <span class="tag">&lt;dependency&gt;</span>
+        <span class="tag">&lt;groupId&gt;</span>across-standard-modules<span class="tag">&lt;/groupId&gt;</span>
+        <span class="tag">&lt;artifactId&gt;</span>debug-web<span class="tag">&lt;/artifactId&gt;</span>
+    <span class="tag">&lt;/dependency&gt;</span>
+<span class="tag">&lt;/dependencies&gt;</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="what-s-new-in-this-version"><a class="anchor" href="#what-s-new-in-this-version"></a>What&#8217;s new in this version</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="2-1-0-release"><a class="anchor" href="#2-1-0-release"></a>2.1.0.RELEASE</h3>
+<div class="paragraph">
+<p>Most of the standard modules have been baselined against Across 3.0.0 in this update.
+See the <a href="migration-2.0.x-to-2.1.x.html">migration guide</a> for upgrading from Across Platform 2.0.x.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Across dependency upgrades</caption>
+<colgroup>
+<col style="width: 60%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Dependency</th>
+<th class="tableblock halign-left valign-top">Previous version</th>
+<th class="tableblock halign-left valign-top">New version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Across</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.1.1.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AcrossHibernateJpaModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.1.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AdminWebModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.1.1.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BootstrapUiModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.2.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EntityModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.2.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SpringSecurityModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.1.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UserModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WebCmsModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.0.3.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.0.4.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Across auto-configure</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SpringSecurityAclModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.1.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LdapModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0.1.RELEASE</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Other dependency upgrades</caption>
+<colgroup>
+<col style="width: 60%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Dependency</th>
+<th class="tableblock halign-left valign-top">Previous version</th>
+<th class="tableblock halign-left valign-top">New version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AssertJ Core</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&nbsp;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.9.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Platform</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Athens-SR6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Brussels-SR7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Thymeleaf</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.7.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.9.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Thymeleaf extras: Java8 time</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&nbsp;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.1.RELEASE</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="2-0-2-release"><a class="anchor" href="#2-0-2-release"></a>2.0.2.RELEASE</h3>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 3. Across dependency upgrades</caption>
+<colgroup>
+<col style="width: 60%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Dependency</th>
+<th class="tableblock halign-left valign-top">Previous version</th>
+<th class="tableblock halign-left valign-top">New version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Across</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.1.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.1.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AdminWebModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.1.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.1.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BootstrapUiModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.1.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.2.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EntityModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.1.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.2.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SpringSecurityModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WebCmsModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.0.2.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.0.3.RELEASE</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 4. Other dependency upgrades</caption>
+<colgroup>
+<col style="width: 60%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Dependency</th>
+<th class="tableblock halign-left valign-top">Previous version</th>
+<th class="tableblock halign-left valign-top">New version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Platform</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Athens-SR2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Athens-SR6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Thymeleaf</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.3.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.7.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Thymeleaf extras: Spring Security 4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.1.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.2.RELEASE</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="2-0-1-release"><a class="anchor" href="#2-0-1-release"></a>2.0.1.RELEASE</h3>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 5. Across dependency upgrades</caption>
+<colgroup>
+<col style="width: 60%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Dependency</th>
+<th class="tableblock halign-left valign-top">Previous version</th>
+<th class="tableblock halign-left valign-top">New version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Across</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.1.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AcrossHibernateJpaModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AdminWebModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.1.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BootstrapUiModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.1.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EntityModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.1.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FileManagerModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.1.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.2.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SpringSecurityAclModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.1.RELEASE</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 6. New dependencies added</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Dependency</th>
+<th class="tableblock halign-left valign-top">Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WebCmsModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.0.2.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ImageServer modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4.0.0.RELEASE</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="dependency-versions"><a class="anchor" href="#dependency-versions"></a>Dependency versions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Across Platform BOM 2.1.0.RELEASE extends the <strong>Spring IO Platform BOM Brussels-SR7</strong>.
+The base list of dependencies can be found in the <a href="http://docs.spring.io/platform/docs/Brussels-SR7/reference/htmlsingle/#appendix-dependency-versions">Spring IO Platform documentation</a>.
+Additionally Across platform BOM defines and overrides the following dependencies:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Group</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Artifact</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Version</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cglib</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cglib</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">across-core</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">across-test</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">across-web</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">across-autoconfigure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">across-hibernate-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">admin-web-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">application-info-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bootstrap-ui-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">debug-web-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ehcache-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">entity-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">file-manager-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.2.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ldap-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">logging-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.1.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">oauth2-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">properties-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.1.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">spring-batch-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.0.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">spring-mobile-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">spring-security-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">spring-security-acl-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.1.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">user-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.across.modules</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">web-cms-module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.0.4.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.imageserver</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">imageserver-core</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.imageserver</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">imageserver-admin</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.imageserver</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">imageserver-client</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4.0.0.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.libs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">common-concurrent</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.libs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">common-spring</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.libs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">common-test</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.foreach.libs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">common-web</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.mattbertolini</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">liquibase-slf4j</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1.2.1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.oracle</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ojdbc6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11.2.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">org.assertj</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">assertj-core</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.9.0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">org.apache.commons</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">commons-collections4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4.1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">org.apache.commons</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">commons-lang3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.7</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">org.thymeleaf</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thymeleaf</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.9.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">org.thymeleaf</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thymeleaf-spring4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.9.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">org.thymeleaf.extras</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thymeleaf-extras-springsecurity4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.2.RELEASE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">org.thymeleaf.extras</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">thymeleaf-extras-java8time</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.1.RELEASE</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="migration-guides"><a class="anchor" href="#migration-guides"></a>Migration guides</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following migration guides are available:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="./migration-2.0.x-to-2.1.x.html">Across Platform 2.0.x to 2.1.x</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 2.1.0.RELEASE<br>
+Last updated 2018-04-03 08:36:21 CEST
+</div>
+</div>
+</body>
+</html>

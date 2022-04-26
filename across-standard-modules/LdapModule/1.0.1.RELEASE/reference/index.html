@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<meta name="author" content="Arne Vandamme">
+<title>LdapModule</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>LdapModule</h1>
+<div class="details">
+<span id="author" class="author">Arne Vandamme</span><br>
+<span id="revnumber">version 1.0.1.RELEASE,</span>
+<span id="revdate">1.0.1.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#about">1. About</a></li>
+<li><a href="#general-information">2. General information</a>
+<ul class="sectlevel2">
+<li><a href="#artifact">2.1. Artifact</a></li>
+<li><a href="#module-dependencies">2.2. Module dependencies</a></li>
+<li><a href="#settings">2.3. Module settings</a></li>
+</ul>
+</li>
+<li><a href="#what-s-new-in-this-version">3. What&#8217;s new in this version?</a>
+<ul class="sectlevel2">
+<li><a href="#1-0-1-release">1.0.1.RELEASE</a></li>
+<li><a href="#1-0-0-release">1.0.0.RELEASE</a></li>
+</ul>
+</li>
+<li><a href="#configuration">4. Configuration</a>
+<ul class="sectlevel2">
+<li><a href="#configuration-via-adminwebmodule">4.1. Configuration via AdminWebModule</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="openblock copyright">
+<div class="content">
+<div class="paragraph">
+<p>Copyright &#169; 2014-2017<br>
+<span class="small">Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies and further provided that each copy contains this Copyright Notice, whether distributed in print or electronically.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="about"><a class="anchor" href="#about"></a>1. About</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The LdapModule provides a services for connecting to LDAP directories.
+It provides a domain model for configuring LDAP connections and integrating them with an authentication layer.
+If <a href="#user-module-url">UserModule</a> is also present support for synchronizing users and groups from LDAP will also be active.</p>
+</div>
+<div class="paragraph">
+<p>Module website: <a href="https://foreach.atlassian.net/wiki/display/AX/LdapModule" class="bare">https://foreach.atlassian.net/wiki/display/AX/LdapModule</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="general-information"><a class="anchor" href="#general-information"></a>2. General information</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="artifact"><a class="anchor" href="#artifact"></a>2.1. Artifact</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependencies&gt;</span>
+        <span class="tag">&lt;dependency&gt;</span>
+                <span class="tag">&lt;groupId&gt;</span>com.foreach.across.modules<span class="tag">&lt;/groupId&gt;</span>
+                <span class="tag">&lt;artifactId&gt;</span>ldap-module<span class="tag">&lt;/artifactId&gt;</span>
+                <span class="tag">&lt;version&gt;</span>1.0.1.RELEASE<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;/dependency&gt;</span>
+<span class="tag">&lt;/dependencies&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="module-dependencies"><a class="anchor" href="#module-dependencies"></a>2.2. Module dependencies</h3>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Module</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AcrossWebModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AcrossHibernateJpaModule</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Required for persisting the domain model.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://foreach.atlassian.net/wiki/display/AX/AdminWebModule">AdminWebModule</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enables the administration user interface for the LDAP entities (if EntityModule is also enabled).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://foreach.atlassian.net/wiki/display/AX/EntityModule">EntityModule</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enables the administration user interface for the LDAP entities (if EntityModule is also enabled).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://foreach.atlassian.net/wiki/display/AX/UserModule">UserModule</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Activates support for synchronizing users and groups from LDAP.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="settings"><a class="anchor" href="#settings"></a>2.3. Module settings</h3>
+<div class="paragraph">
+<p>All properties start with the ldapModule. prefix.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ldapModule.disableSynchronizationTask</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable or disable the ldap synchronization task for all user directories.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>false</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ldapModule.synchronizationTaskIntervalInSeconds</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Long</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The interval for the synchronization task in seconds.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>300</em> (5 minutes)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ldapModule.deleteUsersAndGroupsWhenDeletedFromLdapSource</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable or disable sending of events when a user or group is deleted from the active directory</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>false</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="what-s-new-in-this-version"><a class="anchor" href="#what-s-new-in-this-version"></a>3. What&#8217;s new in this version?</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="1-0-1-release"><a class="anchor" href="#1-0-1-release"></a>1.0.1.RELEASE</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Be more lenient when a user or group cannot be deleted</p>
+</li>
+<li>
+<p>Replace old apt-maven-plugin with maven-compiler-plugin for better integration with Intellij</p>
+</li>
+<li>
+<p>Added lombok annotations internally</p>
+</li>
+<li>
+<p>Emit an <code>LdapEntityDeletedEvent</code> when <code>ldapModule.synchronizationTaskIntervalInSeconds</code> property is <em>true</em></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="1-0-0-release"><a class="anchor" href="#1-0-0-release"></a>1.0.0.RELEASE</h3>
+<div class="paragraph">
+<p>Initial public release available on <a href="http://search.maven.org/">Maven central</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="configuration"><a class="anchor" href="#configuration"></a>4. Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adding the dependency to <a href="https://foreach.atlassian.net/wiki/display/AX/AdminWebModule">LdapModule</a> will automatically register a synchronization task which runs every 5 minutes.
+The task will not run until an <code>LdapConnector</code> and <code>LdapUserDirectory</code> are created.</p>
+</div>
+<div class="sect2">
+<h3 id="configuration-via-adminwebmodule"><a class="anchor" href="#configuration-via-adminwebmodule"></a>4.1. Configuration via AdminWebModule</h3>
+<div class="paragraph">
+<p>The configuration of an <code>LdapConnector</code> and <code>LdapUserDirectory</code> is easiest done by using the <a href="https://foreach.atlassian.net/wiki/display/AX/AdminWebModule">AdminWebModule</a>.
+After logging into the <a href="https://foreach.atlassian.net/wiki/display/AX/AdminWebModule">AdminWebModule</a>, create a new <code>LdapConnector</code> by using the navigation.</p>
+</div>
+<div class="paragraph">
+<p>Currently, the LdapModule support following LDAP directories:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://directory.apache.org/apacheds/">Apache Directory Service 1.5</a></p>
+</li>
+<li>
+<p><a href="https://opends.java.net/">OpenDS</a></p>
+</li>
+<li>
+<p><a href="https://msdn.microsoft.com/en-us/library/bb742424.aspx">Microsoft Active Directory</a></p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="ldapconnector-fields"><a class="anchor" href="#ldapconnector-fields"></a>4.1.1. LdapConnector fields</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A logical name for your connector</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Host name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The hostname or IP address of your Active Directory</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Port</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The port of your Active Directory</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ldap connector type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The implementation of your Active Directory</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Read timeout</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unused</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Search timeout</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">How long an LDAP query may run before aborting (in milliseconds)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0 = unlimited</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Connection timeout</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unused: How long the socket should wait while attempting to create a connection and finally aborting (in milliseconds)</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Username</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The username used to bind to the active directory. For Microsoft Active Directory, the domain is not necessary and should be the "cn" of a user. For example "David Croft".</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Password</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The password used to bind to the active directory.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Base dn</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The base tree where to start search. For example: dc=organisation,dc=com</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Additional user dn</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unused: The base tree to look for users.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Additional group dn</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unused: The base tree to look for groups.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<div class="title">Note</div>
+<ul>
+<li>
+<p>When using Microsoft Active Directory, use port 389 instead of 3268 (Global Catalog). This because the Global Catalog is read-only.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>After creating an <code>LdapConnector</code> you can create an <code>LdapUserDirectory</code> and link this <code>LdapConnector</code> to it.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="ldapuserdirectory-fields"><a class="anchor" href="#ldapuserdirectory-fields"></a>4.1.2. LdapUserDirectory fields</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ldap connector</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The ldap connector to which this User Directory is linked to</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A logical name for your User Directory</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Order</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The order in the tree of UserDirectoryServiceProviders</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Active</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the User Directory is active and the synchronization should be executed</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 1.0.1.RELEASE<br>
+Last updated 2018-04-04 09:59:08 CEST
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>Message codes</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body class="book">
+<div id="header">
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="message-codes"><a class="anchor" href="#message-codes"></a>1. Message codes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following lists the common message codes that SpringSecurityAclModule uses.</p>
+</div>
+<div class="sect2">
+<h3 id="acl-permissions-form-message-codes"><a class="anchor" href="#acl-permissions-form-message-codes"></a>1.1. ACL permissions form</h3>
+<div class="paragraph">
+<p>Message codes for ACL permissions form that can be configured if EntityModule is active.
+The default created ACL permissions form view name is <strong>aclPermissions</strong>.</p>
+</div>
+<div class="paragraph">
+<p>The following parameters are used in the generated message code:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>ViewPrefix</strong></dt>
+<dd>
+<p>Is the message code prefix for the ACL permissions view.
+Usually of the form <strong>EntityPrefix</strong>.views[<strong>viewName</strong>].<br></p>
+<div class="paragraph">
+<p>The <strong>viewName</strong> is the name of the ACL permissions form view.
+Usually this is <code>aclPermissions</code> when using the <code>AclPermissionsFormRegistry</code>.<br></p>
+</div>
+<div class="paragraph">
+<p>Please refer to the <a href="{entity-module-url}">EntityModule</a> documentation for the generated values of <strong>EntityPrefix</strong>.</p>
+</div>
+</dd>
+<dt class="hdlist1"><strong>formName</strong></dt>
+<dd>
+<p>Value of the <code>name</code> property configured on the <code>AclPermissionsForm</code>.
+If you did not explicitly set one, the value will be <code>default</code>.</p>
+</dd>
+<dt class="hdlist1"><strong>sectionName</strong></dt>
+<dd>
+<p>Name of the <code>AclPermissionsFormSection</code> that the message is for.
+Should always be set.</p>
+</dd>
+<dt class="hdlist1"><strong>FormPrefix</strong></dt>
+<dd>
+<p>Represents the combination: <strong>ViewPrefix</strong>.aclForm[<strong>formName</strong>]</p>
+</dd>
+<dt class="hdlist1"><strong>SectionPrefix</strong></dt>
+<dd>
+<p>Represents the combination: <strong>ViewPrefix</strong>.aclSection[<strong>sectionName</strong>]</p>
+</dd>
+<dt class="hdlist1"><strong>SectionInFormPrefix</strong></dt>
+<dd>
+<p>Represents the combination: <strong>ViewPrefix</strong>.aclForm[<strong>formName</strong>].aclSection[<strong>sectionName</strong>]</p>
+</dd>
+<dt class="hdlist1"><strong>permissionName</strong></dt>
+<dd>
+<p>Name of the <code>AclPermission</code> under which it is registered in the <code>AclPermissionFactory</code>, for example <code>read</code>.
+See the <a href="#known-acl-permissions">known ACL permissions</a> for all default permissions.</p>
+</dd>
+<dt class="hdlist1"><strong>permissionGroup</strong></dt>
+<dd>
+<p>Name of the permission group on a form section.</p>
+</dd>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. ACL Permission form message codes (in resolving order)</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Message code</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.title<br>
+<strong>SectionPrefix</strong>.title</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Title of the section.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].title</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.description<br>
+<strong>SectionPrefix</strong>.description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description of the section.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].description</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.permissionGroup[<strong>permissionGroup</strong>]<br>
+<strong>SectionPrefix</strong>.permissionGroup[<strong>permissionGroup</strong>]
+<strong>FormPrefix</strong>.permissionGroup[<strong>permissionGroup</strong>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Label for that permission group.
+Only if the permission group had a name assigned.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].permissionGroup[projects]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.permissionGroup[<strong>permissionGroup</strong>].tooltip<br>
+<strong>SectionPrefix</strong>.permissionGroup[<strong>permissionGroup</strong>].tooltip
+<strong>FormPrefix</strong>.permissionGroup[<strong>permissionGroup</strong>].tooltip</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description (optional tooltip) for that permission group.
+Only if the permission group had a name assigned.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].permissionGroup[projects].description</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.permission[<strong>permissionName</strong>]<br>
+<strong>SectionPrefix</strong>.permission[<strong>permissionName</strong>]
+<strong>FormPrefix</strong>.permission[<strong>permissionName</strong>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Label for that permission.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].permission[create]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.permission[<strong>permissionName</strong>].tooltip<br>
+<strong>SectionPrefix</strong>.permission[<strong>permissionName</strong>].tooltip
+<strong>FormPrefix</strong>.permission[<strong>permissionName</strong>].tooltip</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description (optional tooltip) for that permission.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].permission[create].description</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.removeEntry<br>
+<strong>SectionPrefix</strong>.removeEntry
+<strong>FormPrefix</strong>.removeEntry</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Title of the button to remove an entry.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].removeEntry</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>SectionInFormPrefix</strong>.noEntries<br>
+<strong>SectionPrefix</strong>.noEntries
+<strong>FormPrefix</strong>.noEntries</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Text shown if there are no specific entries with permissions.<br>
+<br>
+Example: <code>(ViewPrefix).aclForm[general].aclSection[user].noEntries</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>ViewPrefix</strong>.properties.<strong>propertyName</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Label for the property that represents the new item selector.
+This is usually the entity name of the type of entity that would be selected.<br>
+<br>
+Example: <code>(EntityPrefix).views[aclPermissions].properties.user</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>ViewPrefix</strong>.feedback.permissionsUpdated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Message shown after permissions have been saved.<br>
+<br>
+Example: <code>(EntityPrefix).views[aclPermissions].feedback.permissionsUpdated</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 3.0.1.RELEASE<br>
+Last updated 2018-03-30 15:15:21 CEST
+</div>
+</div>
+</body>
+</html>

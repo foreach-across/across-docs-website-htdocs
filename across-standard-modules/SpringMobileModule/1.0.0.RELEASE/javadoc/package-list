@@ -1,0 +1,5 @@
+com.foreach.across.modules.spring.mobile
+com.foreach.across.modules.spring.mobile.config
+com.foreach.across.modules.spring.mobile.modules
+com.foreach.across.modules.spring.mobile.services
+com.foreach.across.modules.spring.mobile.thymeleaf

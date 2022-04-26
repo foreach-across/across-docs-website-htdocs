@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>Fundamentals</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="fundamentals" class="book toc2 toc-left">
+<div id="header">
+<h1>Fundamentals</h1>
+<div class="details">
+<span id="revnumber">version 3.0.0.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Fundamentals</div>
+<ul class="sectlevel1">
+<li><a href="#fundamentals-required-knowledge">1. Required knowledge</a></li>
+<li><a href="#fundamentals-technical-requirements">2. Technical requirements</a>
+<ul class="sectlevel2">
+<li><a href="#fundamentals-ax-framework">2.1. Across and Spring framework</a></li>
+</ul>
+</li>
+<li><a href="#fundamentals-ax-framework">3. Across Framework</a></li>
+<li><a href="#fundamentals-ax-platform">4. Across Platform</a></li>
+<li><a href="#fundamentals-ax-standard-modules">5. Across Standard Modules</a></li>
+<li><a href="#concepts">6. Core concepts</a>
+<ul class="sectlevel2">
+<li><a href="#application-context-module">6.1. Application/Context/Module</a></li>
+<li><a href="#module-dependencies">6.2. Module dependencies</a></li>
+<li><a href="#bootstrapping">6.3. Bootstrapping</a></li>
+<li><a href="#exposing-beans">6.4. Exposing beans</a></li>
+<li><a href="#events">6.5. Events</a></li>
+<li><a href="#installers">6.6. Installers</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="quoteblock abstract">
+<blockquote>
+This chapter explains the terminology and fundamental concepts involved with developing Across applications and modules.
+Understanding these terms and concepts is a prerequisite for working with Across.
+</blockquote>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="fundamentals-required-knowledge"><a class="anchor" href="#fundamentals-required-knowledge"></a>1. Required knowledge</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To be able to develop with Across, you need a good grasp of Java (8) and Spring Framework.
+Spring MVC experience is strongly advised, and some Spring Boot knowledge might be helpful.</p>
+</div>
+<div class="paragraph">
+<p>At the very least you should be familiar with Spring’s approach for dependency injection, the <code>ApplicationContext</code> and java-based configuration.</p>
+</div>
+<div class="paragraph">
+<p>Other commonly used libraries that are useful to know are <a href="http://hibernate.org/orm/">Hibernate</a>, <a href="http://projects.spring.io/spring-data/">Spring Data</a>, <a href="http://www.liquibase.org/">Liquibase</a> and <a href="http://www.thymeleaf.org">Thymeleaf</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="fundamentals-technical-requirements"><a class="anchor" href="#fundamentals-technical-requirements"></a>2. Technical requirements</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="fundamentals-ax-framework"><a class="anchor" href="#fundamentals-ax-framework"></a>2.1. Across and Spring framework</h3>
+<div class="paragraph">
+<p><a href="http://projects.spring.io/spring-framework/">Spring framework</a> is a de facto industry standard for building Java (web) applications.
+It was a logical choice to use it as the foundation for Across.
+Across extends or even customizes some aspects of Spring, but still supports most if not all common Spring functions out of the box.
+To optimally use Across, a good knowledge of Spring is required.</p>
+</div>
+<div class="paragraph">
+<p>Across is primarily built on top of Spring framework, but also includes some <a href="https://projects.spring.io/spring-boot/">Spring Boot</a> dependencies.
+Some features of Spring Boot are being used but an Across application is structured differently from a regular Spring Boot application, and as such compatibility is limited.
+Most notable is the fact auto-configuration using Spring Boot starters is not supported.</p>
+</div>
+<div class="paragraph">
+<p>Other modules often integrate different packages from the Spring ecosystem.
+In the <a href="index.adoc#fundamentals-ax-standard-modules">standard modules</a> for example, there are modules building on top of <a href="http://projects.spring.io/spring-data/">Spring Data</a>, {http://projects.spring.io/spring-batch/[Spring Batch] and <a href="http://projects.spring.io/spring-security/">Spring security</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="fundamentals-ax-framework"><a class="anchor" href="#fundamentals-ax-framework"></a>3. Across Framework</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Across Framework is the actual Java library providing all the infrastructure necessary to build Across modules and to run applications based on them.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="fundamentals-ax-platform"><a class="anchor" href="#fundamentals-ax-platform"></a>4. Across Platform</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Across Platform is a set of curated dependencies and Across modules that play well together and help developers assemble applications.
+It is provided as a bill-of-material POM, extending the Spring IO platform BOM.</p>
+</div>
+<div class="paragraph">
+<p>Across applications usually use the Across Platform BOM as a basis, to ensure that both third-party libraries as well as common Across modules are compatible.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="fundamentals-ax-standard-modules"><a class="anchor" href="#fundamentals-ax-standard-modules"></a>5. Across Standard Modules</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Apart from the Across framework itself, there is a set of Across Standard Modules.
+These modules are usually maintained by the Across core team.
+They provide a common set of functionality that can be used as the foundation for your application.</p>
+</div>
+<div class="paragraph">
+<p>There are standard modules that provide you with the set-up for an administrative web interface, secured with {{book.spring_security_url}}[Spring security] and built on top of an entire roles and permissions management domain layer.
+Other modules generate web forms at runtime for persistent entities you have declared in your application.</p>
+</div>
+<div class="paragraph">
+<p>Across framework provides only a ground layer, the real win is in re-using well-defined modules that have already been built.
+The standard modules projects aims to do exactly that: bring some generic base modules to the open source Across landscape.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="concepts"><a class="anchor" href="#concepts"></a>6. Core concepts</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>At the heart of Across are a couple of concepts you should understand.  The terms related tot these concepts are used
+throughout all Across documentation, consider them part of the Across <a href="http://en.wikipedia.org/wiki/Domain-specific_language">DSL</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="application-context-module"><a class="anchor" href="#application-context-module"></a>6.1. Application/Context/Module</h3>
+<div class="sect3">
+<h4 id="across-application"><a class="anchor" href="#across-application"></a>6.1.1. Across application</h4>
+<div class="paragraph">
+<p>An Across application is an application built on top of Across modules.
+These can be shared Across modules and/or dynamic modules like the Across application module.</p>
+</div>
+<div class="sect4">
+<h5 id="discrete"><a class="anchor" href="#discrete"></a>Across application module</h5>
+<div class="paragraph">
+<p>The Across application module is a single special module in your application, it is the one containing your application specific logic.
+The application module is always considered to depend on all other “shared” modules, and as such is started as the last module (with the exception of possible specialized postprocessor modules).</p>
+</div>
+<div class="paragraph">
+<p>Shared modules have an explicit module descriptor, whereas the application module has an implicit one that is derived from the name and package of the <code>@AcrossApplication</code> annotated class.
+The application module is determined using a convention-over-configuration approach, see the <a href="../developing-applications/index.adoc#dynamic-across-modules">chapter on dynamic modules</a> for more information.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="across-context"><a class="anchor" href="#across-context"></a>6.1.2. Across context</h4>
+<div class="paragraph">
+<p>The Across context is the set of configured modules that make up the application.
+There is a single configured Across context in an Across application.</p>
+</div>
+<div class="paragraph">
+<p>The Across context represents a Spring <code>ApplicationContext</code> that is also the parent <code>ApplicationContext</code> of every module that belongs to the Across context.
+Usually the Across context itself has a parent <code>ApplicationContext</code>, for example the <code>EmbeddedWebApplicationContext</code> of a Spring Boot application.</p>
+</div>
+<div class="paragraph">
+<p>You can configure the Across context using the <code>@EnableAcrossContext</code> annotation.
+When you use <code>@AcrossApplication</code>, this is already done behind the scenes.
+<code>@AcrossApplication</code> sets up a Spring Boot application with a single Across context.</p>
+</div>
+<div class="paragraph">
+<p>In code, the Across context is represented as an instance of <code>AcrossContext</code>.</p>
+</div>
+<div class="paragraph">
+<div class="title">Terminology</div>
+<p>When referring to the Across application, we refer to the entire <code>ApplicationContext</code> hierarchy, including the Across context and all its optional parents.
+When referring to the Across context, we refer only to the <code>ApplicationContext</code> hierarchy of the individual Across modules and their direct parent.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="across-module"><a class="anchor" href="#across-module"></a>6.1.3. Across module</h4>
+<div class="paragraph">
+<p>An Across module bundles technical or business domain functionality, most often the latter.
+It represents a single Spring <code>ApplicationContext</code> that holds all the components the module defines and - optionally - makes these components available to other modules.</p>
+</div>
+<div class="paragraph">
+<p>Across modules can depend on other modules.
+These dependencies will determine the relative order of a module versus other modules in the same application.
+A module will start (or ‘bootstrap’) after all the modules it depends on have already started.
+During the bootstrap phase a module can perform one or more initialization tasks through special installer components.</p>
+</div>
+<div class="paragraph">
+<p>An Across application is usually made up of multiple Across modules.
+Most often a single Across module corresponds with a single JAR file, but this is in no way an actual requirement.
+Every Across module has a unique name, and a single <a href="../developing-applications/index.adoc#creating-across-application">module descriptor</a> that describes the basic configuration of the module.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="module-dependencies"><a class="anchor" href="#module-dependencies"></a>6.2. Module dependencies</h3>
+<div class="paragraph">
+<p>Modules can depend on other modules.
+If module B depends on module A, B states explicitly that it wishes to make use of the functionality that A will provide.
+The module dependencies will determine the loading order of the modules in the configured Across context.</p>
+</div>
+<div class="paragraph">
+<p>Modules have two types of dependencies on other modules:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>explicit dependencies usually configured with <a href="../developing-modules/index.adoc#across-depends"><code>@AcrossDepends</code></a></p>
+</li>
+<li>
+<p>implicit dependencies defined by the <a href="#module role">[module role]</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Ordering of modules and components</div>
+<p>The starting order of modules is determined at startup time by the dependency, and never changed after.
+It is used throughout an Across application and expected to be very reliable: if module B depends on A, the functionality will be available when A starts.</p>
+</div>
+<div class="paragraph">
+<p>This ordering is often used by modules to allow other modules to build on top initial configuration that has been done.
+Events for example are also handled in order: if module B depends on A, A will handle an event before an event handler in B is called.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="bootstrapping"><a class="anchor" href="#bootstrapping"></a>6.3. Bootstrapping</h3>
+<div class="paragraph">
+<p>The Across bootstrap is the actual starting of the application.
+During the bootstrapping phase the entire Spring <code>ApplicationContext</code> hierarchy of an application is created.</p>
+</div>
+<div class="paragraph">
+<p>First the initial Across context is started, which determines the modules to start and assigns them a fixed order based on their dependencies.
+Then the modules are started - bootstrapped - one after the other in the order assigned.
+Only when all modules have started is control given back to the (optional) parent <code>ApplicationContext</code>.</p>
+</div>
+<div class="paragraph">
+<p>An <code>AcrossContext</code> is only successfully bootstrapped if all modules have bootstrapped successfully.</p>
+</div>
+<div class="paragraph">
+<p>If an Across context is being shutdown, first the modules are stopped in reverse order before the actual Across context is closed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="exposing-beans"><a class="anchor" href="#exposing-beans"></a>6.4. Exposing beans</h3>
+<div class="paragraph">
+<p>Exposing beans or components is making them available for other modules.</p>
+</div>
+<div class="paragraph">
+<p>Module B can only use a service of module A if module A has explicitly exposed that service.
+A service is usually provided through one or more beans, so that means that module A must expose those beans to its owning Across context.
+If that has been done, beans from module B can simply wire the beans from module A directly.
+Exposing components is the means through which module collaboration is defined.</p>
+</div>
+<div class="paragraph">
+<p>There are several ways to expose beans, but in most cases it is done by annotating the bean or its implementing class with @Exposed.</p>
+</div>
+<div class="sect3">
+<h4 id="refreshing-beans"><a class="anchor" href="#refreshing-beans"></a>6.4.1. Refreshing beans</h4>
+<div class="paragraph">
+<p>Sometimes it is not possible to define explicit dependencies between modules.
+For example where module B depends on module A but creates a bean that A should use.
+Because circular dependencies are not allowed the only solution for this would be to use either a lazy approach, or a <a href="../developing-applications/index.adoc#refreshing">refreshing mechanism</a>.</p>
+</div>
+<div class="paragraph">
+<p>Much like refreshing an <code>ApplicationContext</code>, once all modules in an Across context are started, a refresh is triggered that allows modules to perform actions.</p>
+</div>
+<div class="paragraph">
+<p>As much as possible, dependencies should be explicit and one way only.
+The use of refresh is best to be kept to a minimum to have a clearer flow of control.
+Using events can sometimes be a better alternative.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="events"><a class="anchor" href="#events"></a>6.5. Events</h3>
+<div class="paragraph">
+<p>An Across context creates a central event bus that every module has access to.
+Any bean can publish events on the bus, and special listeners can catch and handle the events published.</p>
+</div>
+<div class="paragraph">
+<p>Using events is a common way for modules to provide extensions points to other modules, without forcing dependencies.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="installers"><a class="anchor" href="#installers"></a>6.6. Installers</h3>
+<div class="paragraph">
+<p>An Across module can define any number of installer components.
+Installers are special beans that will only exist:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>during the bootstrapping of the Across context</p>
+</li>
+<li>
+<p>if all conditions for the installers apply</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Installers can be used to setup the necessary infrastructure for the services that a module provides.
+Common use cases for installers include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>installing a database schema</p>
+</li>
+<li>
+<p>inserting (test) data</p>
+</li>
+<li>
+<p>running migration tasks</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Across itself provides the mechanism for defining installers and optimizing (conditional) installer execution.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 3.0.0.RELEASE<br>
+Last updated 2018-03-29 16:27:59 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "Across reference docs";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

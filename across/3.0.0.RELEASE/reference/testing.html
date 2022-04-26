@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>Testing</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="across-test" class="book toc2 toc-left">
+<div id="header">
+<h1>Testing</h1>
+<div class="details">
+<span id="revnumber">version 3.0.0.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Testing</div>
+<ul class="sectlevel1">
+<li><a href="#base-test-classes">1. Base test classes</a></li>
+<li><a href="#test-context-builders">2. Test context builders</a></li>
+<li><a href="#annotations">3. Annotations</a>
+<ul class="sectlevel2">
+<li><a href="#across-test-configuration">3.1. @AcrossTestConfiguration</a></li>
+<li><a href="#across-web-app-configuration">3.2. @AcrossWebAppConfiguration</a></li>
+<li><a href="#expose-for-test">3.3. @ExposeForTest</a></li>
+</ul>
+</li>
+<li><a href="#mock-mvc-integration">4. Mock MVC integration</a></li>
+<li><a href="#mock-across-servlet-context">5. MockAcrossServletContext</a></li>
+<li><a href="#across-application-testing">6. Across application testing</a>
+<ul class="sectlevel2">
+<li><a href="#web-integration-test">6.1. @WebIntegrationTest</a></li>
+<li><a href="#integration-test-mockmvc-support">6.2. Integration test with MockMvc support</a></li>
+</ul>
+</li>
+<li><a href="#testing-dynamic-modules">7. Testing dynamic modules</a></li>
+<li><a href="#test-datasources">8. Test datasources</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Testing your shared Across modules or your Across application can be done using Across Test.
+Across Test is a utility library extending the Spring testing library.
+It provides helpers for integration testing in a standard or web context.</p>
+</div>
+<div class="paragraph">
+<p>Across Test also integrates with the AcrossWebModule features for testing.</p>
+</div>
+<h2 id="artifact" class="discrete">Artifact</h2>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependencies&gt;</span>
+        <span class="tag">&lt;dependency&gt;</span>
+                <span class="tag">&lt;groupId&gt;</span>com.foreach.across<span class="tag">&lt;/groupId&gt;</span>
+                <span class="tag">&lt;artifactId&gt;</span>across-test<span class="tag">&lt;/artifactId&gt;</span>
+                <span class="tag">&lt;version&gt;</span>3.0.0.RELEASE<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;/dependency&gt;</span>
+<span class="tag">&lt;/dependencies&gt;</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="base-test-classes"><a class="anchor" href="#base-test-classes"></a>1. Base test classes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Across Test offers some base classes for related unit or integration tests.</p>
+</div>
+<h3 id="abstractacrossmoduleconventionstest" class="discrete">AbstractAcrossModuleConventionsTest</h3>
+<div class="paragraph">
+<p>Across Test comes with a base unit test class that can be used to verify an <code>AcrossModule</code> implementation adheres to the <a href="#module-conventions">conventions</a>.
+All you have to do is extend from <code>AbstractAcrossModuleConventionsTest</code> and implement the <code>createModule()</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="title">Basic implementation of a module conventions test</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">TestAcrossWebModuleConventions</span> <span class="directive">extends</span> AbstractAcrossModuleConventionsTest
+{
+        <span class="annotation">@Override</span>
+        <span class="directive">protected</span> AcrossModule createModule() {
+                <span class="keyword">return</span> <span class="keyword">new</span> AcrossWebModule();
+        }
+}</code></pre>
+</div>
+</div>
+<h3 id="abstractviewelementtemplatetest" class="discrete">AbstractViewElementTemplateTest</h3>
+<div class="paragraph">
+<p>Base integration test class for testing the rendering of a <code>ViewElement</code>.
+Provides useful methods for rendering and inspecting the generated output.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example ViewElement rendering test</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">TestNodeViewElement</span> <span class="directive">extends</span> AbstractViewElementTemplateTest
+{
+        <span class="annotation">@Test</span>
+        <span class="directive">public</span> <span class="type">void</span> simpleNodeWithoutContentOrAttributes() {
+                NodeViewElement node = <span class="keyword">new</span> NodeViewElement( <span class="string"><span class="delimiter">&quot;</span><span class="content">div</span><span class="delimiter">&quot;</span></span> );
+
+                renderAndExpect( node, <span class="string"><span class="delimiter">&quot;</span><span class="content">&lt;div&gt;&lt;/div&gt;</span><span class="delimiter">&quot;</span></span> );
+        }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="test-context-builders"><a class="anchor" href="#test-context-builders"></a>2. Test context builders</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Across Test comes with a set of helpers for integration testing an Across module with all its dependencies.
+Main access point is the <code>AcrossTestBuilders</code> class that will provide you with either an <code>AcrossTestContextBuilder</code> or <code>AcrossTestWebContextBuilder</code>.
+The latter should be used if you want to simulate a web container environment.</p>
+</div>
+<div class="paragraph">
+<p>Both builder implementations provide a fluent api for easily configuring an <code>AcrossContext</code> and setting application properties.
+See the javadoc for all different configuration options.
+Upon building the <code>AcrossContext</code> will be bootstrapped and an instance of <code>AcrossTestContext</code> will be returned.
+<code>AcrossTestContext</code> (and the extending <code>AcrossTestWebContext</code>) wraps around the bootstrapped <code>AcrossContext</code> and provides easy querying of the bootstrapped context.
+In addition <code>AcrossTestContext</code> implements <code>Closeable</code> that shuts down the context, easy for using with try-with-resources.</p>
+</div>
+<div class="listingblock">
+<div class="title">Simple text context builder example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Test</span>
+   <span class="directive">public</span> <span class="type">void</span> verifySomeBeanIsExposed() {
+       <span class="keyword">try</span> (
+               AcrossTestContext ctx = AcrossTestBuilders.standard()
+                       .modules( SomeModule.NAME )
+                       .build()
+       ) {
+           <span class="comment">// SomeBean should be available in the root context</span>
+           assertNotNull( ctx.getBeanOfType( SomeBean.class ) );
+       }
+   }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Using the builders will by default load the <a href="#test-datasources">test datasources</a>
+ and will execute a reset of the databases before bootstrapping.
+Both options can be configured separately on the builder.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+You should obviously make sure you are not dropping the databases when connecting to an existing database.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">Example connecting to existing datasource</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Test</span>
+   <span class="directive">public</span> <span class="type">void</span> doSomethingOnExisting() {
+       <span class="keyword">try</span> (
+               AcrossTestContext ignore = AcrossTestBuilders.standard()
+                       .useTestDataSource( <span class="predefined-constant">false</span> )
+                       .dropFirst( <span class="predefined-constant">false</span> )
+                       .dataSource( ds )
+                       .build()
+       ) {
+           ...
+       }
+   }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In a web scenario the <code>AcrossTestWebContextBuilder</code> should be used.
+This will ensure a <code><a href="#mock-across-servlet-context">MockAcrossServletContext</a></code> is being used and return an <code>AcrossTestWebContext</code>.
+The <code>AcrossTestWebContext</code> provides access to the <code>MockAcrossServletContext</code> and a <code>MockMvc</code> bean that is instantiated with all filters registered by the modules.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example web context builder with mock mvc call</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Test</span>
+   <span class="directive">public</span> <span class="type">void</span> filterNotRegisteredButResourceStillWorks() {
+       <span class="keyword">try</span> (
+               AcrossTestWebContext ctx = AcrossTestBuilders.web()
+                       .property( <span class="string"><span class="delimiter">&quot;</span><span class="content">acrossWebModule.resources.versioning.enabled</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">false</span><span class="delimiter">&quot;</span></span> )
+                       .modules( AcrossWebModule.NAME )
+                       .build()
+       ) {
+           <span class="comment">// URL encoding filter should not be registered</span>
+           MockAcrossServletContext servletContext = ctx.getServletContext();
+           assertNull( servletContext.getFilterRegistration( ResourceUrlEncodingFilterConfiguration.FILTER_NAME ) );
+
+           <span class="comment">// Static resource should still be returned</span>
+           MockMvc mvc = ctx.mockMvc();
+           mvc.perform( get( <span class="string"><span class="delimiter">&quot;</span><span class="content">/across/resources/static/testResources/test.txt</span><span class="delimiter">&quot;</span></span> ) )
+               .andExpect( status().isOk() )
+       }
+   }</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="annotations"><a class="anchor" href="#annotations"></a>3. Annotations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Across Test library also provides a set of Across-specific annotations that extend the default Spring Testing annotations (eg <code>@ContextConfiguration</code>) to support <code>AcrossContext</code> setups.</p>
+</div>
+<div class="sect2">
+<h3 id="across-test-configuration"><a class="anchor" href="#across-test-configuration"></a>3.1. @AcrossTestConfiguration</h3>
+<div class="paragraph">
+<p>Class-level annotation to be used as an alternative to <code><a href="developing-applications.html#enable-across-context">@EnableAcrossContext</a></code>.
+Like <code>@EnableAcrossContext</code> this annotation will configure and bootstrap an <code>AcrossContext</code> but also add support for:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#test-datasources">test datasources</a></p>
+</li>
+<li>
+<p>easily exposing additional types for the scope of the test</p>
+</li>
+<li>
+<p>resetting the database before bootstrap</p>
+</li>
+<li>
+<p>creating a <code>MockMvc</code> bean instantiated with all dynamically registered filters from the context, when used in a <code><a href="#across-web-app-configuration">@AcrossWebAppConfiguration</a></code> test class</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When using either <code>@EnableAcrossContext</code> or <code>@AcrossTestConfiguration</code>, all beans exposed can be wired directly in the unit test class.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example using @AcrossTestConfiguration</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RunWith</span>(SpringJUnit4ClassRunner.class)
+<span class="annotation">@DirtiesContext</span>
+<span class="annotation">@ContextConfiguration</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">TestSample</span>
+{
+        <span class="annotation">@Autowired</span>
+        <span class="directive">private</span> MyExposedBean myExposedBean;
+
+        <span class="annotation">@Test</span>
+        <span class="directive">public</span> <span class="type">void</span> doSomethingWithMyExposedBean() {
+                ...
+        }
+
+        <span class="annotation">@AcrossTestConfiguration</span>(modules = MyModule.NAME, expose = MyExposedBean.class)
+        <span class="directive">protected</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">Config</span>
+        {
+        }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="across-web-app-configuration"><a class="anchor" href="#across-web-app-configuration"></a>3.2. @AcrossWebAppConfiguration</h3>
+<div class="paragraph">
+<p>Class-level annotation that sets up a <code>@WebAppConfiguration</code> test that uses a <code><a href="#mock-across-servlet-context">MockAcrossServletContext</a></code> for initialization.
+<code>@AcrossWebAppConfiguration</code> contains a <code>@ContextConfiguration</code> annotation, unless additional annotations are specified, it will load static innter <code>@Configuration</code> classes of the annotated test class.</p>
+</div>
+<div class="paragraph">
+<p>When using this annotation on a test class the <code>MockAcrossServletContext</code> instance can be autowired for introspection.
+In combination with an inner static <code>@AcrossTestConfiguration</code> class, this will support a <code>MockMvc</code> instance initialized with all dynamically registered filters.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example combining @AcrossWebAppConfiguration and @AcrossTestConfiguration</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RunWith</span>(SpringJUnit4ClassRunner.class)
+<span class="annotation">@DirtiesContext</span>
+<span class="annotation">@AcrossWebAppConfiguration</span>
+<span class="annotation">@TestPropertySource</span>( properties = <span class="string"><span class="delimiter">&quot;</span><span class="content">acrossWebModule.resources.versioning.enabled=false</span><span class="delimiter">&quot;</span></span> )
+<span class="directive">public</span> <span class="type">class</span> <span class="class">TestSample</span>
+{
+    <span class="annotation">@Autowired</span>
+    <span class="directive">private</span> MockAcrossServletContext servletContext;
+
+        <span class="annotation">@Autowired</span>
+        <span class="directive">private</span> MockMvc mvc;
+
+        <span class="annotation">@Test</span>
+        <span class="directive">public</span> <span class="type">void</span> resourceUrlEncodingFilterShouldNotBeRegistered() {
+        assertNull( servletContext.getFilterRegistration( ResourceUrlEncodingFilterConfiguration.FILTER_NAME ) );
+        }
+
+        <span class="annotation">@Test</span>
+        <span class="directive">public</span> <span class="type">void</span> staticResourceShouldBeReturned() {
+            mvc.perform( get( <span class="string"><span class="delimiter">&quot;</span><span class="content">/across/resources/static/testResources/test.txt</span><span class="delimiter">&quot;</span></span> ) )
+           .andExpect( status().isOk() )
+        }
+
+        <span class="annotation">@AcrossTestConfiguration</span>(modules = { AcrossWebModule.NAME })
+        <span class="directive">protected</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">Config</span>
+        {
+        }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="expose-for-test"><a class="anchor" href="#expose-for-test"></a>3.3. @ExposeForTest</h3>
+<div class="paragraph">
+<p>Class-level annotation that can be used to manually expose components for tests.
+It can be added to the level of the Across context configuration (<code>@EnableAcrossContext</code> or <code>@AcrossTestConfiguration</code>), as well as unit test class level when working with <code>@SpringBootTest</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example using @ExposeForTest for a manual Across context</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RunWith</span>(SpringJUnit4ClassRunner.class)
+<span class="annotation">@DirtiesContext</span>
+<span class="annotation">@AcrossWebAppConfiguration</span>
+<span class="annotation">@TestPropertySource</span>( properties = <span class="string"><span class="delimiter">&quot;</span><span class="content">acrossWebModule.resources.versioning.enabled=false</span><span class="delimiter">&quot;</span></span> )
+<span class="directive">public</span> <span class="type">class</span> <span class="class">TestSample</span>
+{
+        <span class="comment">// Note that @AcrossTestConfiguration has an expose() attribute</span>
+        <span class="comment">// that also allows exposing additional components</span>
+        <span class="annotation">@ExposeForTest</span>(MyComponent.class)
+        <span class="annotation">@AcrossTestConfiguration</span>(modules = { AcrossWebModule.NAME }, expose = MyOtherComponent.class)
+        <span class="directive">protected</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">Config</span>
+        {
+        }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example using @ExposeForTest for an Across application test</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RunWith</span>(SpringJUnit4ClassRunner.class)
+<span class="annotation">@WebIntegrationTest</span>(randomPort = <span class="predefined-constant">true</span>)
+<span class="annotation">@SpringBootTest</span>(classes = MyApplication.class)
+<span class="annotation">@ExposeForTest</span>(MyComponent.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">TestSpringBootWebIntegration</span>
+{
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="mock-mvc-integration"><a class="anchor" href="#mock-mvc-integration"></a>4. Mock MVC integration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default using either the <a href="#test-context-builders">test builders</a> or <a href="#across-test-configuration">@AcrossTestConfiguration</a> will provide you with a singleton <code>MockMvc</code> instance that is configured with the bootstrapped <code>AcrossContext</code>.
+You can also manually add this singleton configuration by importing the <code>MockMvcConfiguration</code> in your test application context, see the example in the <a href="#integration-test-mockmvc-support">Spring Boot section</a>.</p>
+</div>
+<div class="paragraph">
+<p>Across Test also provides a <code>AcrossMockMvcBuilders</code> class that has factory methods for creating an ad hoc <code>MockMvcBuilder</code> based on a bootstrapped <code>AcrossContext</code>.
+Use this implementation if you want to customize the <code>MockMvc</code> configuration, for example for Spring REST documentation generation.</p>
+</div>
+<div class="listingblock">
+<div class="title">Ad hoc instantiation of a MockMvc instance</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RunWith</span>(SpringJUnit4ClassRunner.class)
+<span class="annotation">@DirtiesContext</span>
+<span class="annotation">@AcrossWebAppConfiguration</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">TestSample</span>
+{
+    <span class="annotation">@Autowired</span>
+    <span class="directive">private</span> AcrossContextInfo contextInfo;
+
+    <span class="directive">private</span> MockMvc mvc;
+
+    <span class="annotation">@Before</span>
+    <span class="directive">public</span> <span class="type">void</span> setUp() {
+        <span class="local-variable">this</span>.mvc = AcrossMockMvcBuilders.acrossContextSetup( contextInfo ).build();
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> staticResourceShouldBeReturned() {
+        mvc.perform( get( <span class="string"><span class="delimiter">&quot;</span><span class="content">/across/resources/static/testResources/test.txt</span><span class="delimiter">&quot;</span></span> ) )
+           .andExpect( status().isOk() )
+    }
+
+    <span class="annotation">@EnableAcrossContext</span>(modules = { AcrossWebModule.NAME })
+    <span class="directive">protected</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">Config</span>
+    {
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="mock-across-servlet-context"><a class="anchor" href="#mock-across-servlet-context"></a>5. MockAcrossServletContext</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>MockAcrossServletContext</code> is an extension of the <code>MockServletContext</code> from Spring Test.
+It adds an implementation that keeps track of all registered servlets, filters and listeners.</p>
+</div>
+<div class="paragraph">
+<p>Unlike the <code>MockServletContext</code> this implementation does not throw an <code>UnsupportedOperationException</code> on registration operations.
+For common operations like servlet and filter registration this implementation will behave as an actual <code>ServletContext</code> from a web container.
+The actual registrations that occurred can be retrieved - in order - from the <code>MockAcrossServletContext</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>MockAcrossServletContext</code> can also mimic initialization of the <code>ServletContext</code>.
+When <code>initialize()</code> is called, the <code>init()</code> methods of the servlet/filter instances will be called with the registration parameters.
+Note that <code>initialize()</code> can be called only once, and afterwards all registration operations will throw an <code>IllegalStateException</code>.</p>
+</div>
+<div class="paragraph">
+<p>Using a <code>MockAcrossServletContext</code> can be used for unit testing <code>AcrossWebDynamicServletConfigurer</code> implementations or for integration tests needing web functionality.
+<code>MockAcrossServletContext</code> is used automatically behind the scenes when using the <a href="#test-context-builders">test builders</a> or <a href="#annotations">annotations</a>.
+In an integration test scenario, the implementation can either be wired as a bean (when using the <a href="#annotations">annotations</a>) or retrieved from the resulting <code>AcrossTestWebContext</code>.</p>
+</div>
+<div class="paragraph">
+<p>Please refer to the javadoc for <code>MockAcrossServletContext</code> for more information.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="across-application-testing"><a class="anchor" href="#across-application-testing"></a>6. Across application testing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is possible to test your <code>@AcrossApplication</code> with Spring Boot testing support.
+Using the <code>@SpringBootTest</code> in your tests is necessary for default <em>application.properties</em> loading and YAML support.
+Refer to the Spring Boot reference documentation for more information on Spring Boot testing facilities.</p>
+</div>
+<div class="sect2">
+<h3 id="web-integration-test"><a class="anchor" href="#web-integration-test"></a>6.1. @WebIntegrationTest</h3>
+<div class="paragraph">
+<p>A full-stack web integration test (eg. with an embedded Tomcat) does not require any special configuration.</p>
+</div>
+<div class="paragraph">
+<p>You can use <a href="#expose-for-test"><code>@ExposeForTest</code></a> in combination with <code>@SpringBootTest</code> to expose additional components during test execution.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example integration test with an embedded servlet container on a random port</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RunWith</span>(SpringJUnit4ClassRunner.class)
+<span class="annotation">@WebIntegrationTest</span>(randomPort = <span class="predefined-constant">true</span>)
+<span class="annotation">@SpringBootTest</span>(classes = MyApplication.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">TestSpringBootWebIntegration</span>
+{
+        <span class="directive">private</span> <span class="directive">final</span> TestRestTemplate restTemplate = <span class="keyword">new</span> TestRestTemplate();
+
+        <span class="annotation">@Value</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">${local.server.port}</span><span class="delimiter">&quot;</span></span>)
+        <span class="directive">private</span> <span class="type">int</span> port;
+
+        <span class="annotation">@Test</span>
+        <span class="directive">public</span> <span class="type">void</span> controllersShouldSayHello() {
+                assertEquals( <span class="string"><span class="delimiter">&quot;</span><span class="content">application says hello</span><span class="delimiter">&quot;</span></span>, get( <span class="string"><span class="delimiter">&quot;</span><span class="content">/application</span><span class="delimiter">&quot;</span></span> ) );
+                assertEquals( <span class="string"><span class="delimiter">&quot;</span><span class="content">infrastructure says hello</span><span class="delimiter">&quot;</span></span>, get( <span class="string"><span class="delimiter">&quot;</span><span class="content">/infrastructure</span><span class="delimiter">&quot;</span></span> ) );
+        }
+
+        <span class="directive">private</span> <span class="predefined-type">String</span> get( <span class="predefined-type">String</span> relativePath ) {
+                <span class="keyword">return</span> restTemplate.getForEntity( url( relativePath ), <span class="predefined-type">String</span>.class ).getBody();
+        }
+
+        <span class="directive">private</span> <span class="predefined-type">String</span> url( <span class="predefined-type">String</span> relativePath ) {
+                <span class="keyword">return</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:</span><span class="delimiter">&quot;</span></span> + port + relativePath;
+        }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="integration-test-mockmvc-support"><a class="anchor" href="#integration-test-mockmvc-support"></a>6.2. Integration test with MockMvc support</h3>
+<div class="paragraph">
+<p>It is also possible to start your entire <code>@AcrossApplication</code> without an embedded servlet container.
+However if you want to have support for <code>MockMvc</code> instantiated with dynamically registered filters, you must manually configure the application loader to use a <code><a href="#mock-across-servlet-context">MockAcrossServletContext</a></code>.
+This is done by adding the required configuration to <code>@SpringBootTest</code> and initializer classes to the <code>@ContextConfiguration</code>.
+See the <a href="appendix.html#test-configuration-classes">appendix section</a> for an overview of all configuration classes available.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example Spring Boot integration test with MockMvc</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RunWith</span>(SpringJUnit4ClassRunner.class)
+<span class="annotation">@WebAppConfiguration</span>
+<span class="annotation">@SpringBootTest</span>( classes = { MyApplication.class, MockMvcConfiguration.class } )
+<span class="annotation">@ContextConfiguration</span>( initializers = MockAcrossServletContextInitializer.class )
+<span class="directive">public</span> <span class="type">class</span> <span class="class">TestSpringBootMockMvc</span>
+{
+        <span class="annotation">@Autowired</span>
+        <span class="directive">private</span> MockMvc mockMvc;
+
+        <span class="annotation">@Test</span>
+        <span class="directive">public</span> <span class="type">void</span> controllersShouldSayHello() <span class="directive">throws</span> <span class="exception">Exception</span> {
+                assertContent( <span class="string"><span class="delimiter">&quot;</span><span class="content">application says hello</span><span class="delimiter">&quot;</span></span>, get( <span class="string"><span class="delimiter">&quot;</span><span class="content">/application</span><span class="delimiter">&quot;</span></span> ) );
+                assertContent( <span class="string"><span class="delimiter">&quot;</span><span class="content">infrastructure says hello</span><span class="delimiter">&quot;</span></span>, get( <span class="string"><span class="delimiter">&quot;</span><span class="content">/infrastructure</span><span class="delimiter">&quot;</span></span> ) );
+        }
+
+        <span class="directive">private</span> <span class="type">void</span> assertContent( <span class="predefined-type">String</span> expected, RequestBuilder requestBuilder ) <span class="directive">throws</span> <span class="exception">Exception</span> {
+                mockMvc.perform( requestBuilder )
+                       .andExpect( status().isOk() )
+                       .andExpect( content().string( is( expected ) ) );
+        }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Using <code>@AcrossWebAppConfiguration</code> in combination with <code>@SpringBootTest</code> is not possible, as the context loaders they use conflict with each other.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="testing-dynamic-modules"><a class="anchor" href="#testing-dynamic-modules"></a>7. Testing dynamic modules</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Testing dynamic modules outside of a full <code>@AcrossApplication</code> test can be done by adding one or more <code>AcrossDynamicModulesConfigurer</code> instances to the <code>AcrossContext</code> configuration.
+Every configurer instance is responsible for building a set of dynamic modules for a particular base package.
+An existing <code>@AcrossApplication</code> class can easily be reused as base for the configurer.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example adding dynamic modules to a builder</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Test</span>
+<span class="directive">public</span> <span class="type">void</span> dynamicModulesRegistration() {
+    <span class="keyword">try</span> (
+            AcrossTestContext ctx = standard()
+                    .configurer( <span class="keyword">new</span> AcrossDynamicModulesConfigurer( DummyApplication.class ) )
+                    .build()
+    ) {
+        assertTrue( ctx.contextInfo().hasModule( <span class="string"><span class="delimiter">&quot;</span><span class="content">DummyApplicationModule</span><span class="delimiter">&quot;</span></span> ) );
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example adding dynamic modules to an annotations based test</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RunWith</span>(SpringJUnit4ClassRunner.class)
+<span class="annotation">@DirtiesContext</span>
+<span class="annotation">@ContextConfiguration</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">TestDynamicModulesConfiguration</span>
+{
+        <span class="annotation">@Autowired</span>
+        <span class="directive">private</span> AcrossContextInfo contextInfo;
+
+        <span class="annotation">@Test</span>
+        <span class="directive">public</span> <span class="type">void</span> sampleModulesShouldBeAdded() {
+            assertTrue( contextInfo.hasModule( <span class="string"><span class="delimiter">&quot;</span><span class="content">DummyApplicationModule</span><span class="delimiter">&quot;</span></span> ) );
+           }
+
+        <span class="annotation">@Configuration</span>
+        <span class="annotation">@EnableAcrossContext</span>
+        <span class="directive">protected</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">SampleConfiguration</span>
+        {
+                <span class="annotation">@Bean</span>
+                <span class="directive">public</span> AcrossDynamicModulesConfigurer sampleDynamicModules() {
+                        <span class="keyword">return</span> <span class="keyword">new</span> AcrossDynamicModulesConfigurer( DummyApplication.class );
+                }
+        }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="test-datasources"><a class="anchor" href="#test-datasources"></a>8. Test datasources</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When using the Across Test <a href="#annotations">annotations</a> or <a href="#test-context-builders">test builders</a>, default support for test datasources is activated.
+If no specific datasource is configured on the <code>AcrossContext</code> a default test datasource will be detected.</p>
+</div>
+<div class="paragraph">
+<div class="title">Test datasource detection</div>
+<p>Test datasources can be configured in a specific property file, located at <strong>${user.home}/dev-configs/across-test.properties</strong>.
+That file is automatically loaded and can contain multiple datasource sections, where every datasource has a unique <strong>NAME</strong> and its properties are prefixed with <strong>acrossTest.datasource.NAME</strong>.
+Required properties for a valid datasource are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>acrossTest.datasource.NAME.driver</p>
+</li>
+<li>
+<p>acrossTest.datasource.NAME.url</p>
+</li>
+<li>
+<p>acrossTest.datasource.NAME.username</p>
+</li>
+<li>
+<p>acrossTest.datasource.NAME.password</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Example across-test.properties file</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="properties">acrossTest.datasource.mysql.driver=com.mysql.jdbc.Driver
+acrossTest.datasource.mysql.url=jdbc:mysql://127.0.0.1:3306/testdb
+acrossTest.datasource.mysql.username=testdb_user
+acrossTest.datasource.mysql.password=testdb_pwd</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When configuring the context, the environment property <strong>acrossTest.datasource</strong> will be checked to determine the <strong>NAME</strong> of the actual datasource that shoul be used.
+If that property does not exist or holds the value <strong>auto</strong>, an embedded HSQLDB is automatically added instead.
+This ensures that installers can always run against an actual datasource.</p>
+</div>
+<div class="paragraph">
+<p>If you want to change the fallback default datasource, you can do so by setting the <strong>acossTest.datasource.default</strong> property value.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+A common strategy is to run the integration tests multiple times with a different <strong>acrossTest.datasource</strong> property.
+The <strong>standard-module-bom</strong> automatically configures your maven build to run all unit test starting with <strong>IT</strong>* in the integration-test phase.
+This is an efficient way to test for example installer compatibility for different database types.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you want to manually add support for test datasources, you should add a <code>TestDataSourceConfigurer</code> for configuring the <code>AcrossContext</code>.</p>
+</div>
+<div class="paragraph">
+<div class="title">Database reset</div>
+<p>When using test datasources it is usually wanted behaviour to drop the database content before bootstrapping the <code>AcrossContext</code>.
+This is done automatically when you are using the Across Test annotations or builders.
+If you want to add this manually, you should add a <code>ResetDatabaseConfigurer</code> to the context configuration.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 3.0.0.RELEASE<br>
+Last updated 2018-03-29 16:27:59 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "Across reference docs";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>WebCmsModule - General Information</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="general-information" class="book toc2 toc-left">
+<div id="header">
+<h1>WebCmsModule - General Information</h1>
+<div class="details">
+<span id="revnumber">version 0.0.4.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">General Information</div>
+<ul class="sectlevel0">
+<li><a href="#general-information">General information</a>
+<ul class="sectlevel1">
+<li><a href="#artifact">1. Artifact</a></li>
+<li><a href="#module-dependencies">2. Module dependencies</a></li>
+<li><a href="#module-settings">3. Module settings</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<h1 id="general-information" class="sect0"><a class="anchor" href="#general-information"></a>General information</h1>
+<div class="sect1">
+<h2 id="artifact"><a class="anchor" href="#artifact"></a>1. Artifact</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependencies&gt;</span>
+        <span class="tag">&lt;dependency&gt;</span>
+                <span class="tag">&lt;groupId&gt;</span>com.foreach.across.modules<span class="tag">&lt;/groupId&gt;</span>
+                <span class="tag">&lt;artifactId&gt;</span>{{book.moduleArtifact}}<span class="tag">&lt;/artifactId&gt;</span>
+                <span class="tag">&lt;version&gt;</span>{{book.moduleVersion}}<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;/dependency&gt;</span>
+<span class="tag">&lt;/dependencies&gt;</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="module-dependencies"><a class="anchor" href="#module-dependencies"></a>2. Module dependencies</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Module</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://across.foreach.be/modules/acrosshibernatejpamodule">AcrossHibernateJpaModule</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Required for the JPA domain model.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://across.foreach.be/modules/entitymodule">EntityModule</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In combination with <code>AdminWebModule</code> this enables the management forms in the administration UI.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://across.foreach.be/modules/adminwebmodule">AdminWebModule</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In combination with <code>EntityModule</code> this enables the management forms in the administration UI.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="module-settings"><a class="anchor" href="#module-settings"></a>3. Module settings</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All properties start with the <strong>webCmsModule.</strong> prefix.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">urls.included-path-patterns</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Paths to be included for <code>WebCmsUrl</code> mapping.
+If empty, all non-excluded paths will be considered.</p>
+<p class="tableblock">Specify as ANT matcher patterns, eg <em>/path/**</em>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">urls.excluded-path-patterns</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Paths to always be excluded from <code>WebCmsUrl</code> mapping.
+If empty, only included paths will be considered.</p>
+<p class="tableblock">Specify as ANT matcher patterns, eg <em>/path/**</em>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">default-data.assets.enabled</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable default assets to be added: this includes component and asset types as well as some sample assets.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pages.default-page-type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type key or object id of the default page type that should assigned to a new page.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>default</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pages.template-prefix</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Prefix to be added to relative template names.
+This corresponds usually with the base directory where the (Thymeleaf) templates are located.
+If unspecified the default resources of any present <code>@AcrossApplication</code> will be used.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pages.template-prefix-to-ignore</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If a page template starts with any of these prefixes, it will be considered absolute and will not be prefixed.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>["th/"]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pages.template-suffix-to-remove</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If a page template ends with this suffix, the suffix will be removed.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>.html</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">default-data.assets.enabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable default assets to be installed: this includes component and asset types as well as some sample assets.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">images.cloudinary.enabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Should a <code>Cloudinary</code> bean be created? Requires Cloudinary dependency to be on the classpath.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">images.cloudinary.cloud-name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cloudinary cloud name.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">images.cloudinary.api-key</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cloudinary API key for secure operations (eg. file upload).</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">images.cloudinary.api-secret</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cloudinary API secret for secure operations (eg. file upload).</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">images.imageServer.enabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Should an <code>ImageServerClient</code> bean be created?  Requires the ImageServer client dependency to be on the classpath.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">images.imageServer.url</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Base URL for the remote ImageServer.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">images.imageServer.hash-token</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the optional hash token that should be used when building image URLs.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">images.imageServer.access-token</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Access token that should be used for secure operations (eg. file upload).</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.0.4.RELEASE<br>
+Last updated 2018-03-30 16:02:35 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "WebCmsModule docs";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

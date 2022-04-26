@@ -1,0 +1,10 @@
+com.foreach.across.modules.bootstrapui
+com.foreach.across.modules.bootstrapui.components
+com.foreach.across.modules.bootstrapui.components.builder
+com.foreach.across.modules.bootstrapui.config
+com.foreach.across.modules.bootstrapui.elements
+com.foreach.across.modules.bootstrapui.elements.builder
+com.foreach.across.modules.bootstrapui.elements.processor
+com.foreach.across.modules.bootstrapui.elements.thymeleaf
+com.foreach.across.modules.bootstrapui.resource
+com.foreach.across.modules.bootstrapui.utils

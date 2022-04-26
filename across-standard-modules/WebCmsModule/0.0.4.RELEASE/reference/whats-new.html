@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>WebCmsModule - Release notes</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="whats-new" class="book toc2 toc-left">
+<div id="header">
+<h1>WebCmsModule - Release notes</h1>
+<div class="details">
+<span id="revnumber">version 0.0.4.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Release notes</div>
+<ul class="sectlevel0">
+<li><a href="#what-s-new-in-this-version">What&#8217;s new in this version?</a>
+<ul class="sectlevel1">
+<li><a href="#0-0-3-release">1. 0.0.3.RELEASE</a></li>
+<li><a href="#0-0-2-release">2. 0.0.2.RELEASE</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<h1 id="what-s-new-in-this-version" class="sect0"><a class="anchor" href="#what-s-new-in-this-version"></a>What&#8217;s new in this version?</h1>
+<div class="sect1">
+<h2 id="0-0-3-release"><a class="anchor" href="#0-0-3-release"></a>1. 0.0.3.RELEASE</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="multi-domain.html#multi-domain-multi-domain-and-site-support">multi-domain/multi-site support</a> has been added</p>
+</li>
+<li>
+<p>it is now possible to filter the component types that can be created on a global level or added as members of a container</p>
+</li>
+<li>
+<p><code>componentRestricted</code> attribute on <code>WebCmsComponentType</code> to indicate a component cannot be added implicitly</p>
+</li>
+<li>
+<p><code>childComponentsRestricted</code> attribute on <code>WebCmsTypeSpecifier</code> to indicate only linked component types should be available for adding</p>
+</li>
+<li>
+<p>see chapters in <a href="components.html#components-defining-component-types">Defining component types</a> for more information</p>
+</li>
+<li>
+<p>component administration UI improvements</p>
+</li>
+<li>
+<p>message codes can be used to <a href="appendix.html#message-codes">configure descriptions and labels for component types</a></p>
+</li>
+<li>
+<p>text components (rich-text/markup) can have a <a href="components.html#components-component-profiles">custom profile configured</a> - default implementations support TinyMCE and CodeMirror profiles</p>
+</li>
+<li>
+<p>`WebCmsAsset`s now have a sortIndex which by default is set to 1000.</p>
+</li>
+<li>
+<p>It is now possible to create and import <code>WebCmsAssetLinks</code></p>
+</li>
+<li>
+<p>It is now possible to import <code><a href="domain-model.html#publication-model-overview">WebCmsUrls</a></code> and <code><a href="domain-model.html#redirects-redirects-overview">Redirects</a></code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="0-0-2-release"><a class="anchor" href="#0-0-2-release"></a>2. 0.0.2.RELEASE</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Initial public release available on [Maven central](<a href="http://search.maven.org" class="bare">http://search.maven.org</a>).</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.0.4.RELEASE<br>
+Last updated 2018-03-30 16:02:35 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "WebCmsModule docs";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

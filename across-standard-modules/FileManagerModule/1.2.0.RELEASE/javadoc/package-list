@@ -1,0 +1,5 @@
+com.foreach.across.modules.filemanager
+com.foreach.across.modules.filemanager.business
+com.foreach.across.modules.filemanager.config
+com.foreach.across.modules.filemanager.services
+com.foreach.across.modules.filemanager.utils

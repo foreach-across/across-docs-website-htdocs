@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>WebCmsModule - Domain Model</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="domain-model" class="book toc2 toc-left">
+<div id="header">
+<h1>WebCmsModule - Domain Model</h1>
+<div class="details">
+<span id="revnumber">version 0.0.4.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Domain Model</div>
+<ul class="sectlevel0">
+<li><a href="#asset-model">Asset model</a>
+<ul class="sectlevel1">
+<li><a href="#webcmsobject">1. WebCmsObject</a></li>
+<li><a href="#webcmsasset">2. WebCmsAsset</a></li>
+<li><a href="#linking-assets">3. Linking assets</a></li>
+<li><a href="#webcmstypespecifier">4. WebCmsTypeSpecifier</a></li>
+<li><a href="#linking-types">5. Linking types</a></li>
+</ul>
+</li>
+<li><a href="#page-model">Page model</a>
+<ul class="sectlevel1">
+<li><a href="#pages-web-cms-page-overview">6. Overview</a>
+<ul class="sectlevel2">
+<li><a href="#properties">6.1. Properties</a></li>
+<li><a href="#web-components">6.2. Web Components</a></li>
+<li><a href="#urls">6.3. URLs</a></li>
+<li><a href="#pages-web-cms-page-import">6.4. Importing a page</a></li>
+</ul>
+</li>
+<li><a href="#pages-web-cms-page-type-overview">7. WebCmsPageType</a>
+<ul class="sectlevel2">
+<li><a href="#properties-3">7.1. Properties</a></li>
+<li><a href="#importing-a-page-type">7.2. Importing a page type</a></li>
+</ul>
+</li>
+<li><a href="#pages-page-web-model">8. Web infrastructure</a>
+<ul class="sectlevel2">
+<li><a href="#default-page-controller-model">8.1. Default page controller model</a></li>
+<li><a href="#custom-page-mapping">8.2. Custom page mapping</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#publication-model-overview">Publication model</a>
+<ul class="sectlevel2">
+<li><a href="#example-model">1.1. Example model</a></li>
+<li><a href="#default-model">1.2. Default model</a></li>
+<li><a href="#domain-implementation">9. Domain implementation</a>
+<ul class="sectlevel2">
+<li><a href="#asset-implementation">9.1. Asset implementation</a></li>
+<li><a href="#webcmsarticle">9.2. WebCmsArticle</a></li>
+<li><a href="#webcmsarticletype">9.3. WebCmsArticleType</a></li>
+<li><a href="#webcmspublication">9.4. WebCmsPublication</a></li>
+<li><a href="#webcmspublicationtype">9.5. WebCmsPublicationType</a></li>
+</ul>
+</li>
+<li><a href="#administrative-ui">10. Administrative UI</a></li>
+<li><a href="#publication-article-web-model">11. Web infrastructure</a>
+<ul class="sectlevel2">
+<li><a href="#default-article-controller-model">11.1. Default article controller model</a></li>
+<li><a href="#custom-article-mapping">11.2. Custom article mapping</a></li>
+<li><a href="#publication-web-cms-article-import">11.3. Importing data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#redirects-redirects-overview">Redirects</a>
+<ul class="sectlevel1">
+<li><a href="#Redirect-import">12. Importing a redirect</a></li>
+</ul>
+</li>
+<li><a href="#menu">Menu</a>
+<ul class="sectlevel1">
+<li><a href="#menu-web-cms-menu-overview">13. Overview</a></li>
+<li><a href="#menu-web-cms-menu-programatically">14. Building a menu</a>
+<ul class="sectlevel2">
+<li><a href="#example-building-an-rendering-a-menu">14.1. Example building an rendering a menu</a></li>
+<li><a href="#generated-menu-items">14.2. Generated menu items</a></li>
+</ul>
+</li>
+<li><a href="#properties-4">15. Properties</a></li>
+<li><a href="#menu-web-cms-menu-import">16. Importing a menu item</a>
+<ul class="sectlevel2">
+<li><a href="#supported-properties">16.1. Supported properties</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<h1 id="asset-model" class="sect0"><a class="anchor" href="#asset-model"></a>Asset model</h1>
+<div class="openblock partintro">
+<div class="content">
+WebCmsModule provides a basic model for mapping assets and types.
+Example assets provided by default are <code>WebCmsArticle</code> and <code>WebCmsPage</code>.
+Related types would be <code>WebCmsArticleType</code> and <code>WebCmsPageType</code>.
+</div>
+</div>
+<div class="sect1">
+<h2 id="webcmsobject"><a class="anchor" href="#webcmsobject"></a>1. WebCmsObject</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Both types and assets are implementations of <code>WebCmsObject</code>.
+A <code>WebCmsObject</code> can be any object, as long as it has a unique <code>objectId</code>.
+The <code>objectId</code> is a <code>String</code> value, can be manually assigned but should never change once set.
+It should also be unique within a single data store.</p>
+</div>
+<div class="paragraph">
+<p>The unique <code>objectId</code> is used for importing/exporting and synchronizing data.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="webcmsasset"><a class="anchor" href="#webcmsasset"></a>2. WebCmsAsset</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The base class for an asset is <code>WebCmsAsset</code>.
+Default implementations are <code>WebCmsPage</code>, <code>WebCmsArticle</code> and <code>WebCmsPublication</code>.</p>
+</div>
+<div class="paragraph">
+<p>By default an asset has a concept of being published or not.</p>
+</div>
+<div class="paragraph">
+<p>The repository for working with the abstract <code>WebCmsAsset</code> is <code>WebCmsAssetRepository</code>.</p>
+</div>
+<div class="paragraph">
+<p>WebCmsAssets also have a sortIndex, which will initially be set to 1000. Should you create your own <code>WebCmsAsset</code> implementation, do note that if you use a <code>Builder</code> pattern, that you will need to provide the logic to set the sortIndex to 1000. (e.g. override the default value inside the builder.)</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="linking-assets"><a class="anchor" href="#linking-assets"></a>3. Linking assets</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A generic <code>WebCmsAssetLink</code> object is available to link a <code>WebCmsAsset</code> to any <code>WebCmsObject</code> with a specific <code>linkType</code> demarcation.
+These links are mapped using <code>WebCmsAssetLink</code> and <code>WebCmsAssetLinkRepository</code></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="webcmstypespecifier"><a class="anchor" href="#webcmstypespecifier"></a>4. WebCmsTypeSpecifier</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The base class for a type is <code>WebCmsTypeSpecifier</code>.
+A type is a specification attribute for another <code>WebCmsObject</code> like <code>WebCmsAsset</code> or <code>WebCmsComponent</code>.</p>
+</div>
+<div class="paragraph">
+<p>Types are simpler objects that have a unique <code>typeKey</code> and descriptive <code>name</code>.
+The <code>typeKey</code> must always be unique within all instances of that type.
+The <code>typeKey</code> is used heavily throughout code or imports for an easy - readable way of identifying a specific type.</p>
+</div>
+<div class="paragraph">
+<p>Apart from the <code>typeKey</code>, a <code>WebCmsTypeSpecifier</code> has a collection of <code>attributes</code>.
+These are simple key/value pairs of strings that can be used for configuration and behaviour.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="linking-types"><a class="anchor" href="#linking-types"></a>5. Linking types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A generic <code>WebCmsTypeSpecifierLink</code> object is available to link a <code>WebCmsTypeSpecifier</code> to any <code>WebCmsObject</code> with a specific <code>linkType</code> demarcation.
+These links are mapped using the <code>WebCmsTypeSpecifierLink</code> and <code>WebCmsTypeSpecifierLinkRepository</code>.</p>
+</div>
+</div>
+</div>
+<h1 id="page-model" class="sect0"><a class="anchor" href="#page-model"></a>Page model</h1>
+<div class="sect1">
+<h2 id="pages-web-cms-page-overview"><a class="anchor" href="#pages-web-cms-page-overview"></a>6. Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A <code>WebCmsPage</code> is a component that represents a single page in the application. It differs from an <a href="#publication-model-overview">article</a> in that the page is stand-alone,
+i.e. you have more control regarding the layout and the components of the page. One can use this, for example, to create <em>about</em> or <em>faq</em> pages. It is related to the publication model
+ in that an article is contained in a page: the data is contained in the article component, but how the article is rendered is handled by the page.</p>
+</div>
+<div class="sect2">
+<h3 id="properties"><a class="anchor" href="#properties"></a>6.1. Properties</h3>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+<col style="width: 12.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Mandatory</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Page Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#pages-web-cms-page-type-overview">Page Type</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines the page type of a page. Can be set during page creation but can not be changed afterwards.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Title</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The title of the page.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parent</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Select</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parent page of the page. Affects any generated URLs and (if auto-generated) the canonical path.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Template</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The thymeleaf template of the page. The filename of the page without the extension. If none is defined the one from the page type is used.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path Segment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The path segment of the page.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Auto create menu items</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Checklist of menu names.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If checked, a menu item is generated for the checked menu(s).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>There are two configurable subsections, one for URL settings and one for publication settings</p>
+</div>
+<div class="sect3">
+<h4 id="url-settings"><a class="anchor" href="#url-settings"></a>6.1.1. URL settings</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+<col style="width: 12.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Mandatory</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path Segment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path (URL) of the page.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Canonical path</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FQDN of the page. Must be unique within the application.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Both of these can be generated manually or automatically, depending on the title and parent (and grandparent, and &#8230;&#8203;) of the page by checking the relevant checkboxes.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="publish-settings"><a class="anchor" href="#publish-settings"></a>6.1.2. Publish settings</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+<col style="width: 12.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Mandatory</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Published</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the page is published (or not). Published pages are visible for regular, non-logged in users.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Publication Date</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Date</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The page is only visible if the access date of the file is greater than the publication date.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Auto-create new menu items</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If checked, creates a new menu item after creation.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">False</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>When creating or updating the page, the following updates are done with regards to the associated URLs:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If the page object is saved, and the publication is in the future or not yet published, update the primary url.</p>
+</li>
+<li>
+<p>If the page object is saved and published but the publication date is in the past, no adjustments to the primary url will happen.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This, however, can be overridden by behaviour defined in <code>WebCmsMenu</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="page-template"><a class="anchor" href="#page-template"></a>6.1.3. Page template</h4>
+<div class="paragraph">
+<p>A page can optionally specify a template that should be used for rendering.
+If the template is left empty, the <code>template</code> attribute of the <code>WebCmsPageType</code> will be used as template for rendering instead.
+If the <code>WebCmsPageType</code> does not specify a template either, the value of module setting <code>webCmsModule.pages.default-template</code> will be used.</p>
+</div>
+<div class="paragraph">
+<p>A page template will usually be resolved by the configured Spring MVC <code>ViewResolver</code> beans.
+By default page templates are expected to be Thymeleaf template files.</p>
+</div>
+<div class="paragraph">
+<p>At startup of the application, WebCmsModule will attempt to determine the default template path of the current application.
+Any relative template will then be automatically prefixed with the default template path.
+Only templates with a specified prefix (eg. <em>th/</em>) are considered absolute and will be left untouched.</p>
+</div>
+<div class="paragraph">
+<p>The default file extension <em>.html</em> does not need to be specified when setting the template value.</p>
+</div>
+<div class="paragraph">
+<p><em>Example:</em>
+<code>MyApplication</code> would resolve the default template path as <code>th/my/</code>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>template <code>my-template</code> would be resolved as <code>th/my/template</code></p>
+</li>
+<li>
+<p>template <code>th/other-module/my-template</code> would be resolved as <code>th/other-module/my-template</code></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You can manually specify the default template prefix using property <code>webCmsModule.pages.template-prefix</code>.
+See the <a href="general-information.html#module-settings">module settings</a> for all options you can configure if you want to change the default template resolving behaviour.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="web-components"><a class="anchor" href="#web-components"></a>6.2. Web Components</h3>
+<div class="paragraph">
+<p>A <code>WebCmsPage</code> can contain different <code>WebCmsComponent</code> assets. Those form the building blocks of the pages. For further information, please check the <a href="components.html#components-overview">chapter</a> on components.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="urls"><a class="anchor" href="#urls"></a>6.3. URLs</h3>
+<div class="paragraph">
+<p>A <code>WebCmsPage</code> can be referred to by different URLs. Please see the respective <a href="#WebCmsUrl-pages">chapter</a> for more information.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="pages-web-cms-page-import"><a class="anchor" href="#pages-web-cms-page-import"></a>6.4. Importing a page</h3>
+<div class="paragraph">
+<p>One can import a page by using the import infrastructure provided by the import functionality of WebCmsModule.</p>
+</div>
+<div class="sect3">
+<h4 id="examples"><a class="anchor" href="#examples"></a>6.4.1. Examples</h4>
+<div class="paragraph">
+<p><strong><em>Example page</em></strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">page</span>:
+  - <span class="string"><span class="content">title: Always Created Page </span></span><i class="conum" data-value="1"></i><b>(1)</b>
+
+  - <span class="string"><span class="content">objectId: &quot;wcm:asset:page:reference-simple&quot;</span></span>
+    <span class="key">title</span>: <span class="string"><span class="content">Simple Page</span></span>
+
+  - <span class="string"><span class="content">objectId: &quot;wcm:asset:page:reference-simple-child&quot;</span></span>
+    <span class="key">title</span>: <span class="string"><span class="content">Simple Child Page</span></span>
+    <span class="key">parent</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:asset:page:reference-simple</span><span class="delimiter">&quot;</span></span> <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="key">published</span>: <span class="string"><span class="content">true</span></span>
+
+  - <span class="string"><span class="content">objectId: &quot;wcm:asset:page:reference-fixed-path-segment&quot;</span></span>
+    <span class="key">title</span>: <span class="string"><span class="content">Fixed Path Segment Page</span></span>
+    <span class="key">parent</span>: <span class="string"><span class="content">/simple-page </span></span><i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="key">pathSegment</span>: <span class="string"><span class="content">fixed</span></span>
+    <span class="key">publicationDate</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2017-03-14</span><span class="delimiter">&quot;</span></span>
+
+  - <span class="string"><span class="content">objectId: &quot;wcm:asset:page:reference-faq&quot;</span></span>
+    <span class="key">title</span>: <span class="string"><span class="content">Frequently Asked Questions</span></span>
+    <span class="key">pathSegment</span>: <span class="string"><span class="content">faq</span></span>
+    <span class="error">wcm:menu-items</span>: <i class="conum" data-value="3"></i><b>(3)</b>
+      - <span class="string"><span class="content">menu: sideNav</span></span>
+      - <span class="string"><span class="content">menu: topNav</span></span>
+        <span class="key">title</span>: <span class="string"><span class="content">FAQ</span></span>
+        <span class="key">path</span>: <span class="string"><span class="content">/help/faq</span></span>
+        <span class="key">sortIndex</span>: <span class="string"><span class="content">10</span></span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Sensible defaults are used. Only title is mandatory.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>One can refer to both the object id and the canonical path.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>You can use this notation to manipulate the associated menu items.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="properties-2"><a class="anchor" href="#properties-2"></a>6.4.2. Properties</h4>
+<div class="sect4">
+<h5 id="page-properties-that-can-be-imported"><a class="anchor" href="#page-properties-that-can-be-imported"></a>Page properties that can be imported</h5>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">On UI</th>
+<th class="tableblock halign-left valign-top">Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">title</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Title</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">parent</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parent</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Should be the canonical path or the objectId</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pathSegment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path segment</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pathSegmentGenerated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Generate path segment based on title</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">canonicalPath</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Canonical Path</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">canonicalPathGenerated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Generate canonical path based on title</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">template</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Template</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pageType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Page type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Only supported during creation; if you do an update where the type has been changed an exception will be thrown.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">objectId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">isPublished</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Published</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">publicationDate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Publication Date</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pages-web-cms-page-type-overview"><a class="anchor" href="#pages-web-cms-page-type-overview"></a>7. WebCmsPageType</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A WebCmsPageType is used for assigning a certain type of page to a <a href="#pages-web-cms-page-overview">WebCmsPage</a>. The default page type is controlled via the <code>webCmsModule.pages.default-page-type</code> parameter in the configuration.</p>
+</div>
+<div class="sect2">
+<h3 id="properties-3"><a class="anchor" href="#properties-3"></a>7.1. Properties</h3>
+<div class="sect4">
+<h5 id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h5>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 50%;">
+<col style="width: 12.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Required</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the page type. Displayed in the drop down list when creating a new page.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Attributes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#pages-web-cms-page-type-attributes">Attributes</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The attributes affecting the behaviour when rendering/creating the page. Specified as key-value pairs.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wcm:components</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Components</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The components that are automatically generated when creating a page that uses this page type.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong><em>Attributes</em></strong> <a id="pages-web-cms-page-type-attributes"></a></p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Attribute</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">contentTemplate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the container component whose components should be cloned to every page of that type.
+If omitted, a component called <strong>contentTemplate</strong> will be searched for.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">defaultTemplate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The thymeleaf page that is used if there has not been a page specified on the page itself.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hasEndpoint</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether or not an endpoint is defined for a page. If you disable this, the menu and URL functionality will be disabled on the front end.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">isPublishable</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether or not the page can be published.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="importing-a-page-type"><a class="anchor" href="#importing-a-page-type"></a>7.2. Importing a page type</h3>
+<div class="paragraph">
+<p>In the standard setup one can only manipulate the available page types via the import functionality. The default types are described further down. One can extrapolate any other needed page type from them.</p>
+</div>
+<div class="sect3">
+<h4 id="default-page-types"><a class="anchor" href="#default-page-types"></a>7.2.1. Default page types</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">types</span>:
+  <span class="key">page</span>:
+    <span class="key">default</span>: <i class="conum" data-value="1"></i><b>(1)</b>
+      <span class="key">name</span>: <span class="string"><span class="content">Default</span></span>
+    <span class="key">template</span>:
+      <span class="key">name</span>: <span class="string"><span class="content">Template</span></span>
+      <span class="key">attributes</span>: <i class="conum" data-value="2"></i><b>(2)</b>
+        <span class="key">hasEndpoint</span>: <span class="string"><span class="content">false</span></span>
+        <span class="key">isPublishable</span>: <span class="string"><span class="content">false</span></span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The default page type. Notice that there are no attributes, so the default <a href="#pages-web-cms-page-type-attributes">attributes</a> specified are in effect for this type.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td><a href="#pages-web-cms-page-type-attributes">Attributes</a> are defined as simple key-value pairs.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Another, more complex example. This page contains multiple nested containers that themselves have child components.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="tabbed"><a class="anchor" href="#tabbed"></a>7.2.2. Tabbed</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">tabbed-page</span>:
+  <span class="key">name</span>: <span class="string"><span class="content">Tabbed page</span></span>
+  <span class="key">attributes</span>:
+    <span class="key">template</span>: <span class="string"><span class="content">th/cfr/tabbed-page</span></span>
+  <span class="error">wcm:components</span>:
+    <span class="key">content</span>:
+      <span class="key">componentType</span>: <span class="string"><span class="content">container</span></span>
+      <span class="key">sortIndex</span>: <span class="string"><span class="content">1</span></span>
+      <span class="error">wcm:components</span>:
+        <span class="key">code</span>:
+          <span class="key">title</span>: <span class="string"><span class="content">Code</span></span>
+          <span class="key">componentType</span>: <span class="string"><span class="content">container</span></span>
+          <span class="error">wcm:components</span>:
+            <span class="key">introduction</span>:
+              <span class="key">title</span>: <span class="string"><span class="content">introduction</span></span>
+              <span class="key">componentType</span>: <span class="string"><span class="content">html</span></span>
+              <span class="key">sortIndex</span>: <span class="string"><span class="content">1 </span></span><i class="conum" data-value="2"></i><b>(2)</b>
+              <span class="key">content</span>: <span class="string"><span class="delimiter">|</span></span> <i class="conum" data-value="1"></i><b>(1)</b>
+                <span class="error">&lt;section&gt;introduction&lt;/section&gt;</span>
+            <span class="key">requirements</span>:
+              <span class="key">title</span>: <span class="string"><span class="content">requirements</span></span>
+              <span class="key">componentType</span>: <span class="string"><span class="content">html</span></span>
+              <span class="key">sortIndex</span>: <span class="string"><span class="content">2</span></span>
+              <span class="key">content</span>: <span class="string"><span class="delimiter">|</span></span> <i class="conum" data-value="1"></i><b>(1)</b>
+                <span class="error">&lt;section&gt;requirements&lt;/section&gt;</span>
+            <span class="key">browser-support</span>:
+              <span class="key">title</span>: <span class="string"><span class="content">browser support</span></span>
+              <span class="key">componentType</span>: <span class="string"><span class="content">html</span></span>
+              <span class="key">sortIndex</span>: <span class="string"><span class="content">3</span></span>
+              <span class="key">content</span>: <span class="string"><span class="delimiter">|</span></span> <i class="conum" data-value="1"></i><b>(1)</b>
+                <span class="error">&lt;section&gt;browser support&lt;/section&gt;</span>
+            <span class="key">further-reading</span>:
+              <span class="key">title</span>: <span class="string"><span class="content">further reading</span></span>
+              <span class="key">componentType</span>: <span class="string"><span class="content">html</span></span>
+              <span class="key">sortIndex</span>: <span class="string"><span class="content">4</span></span>
+              <span class="key">content</span>: <span class="string"><span class="delimiter">|</span></span> <i class="conum" data-value="1"></i><b>(1)</b>
+                <span class="error">&lt;section&gt;further reading&lt;/section&gt;</span>
+        <span class="key">documentation</span>:
+          <span class="key">title</span>: <span class="string"><span class="content">Documentation</span></span>
+          <span class="key">componentType</span>: <span class="string"><span class="content">html</span></span>
+          <span class="key">sortIndex</span>: <span class="string"><span class="content">2</span></span>
+        <span class="key">used-in</span>:
+          <span class="key">title</span>: <span class="string"><span class="content">Used in</span></span>
+          <span class="key">componentType</span>: <span class="string"><span class="content">html</span></span>
+          <span class="key">sortIndex</span>: <span class="string"><span class="content">3</span></span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Pre-filled content. When a page is created using this template, this data will be filled in (but can be changed by the user).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>You need to manually set the sort order, or otherwise the default value (i.e. 0) will be filled in.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pages-page-web-model"><a class="anchor" href="#pages-page-web-model"></a>8. Web infrastructure</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Any <code>WebCmsPage</code> will automatically create a <code>WebCmsAssetEndpoint</code> with generated URL values.</p>
+</div>
+<div class="sect2">
+<h3 id="default-page-controller-model"><a class="anchor" href="#default-page-controller-model"></a>8.1. Default page controller model</h3>
+<div class="paragraph">
+<p>When requesting a page endpoint a default model will be rendered:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the template rendered will be determined by the <code>template</code> property or by the <code>WebCmsPageType</code> if no <code>template</code> is set on the page itself</p>
+</li>
+<li>
+<p>the components attached to the page will be available as <strong>page</strong> scope</p>
+</li>
+<li>
+<p>the following model attributes will be registered:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><em>page</em>: <code>WebCmsPage</code> being rendered</p>
+</li>
+<li>
+<p><em>asset</em>: <code>WebCmsPage</code> being rendered (alias for <em>page</em>)</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The default page model is loaded by the <code>WebCmsPageModelLoader</code> bean.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="custom-page-mapping"><a class="anchor" href="#custom-page-mapping"></a>8.2. Custom page mapping</h3>
+<div class="paragraph">
+<p>You can create your own page handler by using <code>@WebCmsPageMapping</code> annotation.
+The <code>@WebCmsPageMapping</code> annotation can be combined with other <code>@RequestMapping</code> annotations to create a specific match.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@WebCmsPageMapping</span>(canonicalPath = <span class="string"><span class="delimiter">&quot;</span><span class="content">/my/page</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="directive">public</span> <span class="type">void</span> extendSpecificPageModel( WebCmsPage page, Model model ) {
+    model.addAttribute( <span class="string"><span class="delimiter">&quot;</span><span class="content">extraData</span><span class="delimiter">&quot;</span></span>, ... );
+}
+
+<span class="annotation">@GetMapping</span> <i class="conum" data-value="2"></i><b>(2)</b>
+<span class="annotation">@WebCmsPageMapping</span>(pageType = <span class="string"><span class="delimiter">&quot;</span><span class="content">static</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="2"></i><b>(2)</b>
+<span class="annotation">@IgnoreEndpointModel</span> <i class="conum" data-value="3"></i><b>(3)</b>
+<span class="directive">public</span> <span class="predefined-type">String</span> renderStaticPage( WebCmsPage page, Model model ) {
+    model.addAttribute( <span class="string"><span class="delimiter">&quot;</span><span class="content">page</span><span class="delimiter">&quot;</span></span>, page );
+    <span class="keyword">return</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">th/my-app/static-page</span><span class="delimiter">&quot;</span></span>;
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Handler method that will be used for the single page with the unique canonicalPath <em>/my/page</em>.
+The default page model will still be loaded, this handler only adds a model attribute.
+This handler method could optionally return a view, but since it does not, the view being rendered is still determined by the default model.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Handler method for a page of type <em>static</em>, provided the page is requested using the HTTP <em>GET</em> method.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <code>@IgnoreEndpointModel</code> annotation suppresses the default page model from being loaded.
+The handler method should fully initialize the model required as well as return the view that should be rendered.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<h1 id="publication-model-overview" class="sect0"><a class="anchor" href="#publication-model-overview"></a>Publication model</h1>
+<div class="openblock partintro">
+<div class="content">
+<div class="paragraph">
+<p>WebCmsModule contains a default publication model for articles.
+An article can typically be pretty much any type of content, but usually it is something like a piece of news or a blog article.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>An article is of a specific article type and belongs to a single publication.</p>
+</li>
+<li>
+<p>A publication is of a specific publication type.</p>
+</li>
+<li>
+<p>The publication type determines the different article types any publication of that publication type can have.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="example-model"><a class="anchor" href="#example-model"></a>1.1. Example model</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Publication type <em>blog</em> would represent a collection of blog articles</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Article types <em>blog</em> and <em>status-update</em> would be linked to the publication type</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Publication <em>John&#8217;s blog</em> would be a single instance of the <em>blog</em> publication type</p>
+</li>
+<li>
+<p><em>Leaving on holiday today!</em> would be an article of type <em>status-update</em> in <em>John&#8217;s blog</em></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="default-model"><a class="anchor" href="#default-model"></a>1.2. Default model</h3>
+<div class="paragraph">
+<p>Out of the box, WebCmsModule configures the following data:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>publication types: <strong>news</strong>, <strong>blogs</strong></p>
+</li>
+<li>
+<p>article types: <strong>news</strong>, <strong>blog</strong></p>
+</li>
+<li>
+<p>template pages: <strong>/blog/<strong></strong>*, </strong><strong>/news/</strong>*</p>
+</li>
+<li>
+<p>publications:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>news</strong> with article type <strong>news</strong> and template page <strong>/news/</strong>*</p>
+</li>
+<li>
+<p><strong>blogs</strong> with article type <strong>blog</strong> and template page <strong>/blog/</strong>*</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect1">
+<h2 id="domain-implementation"><a class="anchor" href="#domain-implementation"></a>9. Domain implementation</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="asset-implementation"><a class="anchor" href="#asset-implementation"></a>9.1. Asset implementation</h3>
+
+</div>
+<div class="sect2">
+<h3 id="webcmsarticle"><a class="anchor" href="#webcmsarticle"></a>9.2. WebCmsArticle</h3>
+<div class="paragraph">
+<p>Represents a single article.
+<code>WebCmsArticle</code> is an implementation of a publishable <code>WebCmsAsset</code>.</p>
+</div>
+<div class="paragraph">
+<p>The properties <code>title</code>, <code>subTitle</code> and <code>description</code> are metadata properties of an article.
+The bulk of the article content is represented as a collection of components and can be configured on application level.</p>
+</div>
+<div class="paragraph">
+<p>Properties <code>articleType</code> and <code>publication</code> refer to the <code>WebCmsArticleType</code> and <code>WebCmsPublication</code> of the article respectively.</p>
+</div>
+<div class="paragraph">
+<p>See <em><a href="#publication-configuring-publication-model">Configuring your own publication model</a></em> for an example component configuration.</p>
+</div>
+<div class="paragraph">
+<p>An article is considered an asset with an endpoint URL.
+When saving an article, a URL will always be created combining the title of the article with the canonical path of the publication template page.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webcmsarticletype"><a class="anchor" href="#webcmsarticletype"></a>9.3. WebCmsArticleType</h3>
+<div class="paragraph">
+<p>Represents the specific type of an article.
+<code>WebCmsArticleType</code> is an implementation of <code>WebCmsTypeSpecifier</code>.
+The article type is used to determine the components that should be added to an article of that type.</p>
+</div>
+<div class="paragraph">
+<p>The default components are the members of a container linked to the article type and will be cloned to every article created.
+The name of the default component container is <strong>contentTemplate</strong>, but the name can be configured by setting the <strong>contentTemplate</strong> attribute on the <code>WebCmsArticleType</code>.
+An article type can also use the component container from another article type.
+The article type to reuse the component container from can be configured by setting the <strong>parent</strong> attribute to the <code>typeKey</code> of the other article type.</p>
+</div>
+<div class="paragraph">
+<p>An article is always linked to a single article type.</p>
+</div>
+<div class="paragraph">
+<p>See <em><a href="#publication-configuring-publication-model">Configuring your own publication model</a></em> for a full example.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webcmspublication"><a class="anchor" href="#webcmspublication"></a>9.4. WebCmsPublication</h3>
+<div class="paragraph">
+<p>Represents a named collection of articles.
+<code>WebCmsPublication</code> is an implementation of a publishable <code>WebCmsAsset</code>.
+Property <code>publicationType</code> refers to the <code>WebCmsPublicationType</code> of the publication.</p>
+</div>
+<div class="paragraph">
+<p>Property <code>articleTemplatePage</code> links to a <code>WebCmsPage</code> that represents the template layout of the article.
+When saving an article, the <code>canonicalPath</code> of the template page will be used as pattern (usually prefix) for the article URL.
+The template page model will also be loaded automatically when rendering an article, see <em><a href="#publication-article-web-model">Web infrastructure</a></em> for more information.</p>
+</div>
+<div class="paragraph">
+<p>An article is always linked to a single publication.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webcmspublicationtype"><a class="anchor" href="#webcmspublicationtype"></a>9.5. WebCmsPublicationType</h3>
+<div class="paragraph">
+<p>Represents the specific type of a publication.
+<code>WebCmsPublicationType</code> is an implementation of <code>WebCmsTypeSpecifier</code>.
+The publication type defines the different article types that are allowed in a publication of that type.</p>
+</div>
+<div class="sect4">
+<h5 id="services-and-repositories"><a class="anchor" href="#services-and-repositories"></a>Services and repositories</h5>
+<div class="paragraph">
+<p>The following repositories are available for managing the publication related domain model:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>WebCmsPublicationTypeRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsPublicationRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsArticleTypeRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsArticleRepository</code></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you want to change the strategy for default components, see the <code>WebCmsDefaultComponentsService</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="administrative-ui"><a class="anchor" href="#administrative-ui"></a>10. Administrative UI</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The default configuration allows managing publications and articles from the administration UI.
+Both article type and publication type are assumed to be installed using code.</p>
+</div>
+<div class="paragraph">
+<p>Enabling/disabling managing of article type or publication type can be done by modifying the EntityModule configuration of <code>WebCmsArticleType</code> and <code>WebCmsPublicationType</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="publication-article-web-model"><a class="anchor" href="#publication-article-web-model"></a>11. Web infrastructure</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Any <code>WebCmsArticle</code> will automatically create a <code>WebCmsAssetEndpoint</code> with generated URL values.</p>
+</div>
+<div class="sect2">
+<h3 id="default-article-controller-model"><a class="anchor" href="#default-article-controller-model"></a>11.1. Default article controller model</h3>
+<div class="paragraph">
+<p>When requesting an article endpoint a default model will be rendered:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the template rendered will be determined by the <code>WebCmsPage</code> that is the article template of the <code>WebCmsPublication</code> the article belongs to</p>
+</li>
+<li>
+<p>the components attached to the template page will be available as <strong>page</strong> scope</p>
+</li>
+<li>
+<p>the components attached to the article will be available as <strong>article</strong> scope, <strong>article</strong> is also the default scope</p>
+</li>
+<li>
+<p>the following model attributes will be registered:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><em>article</em>: <code>WebCmsArticle</code> being rendered</p>
+</li>
+<li>
+<p><em>asset</em>: <code>WebCmsArticle</code> being rendered (alias for <em>article</em>)</p>
+</li>
+<li>
+<p><em>publication</em>: <code>WebCmsPublication</code> the article belongs to</p>
+</li>
+<li>
+<p><em>page</em>: <code>WebCmsPage</code> that is the template page for that publication</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The default article model is loaded by the <code>WebCmsArticleModelLoader</code> bean.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="custom-article-mapping"><a class="anchor" href="#custom-article-mapping"></a>11.2. Custom article mapping</h3>
+<div class="paragraph">
+<p>You can create your own article handler by using <code>@WebCmsArticleMapping</code> annotation.
+The <code>@WebCmsArticleMapping</code> annotation can be combined with other <code>@RequestMapping</code> annotations to create a specific match.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@WebCmsArticleMapping</span>(publicationType = <span class="string"><span class="delimiter">&quot;</span><span class="content">news</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="directive">public</span> <span class="type">void</span> extendNewsArticleModel( WebCmsArticle article, Model model ) {
+    model.addAttribute( <span class="string"><span class="delimiter">&quot;</span><span class="content">extraData</span><span class="delimiter">&quot;</span></span>, ... );
+}
+
+<span class="annotation">@GetMapping</span> <i class="conum" data-value="2"></i><b>(2)</b>
+<span class="annotation">@WebCmsArticleMapping</span>(publicationType = <span class="string"><span class="delimiter">&quot;</span><span class="content">news</span><span class="delimiter">&quot;</span></span>, articleType = <span class="string"><span class="delimiter">&quot;</span><span class="content">breaking-news</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="2"></i><b>(2)</b>
+<span class="annotation">@IgnoreEndpointModel</span> <i class="conum" data-value="3"></i><b>(3)</b>
+<span class="directive">public</span> <span class="predefined-type">String</span> renderBreakingNews( WebCmsArticle article, Model model ) {
+    model.addAttribute( <span class="string"><span class="delimiter">&quot;</span><span class="content">article</span><span class="delimiter">&quot;</span></span>, article );
+    <span class="keyword">return</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">th/my-app/breaking-news</span><span class="delimiter">&quot;</span></span>;
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Handler method that will be used for any article in a publication of type <em>news</em>, provided there is not a more specific handler (see next).
+The default article model will still be loaded, this handler only adds a model attribute.
+This handler method could optionally return a view, but since it does not, the view being rendered is still determined by the default model.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Handler method for an article of type <em>breaking-news</em> inside a <em>news</em> publication, provided the article is requested using the HTTP <em>GET</em> method.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <code>@IgnoreEndpointModel</code> annotation suppresses the default article model from being loaded.
+The handler method should fully initialize the model required as well as return the view that should be rendered.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="publication-web-cms-article-import"><a class="anchor" href="#publication-web-cms-article-import"></a>11.3. Importing data</h3>
+<div class="paragraph">
+<p>Most domain data of the publication model can be imported using YAML.
+See <em><a href="#publication-configuring-publication-model">Configuring your own publication model</a></em> for a full example.</p>
+</div>
+<div class="sect3">
+<h4 id="publication-configuring-publication-model"><a class="anchor" href="#publication-configuring-publication-model"></a>11.3.1. Configuring your own publication model</h4>
+<div class="paragraph">
+<p>This chapter describes a full example of defining a custom publication model.</p>
+</div>
+<div class="paragraph">
+<p>We create an article type <strong>Job</strong> which represents a particular job offering.
+A publication type <strong>Jobs</strong> can only contain <strong>Job</strong> articles.
+And our publications <strong>IT Jobs</strong> and <strong>Marketing Jobs</strong> are example collections of different job offerings.</p>
+</div>
+<div class="paragraph">
+<p>All required configuration is shown using the YAML data structures:</p>
+</div>
+<div class="sect4">
+<h5 id="defining-the-article-type"><a class="anchor" href="#defining-the-article-type"></a>Defining the article type</h5>
+<div class="paragraph">
+<p>We create a Job article type that specifies the different content fields any Job article should have.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">types</span>:
+  <span class="key">article</span>: <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="key">job</span>: <i class="conum" data-value="2"></i><b>(2)</b>
+      <span class="key">name</span>: <span class="string"><span class="content">Job </span></span><i class="conum" data-value="3"></i><b>(3)</b>
+      <span class="error">wcm:components</span>: <i class="conum" data-value="4"></i><b>(4)</b>
+        <span class="key">content</span>:
+          <span class="key">title</span>: <span class="string"><span class="content">Job fields</span></span>
+          <span class="key">componentType</span>: <span class="string"><span class="content">container</span></span>
+          <span class="error">wcm:components</span>:  <i class="conum" data-value="5"></i><b>(5)</b>
+            <span class="key">company</span>:
+              <span class="key">title</span>: <span class="string"><span class="content">Company</span></span>
+              <span class="key">componentType</span>: <span class="string"><span class="content">text-field</span></span>
+              <span class="key">sortIndex</span>: <span class="string"><span class="content">0</span></span>
+            <span class="key">description</span>:
+              <span class="key">title</span>: <span class="string"><span class="content">Job description</span></span>
+              <span class="key">componentType</span>: <span class="string"><span class="content">rich-text</span></span>
+              <span class="key">content</span>: <span class="string"><span class="content">&lt;h1&gt;@@title@@&lt;/h1&gt;  </span></span><i class="conum" data-value="6"></i><b>(6)</b>
+              <span class="key">sortIndex</span>: <span class="string"><span class="content">1</span></span>
+            <span class="key">salary</span>:
+              <span class="key">title</span>: <span class="string"><span class="content">Salary package</span></span>
+              <span class="key">componentType</span>: <span class="string"><span class="content">rich-text</span></span>
+              <span class="key">sortIndex</span>: <span class="string"><span class="content">2</span></span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>YAML data path <em>types/article</em> specifies the block defines a <code>WebCmsArticleType</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The type key of this <code>WebCmsArticleType</code> is <strong>job</strong>, and should be unique within article types.
+In a list YAML structure, this value would be specified using the <code>typeKey</code> attribute instead.
+For a <code>WebCmsTypeSpecifier</code> the type key also determines the unique object id that will be generated, in this case this would be <strong>wcm:type:article:job</strong>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Descriptive name of the article type.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Represents the components directly linked to the <code>WebCmsArticleType</code>.
+In this case the component with name <strong>content</strong> and title <strong>Job fields</strong>.
+The <strong>content</strong> component represents the content template for a new article of that type.
+This means that when a new article is created, the <strong>content</strong> component will be cloned and attached directly to the new article.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Represents the collection of components that make up the members of the <strong>content</strong> component.
+These are the actual content fields of a job article.
+These fields will be directly editable in the administration UI and the <code>sortIndex</code> determines both rendering and editing order.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Special markers <em>@@title@@</em>, <em>@@subTitle@@</em> and <em>@@description@@</em> can be used to represent article properties.
+When creating a new article these markers will be replaced by the actual property value of the newly created article.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="defining-the-publication-type"><a class="anchor" href="#defining-the-publication-type"></a>Defining the publication type</h5>
+<div class="paragraph">
+<p>We create a Jobs publication type that can only hold articles with our Job article type.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">types</span>:
+  <span class="key">publication</span>: <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="key">jobs</span>: <i class="conum" data-value="2"></i><b>(2)</b>
+      <span class="key">name</span>: <span class="string"><span class="content">Jobs</span></span>
+      <span class="error">wcm:types</span>: <i class="conum" data-value="3"></i><b>(3)</b>
+        - <span class="string"><span class="content">linkType: article </span></span><i class="conum" data-value="4"></i><b>(4)</b>
+          <span class="key">typeSpecifier</span>: <span class="string"><span class="content">wcm:type:article:job  </span></span><i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>YAML data path <em>types/publication</em> specifies the block defines a <code>WebCmsPublicationType</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The type key of this <code>WebCmsPublicationType</code>, unique within publication types.
+In a list YAML structure, this value would be specified using the <code>typeKey</code> attribute instead.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <em>wcm:types</em> attribute defines a list of other <code>WebCmsTypeSpecifier</code> instances linked to the current entity being imported.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>We create an <em>article</em> link type.
+The link type can be any string value, but in case of a <code>WebCmsPublicationType</code> the article link type is used to refer to the <code>WebCmsArticleType</code> instances that are allowed in a publication of that <code>WebCmsPublicationType</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>The unique object id of the <code>WebCmsArticleType</code> that is attached to this publication type.
+Because a <code>WebCmsTypeSpecifierLink</code> can hold a reference to any <code>WebCmsTypeSpecifier</code>, we must use the globally unique object id.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="creating-the-publications"><a class="anchor" href="#creating-the-publications"></a>Creating the publications</h5>
+<div class="paragraph">
+<p>We create two publications with our Jobs types.
+Both publications use the same article template page for rendering the article.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">assets</span>:
+  <span class="key">page</span>: <i class="conum" data-value="1"></i><b>(1)</b>
+    - <span class="string"><span class="content">objectId: &quot;wcm:asset:page:jobs-detail&quot; </span></span><i class="conum" data-value="2"></i><b>(2)</b>
+      <span class="key">canonicalPath</span>: <span class="string"><span class="content">/jobs/*</span></span>
+      <span class="key">title</span>: <span class="string"><span class="content">Job detail page</span></span>
+      <span class="key">pageType</span>: <span class="string"><span class="content">template </span></span><i class="conum" data-value="3"></i><b>(3)</b>
+
+  <span class="key">publication</span>: <i class="conum" data-value="4"></i><b>(4)</b>
+    <span class="key">it-jobs</span>: <i class="conum" data-value="5"></i><b>(5)</b>
+      <span class="key">name</span>: <span class="string"><span class="content">IT Jobs</span></span>
+      <span class="key">publicationType</span>: <span class="string"><span class="content">jobs </span></span><i class="conum" data-value="6"></i><b>(6)</b>
+      <span class="key">published</span>: <span class="string"><span class="content">true </span></span><i class="conum" data-value="7"></i><b>(7)</b>
+      <span class="key">articleTemplatePage</span>: <span class="string"><span class="content">/jobs/* </span></span><i class="conum" data-value="8"></i><b>(8)</b>
+    <span class="key">marketing-jobs</span>:
+      <span class="key">name</span>: <span class="string"><span class="content">Marketing Jobs</span></span>
+      <span class="key">publicationType</span>: <span class="string"><span class="content">jobs</span></span>
+      <span class="key">published</span>: <span class="string"><span class="content">true</span></span>
+      <span class="key">articleTemplatePage</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:asset:page:jobs-detail</span><span class="delimiter">&quot;</span></span> <i class="conum" data-value="8"></i><b>(8)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>YAML data path <em>assets/page</em> specifies the block defines a <code>WebCmsPage</code>.
+In this case we create the article template page that we&#8217;ll refer to.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Though not strictly required we manually define a unique object id for the page.
+If omitted, the <code>canonicalPath</code> would serve as a unique identifier for referring to our page.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Because our page serves as a template but it is not accessible by itself, we define it as a <em>template</em> page type.
+A template page will not get an endpoint or url created.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>YAML data path <em>assets/publication</em> specifies the block defines a <code>WebCmsPublication</code>.
+In this case we create our <em>IT Jobs</em> and <em>Marketing Jobs</em> publications.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>The publication key of this <code>WebCmsPublication</code>, unique within publications.
+In a list YAML structure, this value would be specified using the <code>publicationKey</code> attribute instead.
+We can use the <code>publicationKey</code> to refer to our publication in both code (eg. <code>@WebCmsArticleMapping</code>) and other YAML structures.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>We refer to our newly created <em>jobs</em> publication type by using the publication <code>typeKey</code> value.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>We set our publication as published.
+This ensures that all individually published articles of the publication will be actually available.
+If a publication is not published (offline), none of its articles will be published.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td>We link our publications to the template page we defined previously.
+We can use either the <code>objectId</code> or the <code>canonicalPath</code> to refer to the <code>WebCmsPage</code>.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="adding-a-sample-job-to-our-it-jobs-publication"><a class="anchor" href="#adding-a-sample-job-to-our-it-jobs-publication"></a>Adding a sample job to our IT Jobs publication</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">assets</span>:
+ <span class="key">article</span>: <i class="conum" data-value="1"></i><b>(1)</b>
+  - <span class="string"><span class="content">title: &quot;IT Manager EMEA @ Foreach&quot; </span></span><i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:asset:article:job-it-manager-emea</span><span class="delimiter">&quot;</span></span> <i class="conum" data-value="3"></i><b>(3)</b>
+    <span class="key">publication</span>: <span class="string"><span class="content">it-jobs </span></span><i class="conum" data-value="4"></i><b>(4)</b>
+    <span class="key">articleType</span>: <span class="string"><span class="content">job </span></span><i class="conum" data-value="4"></i><b>(4)</b>
+    <span class="key">description</span>: <span class="string"><span class="content">Supposed to be online until August 2017  </span></span><i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="key">published</span>: <span class="string"><span class="content">true </span></span><i class="conum" data-value="5"></i><b>(5)</b>
+    <span class="error">wcm:components</span>: <i class="conum" data-value="6"></i><b>(6)</b>
+      <span class="key">content</span>:
+        <span class="error">wcm:components</span>:
+          <span class="key">company</span>:
+            <span class="key">content</span>: <span class="string"><span class="content">Foreach</span></span>
+          <span class="key">description</span>:
+            <span class="key">content</span>: <span class="string"><span class="content">A really cool job at a really great company.</span></span>
+          <span class="key">salary</span>:
+            <span class="key">content</span>: <span class="string"><span class="content">Remuneration package discussable.</span></span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>YAML data path <em>assets/article</em> specifies the block defines a <code>WebCmsArticle</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>We set some direct properties of the <code>WebCmsArticle</code>: <code>title</code> and <code>description</code>.
+Note that these are different than the content components, which could have the same name (eg. description).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>We manually provide a unique <code>objectId</code> to our article.
+This is the only identifier for an article and is required if we ever want to update the article through data imports.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>We create an article in our IT Jobs publication, and give it the job article type.
+Note that even if we were to specify a different article type, the article would still be imported.
+There is no hard validation during imports that only article types allowed for a publication can be imported.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>We publish the article upon creation.
+This makes the article available online using a URL generated based on the article title and the article template page.
+In our example, the generated url for the article would be <em>/jobs/it-manager-emea-foreach</em></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>We update the different content fields.
+As each field is a member of the linked <strong>content</strong> component, this is the same as updating individual components.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h1 id="redirects-redirects-overview" class="sect0"><a class="anchor" href="#redirects-redirects-overview"></a>Redirects</h1>
+<div class="openblock partintro">
+<div class="content">
+<div class="paragraph">
+<p>Redirects offer you a way to specify one or more request paths that should be redirected to another path or an external url.
+A redirect has a destination URL and one ore more paths that should redirect to the destination.
+A specific HTTP status code can be configured for every path.</p>
+</div>
+<div class="paragraph">
+<p>In the domain model, a redirect is implemented as <code>WebCmsRemoteEndpoint</code>.
+The different paths are the <code>WebCmsUrl</code> members of the endpoint (property <code>urls</code>).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="Redirect-import"><a class="anchor" href="#Redirect-import"></a>12. Importing a redirect</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>One can import a redirect and its associated urls by using the import infrastructure provided by the import functionality of WebCms.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">redirects</span>: <i class="conum" data-value="1"></i><b>(1)</b>
+ - <span class="string"><span class="content">targetUrl: &quot;http://google.com&quot;</span></span>
+   <span class="error">wcm:urls</span>: <i class="conum" data-value="2"></i><b>(2)</b>
+    - <span class="string"><span class="content">path: /path-that-should-redirect</span></span>
+      <span class="key">httpStatus</span>: <span class="string"><span class="content">301</span></span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The root element <code>redirects</code> indicates that the next item is going to be one (or many) <code>WebCmsRemoteEndpoints</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Starts the collection of the attached urls.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<h1 id="menu" class="sect0"><a class="anchor" href="#menu"></a>Menu</h1>
+<div class="sect1">
+<h2 id="menu-web-cms-menu-overview"><a class="anchor" href="#menu-web-cms-menu-overview"></a>13. Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A <code>WebCmsMenu</code> is a construct that can be used to render content resembling a menu. A single menu can have zero or more <code>WebCmsMenuItem</code> assets.
+A <code>WebCmsMenuItem</code> represents a link from a path in the menu to an endpoint.
+Like everything in WebCmsModule you need to manually define where and how you want to display the menu; there is no automatic display provided nor is there a default menu.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="menu-web-cms-menu-programatically"><a class="anchor" href="#menu-web-cms-menu-programatically"></a>14. Building a menu</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A menu is always built using the <code>MenuFactory</code> from AcrossWebModule.
+The WebCmsModule will intercept any menu being built, will check if there is a <code>WebCmsMenu</code> with that menu name, and will add all menu items if that is the case.</p>
+</div>
+<div class="paragraph">
+<p>Usually a menu is built in a layout processor and then rendered in for example a Thymeleaf template.</p>
+</div>
+<div class="paragraph">
+<p>Apart form items registered on a <code>WebCmsMenu</code>, it is perfectly to possible to add or modify items directly to the generated <code>Menu</code> from code.</p>
+</div>
+<div class="sect2">
+<h3 id="example-building-an-rendering-a-menu"><a class="anchor" href="#example-building-an-rendering-a-menu"></a>14.1. Example building an rendering a menu</h3>
+<div class="paragraph">
+<p>You can access the menu on your Thymeleaf template if you follow the following steps.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>In the class where you configure your template, override the <code>buildMenus</code> method. In our example, we&#8217;re adding the <em>sideNav</em> menu to the page.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">DefaultPageTemplate.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Component</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">DefaultPageTemplate</span> <span class="directive">extends</span> LayoutTemplateProcessorAdapterBean
+{
+  <span class="directive">public</span> DefaultPageTemplate() {
+   <span class="local-variable">super</span>( <span class="string"><span class="delimiter">&quot;</span><span class="content">default</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">th/adminWebCms/layout/main</span><span class="delimiter">&quot;</span></span> );
+  }
+
+  <span class="annotation">@Override</span>
+  <span class="directive">protected</span> <span class="type">void</span> buildMenus( MenuFactory menuFactory ) {
+   menuFactory.buildMenu( <span class="string"><span class="delimiter">&quot;</span><span class="content">sideNav</span><span class="delimiter">&quot;</span></span> );
+  }
+
+  <span class="annotation">@Autowired</span>
+  <span class="directive">public</span> <span class="type">void</span> registerAsDefaultTemplate( WebTemplateRegistry webTemplateRegistry ) {
+   webTemplateRegistry.setDefaultTemplateName( <span class="string"><span class="delimiter">&quot;</span><span class="content">default</span><span class="delimiter">&quot;</span></span> );
+  }
+}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Adjust your thymeleaf page. In our example we iterate over the (menu) items of the sideNav menu (and its children) to display a menu.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">layout.html</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="tag">&lt;ul</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">cd-accordion-menu animated</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+  <span class="tag">&lt;li</span> <span class="attribute-name">th:if</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${menuGroup.hasItems() and !menuGroup.isDisabled()}</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">has-children</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">th:each</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">menuGroup : ${sideNav.items}</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+     <span class="tag">&lt;input</span> <span class="attribute-name">type</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">checkbox</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">th:if</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${menuGroup.hasItems()}</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">th:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${menuGroup.title}</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">th:id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${menuGroup.title}</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">th:attr</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">checked=${menuGroup.selected} ? 'checked'</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+     <span class="tag">&lt;label</span> <span class="attribute-name">th:for</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${menuGroup.title}</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">th:text</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${menuGroup.title}</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>Getting started<span class="tag">&lt;/label&gt;</span>
+     <span class="tag">&lt;ul&gt;</span>
+        <span class="tag">&lt;li</span> <span class="attribute-name">th:each</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">menuItem : ${menuGroup.items}</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+           <span class="tag">&lt;a</span> <span class="attribute-name">th:href</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${menuItem.url}</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">th:classappend</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${menuItem.selected}? 'active'</span><span class="delimiter">&quot;</span></span>
+              <span class="attribute-name">th:text</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${menuItem.title}</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>About<span class="tag">&lt;/a&gt;</span><span class="tag">&lt;/li&gt;</span>
+     <span class="tag">&lt;/ul&gt;</span>
+  <span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="generated-menu-items"><a class="anchor" href="#generated-menu-items"></a>14.2. Generated menu items</h3>
+<div class="paragraph">
+<p>WebCmsModule automatically adds all items of a <code>WebCmsMenu</code> to the menu being built with the same name.</p>
+</div>
+<div class="paragraph">
+<p>Some particular rules apply when the menu item refers to a <code>WebCmsEndpoint</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>if a menu item is a <code>WebCmsEndpoint</code> the primary url of the endpoint will be used as url property for the menu item</p>
+</li>
+<li>
+<p>if a menu item is a <code>WebCmsEndpoint</code> an attribute <strong>endpointId</strong> containing the <strong>id</strong> value of the endpoint will be added to the item</p>
+</li>
+<li>
+<p>if a menu item is a <code>WebCmsAssetEndpoint</code> an additional attribute <strong>assetObjectId</strong> will be added to the item, containing the <strong>objectId</strong> value of the actual <code>WebCmsAsset</code></p>
+</li>
+<li>
+<p>if a menu item is a <code>WebCmsAssetEndpoint</code> and the <code>WebCmsAsset</code> is not published, a menu item will still be created but the value of <strong>disabled</strong> will be <code>true</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="properties-4"><a class="anchor" href="#properties-4"></a>15. Properties</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Properties of a menu</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+<col style="width: 12.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Mandatory</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The (unique) name of the menu. Used in the thymeleaf templates to refer to the menu.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A description of the menu.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Properties of a menu item</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+<col style="width: 12.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Mandatory</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The path in the menu tree</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Title</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The title of the menu item</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Url</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The url the menu item points to. Supersedes any defined <code>endpoint</code>. If this is not filled in, the primary <code>endpoint</code> of the associated asset is used.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Endpoint</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The endpoint this menu item points to.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sort Index</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The position of the item in the menu.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Render as submenu</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If checked, an extra property called <code>group</code> is set on
+the menu item. This can used in the Thymeleaf template to render the items in a distinct way.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">False</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Update automatically</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If checked and the linked endpoint gets updated, any updates will be reflected in this menu item.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">False</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="menu-web-cms-menu-import"><a class="anchor" href="#menu-web-cms-menu-import"></a>16. Importing a menu item</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>One can import a menu and its associated items by using the import infrastructure provided by the import functionality of WebCms.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">menus</span>: <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="key">topNav</span>: <i class="conum" data-value="2"></i><b>(2)</b>
+   <span class="key">description</span>: <span class="string"><span class="content">Top navigation</span></span>
+   <span class="key">items</span>: <i class="conum" data-value="3"></i><b>(3)</b>
+     <span class="comment"># Register fixed controller paths</span>
+     <span class="key">/home</span>: <i class="conum" data-value="4"></i><b>(4)</b>
+      <span class="key">title</span>: <span class="string"><span class="content">Home</span></span>
+      <span class="key">url</span>: <span class="string"><span class="content">/home</span></span>
+      <span class="key">sortIndex</span>: <span class="string"><span class="content">1</span></span>
+      <span class="key">asset</span>: <span class="string"><span class="content">/extension/referenceForMenu </span></span><i class="conum" data-value="5"></i><b>(5)</b>
+     <span class="key">/categories</span>:
+      <span class="key">title</span>: <span class="string"><span class="content">Categories</span></span>
+      <span class="key">group</span>: <span class="string"><span class="content">true</span></span>
+      <span class="key">sortIndex</span>: <span class="string"><span class="content">2</span></span>
+     <span class="key">/categories/news</span>:
+      <span class="key">title</span>: <span class="string"><span class="content">News</span></span>
+      <span class="key">url</span>: <span class="string"><span class="content">/category/news</span></span>
+      <span class="key">sortIndex</span>: <span class="string"><span class="content">1</span></span>
+      <span class="key">asset</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:asset:page:reference-for-menu</span><span class="delimiter">&quot;</span></span> <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The root element <code>menus</code> indicates that the next item is going to be one (or many) menus.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The key of the YAML item is re-used as the name of the menu.
+Should be unique.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Starts the collection of the menu items.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The key of the YAML item is re-used as the path of the menu item.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>If you want to set the endpoint of the item, you can use the <code>asset</code> keyword.
+It can use both the objectId (for all <code>WebCmsAsset</code> assets) and the canonical path (only for <code>WebCmsPage</code> assets).</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="supported-properties"><a class="anchor" href="#supported-properties"></a>16.1. Supported properties</h3>
+<div class="paragraph">
+<p>This is an overview of the items that can be filled via a YAML import.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 3. Menu properties that can be imported</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">On UI</th>
+<th class="tableblock halign-left valign-top">Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The key of the YAML entry is used if name is not specified.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 4. Menu Item properties that can be imported</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">On UI</th>
+<th class="tableblock halign-left valign-top">Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">path</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The key is used if not defined.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">title</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Title</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">asset</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Endpoint</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Can be an objectId (for every asset type or a canonical path (only for pages)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">url</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Url</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sortIndex</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SortIndex</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">group</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Render as submenu</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">generated</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Update automatically</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Unresolved directive in domain-model/index.adoc - include::multi-domain/multi-domain-support.adoc[]</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.0.4.RELEASE<br>
+Last updated 2018-03-30 16:02:35 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "WebCmsModule docs";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

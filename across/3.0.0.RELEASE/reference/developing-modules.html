@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>Developing Across modules</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="developing-across-modules" class="book toc2 toc-left">
+<div id="header">
+<h1>Developing Across modules</h1>
+<div class="details">
+<span id="revnumber">version 3.0.0.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Developing Across modules</div>
+<ul class="sectlevel1">
+<li><a href="#creating-an-across-module">1. Creating an AcrossModule</a></li>
+<li><a href="#module-dependencies">2. Module dependencies</a>
+<ul class="sectlevel2">
+<li><a href="#across-depends">2.1. @AcrossDepends</a></li>
+<li><a href="#conditional-on-across-module">2.2. @ConditionalOnAcrossModule</a></li>
+<li><a href="#conditionals">2.3. Conditionals</a></li>
+</ul>
+</li>
+<li><a href="#exposing-beans">3. Exposing beans</a></li>
+<li><a href="#message-sources">4. Message sources</a>
+<ul class="sectlevel2">
+<li><a href="#auto-detecting-message-sources">4.1. Auto-detecting message sources</a></li>
+<li><a href="#message-source-hierarchy">4.2. Message source hierarchy</a></li>
+</ul>
+</li>
+<li><a href="#installers">5. Installers</a></li>
+<li><a href="#module-validation">6. Validation</a></li>
+<li><a href="#module-version-information">7. Module version information</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="creating-an-across-module"><a class="anchor" href="#creating-an-across-module"></a>1. Creating an AcrossModule</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Creating a new Across module is done by extending <code>AcrossModule</code> and providing a valid name and description.
+An <code>AcrossModule</code> is in essence a configuration class.
+It uniquely identifies the module and holds all configuration parameters required to bootstrap the module.
+It also allows you to alter settings of how beans should be shared with other modules.</p>
+</div>
+<div class="paragraph">
+<p>A module name should be unique and as a best practice also be available as a public static final <strong>NAME</strong> field on the <code>AcrossModule</code> implementation.</p>
+</div>
+<div class="listingblock">
+<div class="title">Minimal AcrossModule</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">ValidModule</span> <span class="directive">extends</span> AcrossModule
+{
+        <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">String</span> NAME = <span class="string"><span class="delimiter">&quot;</span><span class="content">ValidModule</span><span class="delimiter">&quot;</span></span>;
+
+        <span class="annotation">@Override</span>
+        <span class="directive">public</span> <span class="predefined-type">String</span> getName() {
+                <span class="keyword">return</span> NAME;
+        }
+
+        <span class="annotation">@Override</span>
+        <span class="directive">public</span> <span class="predefined-type">String</span> getDescription() {
+                <span class="keyword">return</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">ValidModule exposes some valid beans.</span><span class="delimiter">&quot;</span></span>;
+        }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">Making an AcrossModule autoconfigurable</div>
+<p>For an Across module to be autoconfigurable it must adhere to the following conventions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the module name must be available in the public static final <strong>NAME</strong> field</p>
+</li>
+<li>
+<p>the module must have public constructor without any parameters</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Definining beans</div>
+<p>Upon bootstrap a module will create its own <code>ApplicationContext</code> with the <code>AcrossContext</code> as parent.
+The beans created in the module <code>ApplicationContext</code> are configured using <code>ApplicationContextConfigurer</code> instances.</p>
+</div>
+<div class="paragraph">
+<p>By default a scan for <code>@Configuration</code> classes will happen on the <strong>config</strong> package below the package of the <code>AcrossModule</code> implementation.
+If you want more explicit control, you can override the <code>registerDefaultApplicationContextConfigurers()</code> method.</p>
+</div>
+<div class="paragraph">
+<div class="title">Module resources</div>
+<p>Most modules will also define one or more resources in a location determined on the <em>resources key</em> of the module.
+By default the resources key or a module is the same as the module name.
+You can change this by overriding the <code>getResourcesKey()</code> method.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="module-dependencies"><a class="anchor" href="#module-dependencies"></a>2. Module dependencies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several ways to influence the beans that are being bootstrapped with a module, by passing information from the configuration to the actual module ApplicationContext.</p>
+</div>
+<div class="sect2">
+<h3 id="across-depends"><a class="anchor" href="#across-depends"></a>2.1. @AcrossDepends</h3>
+<div class="sect3">
+<h4 id="using-acrossdepends-on-a-module-descriptor"><a class="anchor" href="#using-acrossdepends-on-a-module-descriptor"></a>2.1.1. Using @AcrossDepends on a module descriptor</h4>
+<div class="paragraph">
+<p>Using AcrossDepends annotation on a module descriptor class you can avoid beans or Configurations from being created based on the presence of other modules.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>required modules: the component will only be created if all the <em>required</em> modules are present</p>
+</li>
+<li>
+<p>optional modules: the component will only be created if at least one of the <em>optional</em> modules is present</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="conditional-on-across-module"><a class="anchor" href="#conditional-on-across-module"></a>2.2. @ConditionalOnAcrossModule</h3>
+<h4 id="using-conditionalonacrossmodule-on-components" class="discrete">Using @ConditionalOnAcrossModule on components</h4>
+<div class="paragraph">
+<p>Using AcrossDepends annotation on a component class you can avoid beans or Configurations from being created based on the presence of other modules.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>allOf modules: the component will only be created if all the <em>allOf</em> modules are present</p>
+</li>
+<li>
+<p>anyOf modules: the component will only be created if at least one of the <em>anyOf</em> modules is present</p>
+</li>
+<li>
+<p>noneOf modules: the component will only be created if none of the <em>noneOf</em> modules are present</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="conditionals"><a class="anchor" href="#conditionals"></a>2.3. Conditionals</h3>
+<div class="paragraph">
+<p>Any Spring conditional can be used to determine if a bean should be created.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="exposing-beans"><a class="anchor" href="#exposing-beans"></a>3. Exposing beans</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A module can share its beans with other modules by <strong>exposing</strong> them.
+All exposed beans from a module are pushed upwards into the parent <code>ApplicationContext</code> of the <code>AcrossContext</code> itself.
+Likewise, at the end of the context bootstrap, all exposed beans are pushed into the <code>ApplicationContext</code> that is - optionally - configured as the parent of the <code>AcrossContext</code>.</p>
+</div>
+<div class="paragraph">
+<p>Which beans are exposed is determined by the <code>exposeFilter</code> property on an <code>AcrossModule</code>.
+By default all beans annotated with <code>@Exposed</code> or <code>@Service</code> will be exposed.
+See the <code>com.foreach.across.core.filters.BeanFilter</code> implementations for standard filters.</p>
+</div>
+<div class="paragraph">
+<p>When pushing beans to the parent <code>ApplicationContext</code> it is possible to run into name conflicts or duplicate bean types.
+You can use an <code>ExposedBeanDefinitionTransformer</code> to modify the bean definitions that are pushed to the parent.
+Common examples for this are changing the bean names or marking the beans as primary.
+You can set the transformer to use through the <code>exposeTransformer</code> property on an <code>AcrossModule</code> or the <code>AcrossContext</code>.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">ExposedBeanDefinitionTransformer on AcrossModule</dt>
+<dd>
+<p>will be applied when pushing beans from the module into the <code>AcrossContext</code></p>
+</dd>
+<dt class="hdlist1">ExposedBeanDefinitionTransformer on AcrossModule</dt>
+<dd>
+<p>will be applied when pushing beans from the <code>AcrossContext</code> into the parent <code>ApplicationContext</code></p>
+</dd>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">SomeModule</span> <span class="directive">extends</span> AcrossModule
+{
+        <span class="comment">/**
+         * Only expose specific beans from this module and ensure that
+         * they have a prefixed bean name for the other modules.
+         */</span>
+        <span class="directive">public</span> SomeModule() {
+                setExposeFilter( <span class="keyword">new</span> ClassBeanFilter( PlatformTransactionManager.class, SessionFactory.class ) );
+                setExposeTransformer( <span class="keyword">new</span> BeanPrefixingTransformer( <span class="string"><span class="delimiter">&quot;</span><span class="content">someModule</span><span class="delimiter">&quot;</span></span> ) );
+        }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Beans created directly in the <code>AcrossContext</code> scope - and not inside one of the modules - will only be exposed if they are annotated explicitly with <code>@Exposed</code>.
+The <code>AcrossContext</code> does not support a custom <code>exposeFilter</code> but you can supply an additional <code>exposeTransformer</code> on the context level.
+If you want to avoid an <code>AcrossContext</code> to push the exposed beans further upwards into its parent <code>ApplicationContext</code>, you should configure the <code>ExposedBeanDefinitionTransformer.REMOVE_ALL</code> as <code>exposeTransformer</code> on the <code>AcrossContext</code> itself.
+For an <code>AcrossModule</code> using the <code>REMOVE_ALL</code> transformer would be the same as putting <code>null</code> as <code>exposeFilter</code>.</p>
+</div>
+<div class="paragraph">
+<div class="title">Manually exposing beans</div>
+<p>In addition to setting the <em>exposeFilter</em> property, <code>AcrossModule</code> has <code>expose(&#8230;&#8203;)</code> methods that allow you to quickly expose one or more beans based on bean name or type.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="message-sources"><a class="anchor" href="#message-sources"></a>4. Message sources</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="auto-detecting-message-sources"><a class="anchor" href="#auto-detecting-message-sources"></a>4.1. Auto-detecting message sources</h3>
+<div class="paragraph">
+<p>If a module has a message source packaged in the right location it will be auto-detected and configured.
+The following default message properties will be configured automatically if they are present on the classpath:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>/messages/MODULE_RESOURCES/MODULE_NAME.properties <em>(deprecated)</em></p>
+</li>
+<li>
+<p>/messages/MODULE_RESOURCES/default.properties</p>
+</li>
+<li>
+<p>/messages/MODULE_RESOURCES/default/*.properties</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The default message sources are configured using an instance of <code>AcrossModuleMessageSource</code>.
+<code>AcrossModuleMessageSource</code> is a special case of Spring&#8217;s <code>ReloadableResourceBundleMessageSource</code>.
+If development mode is active and the development locations for the module have been configured, the classpath lookups are replaced by physical file lookups with a cache time of 1 second.
+This is very useful during development where updates to resource bundles can be instantly visible.</p>
+</div>
+<div class="paragraph">
+<p>Automatic configuration of message sources only happens if the module does not define a bean named <strong>messageSource</strong>.
+The following section details how you can manually define message sources.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="message-source-hierarchy"><a class="anchor" href="#message-source-hierarchy"></a>4.2. Message source hierarchy</h3>
+<div class="paragraph">
+<p>Across has its own custom behavior in relation to <strong>messageSource</strong> beans declared in modules.
+Each module can declare a default <code>MessageSource</code> bean named <strong>messageSource</strong>.
+Upon bootstrap this message source will be added to a hierarchy along with all other <strong>messageSource</strong> beans.
+Once bootstrap is complete, a message will be looked up in all sources defined.</p>
+</div>
+<div class="paragraph">
+<div class="title">Default message source hierarchy</div>
+<p>By default Across uses the following approach to build a message source hierarchy:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>a <strong>messageSource</strong> bean from a parent <code>ApplicationContext</code> is considered to be application specific and should allow
+customizing the messages of the modules</p>
+</li>
+<li>
+<p>a <strong>messageSource</strong> bean in a module is expected to be able to customize messages from other modules that the current
+module depends on</p>
+<div class="ulist">
+<ul>
+<li>
+<p>this is also interpreted as: the message source of a module takes precedence over the message source of earlier modules</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>As a result, once a context is fully bootstrapped and a message is requested, the sources are queried in the following order:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>message sources of the parent <code>ApplicationContext</code> (and up its hierarchy if more than one parent)</p>
+</li>
+<li>
+<p>message sources of the modules in reverse bootstrap order (last bootstrapped first)</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Once an <code>AcrossContext</code> is fully bootstrapped, messages will be looked up in the hierarchy built from all bootstrapped modules.
+During the bootstrap phase however, only message sources from earlier modules and the parent <code>ApplicationContext</code> are available.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<div class="title">Reverting to default spring behavior</div>
+<p>Default Spring behavior with message sources is that a <code>MessageSource</code> in an <code>ApplicationContext</code> will get the <code>MessageSource</code> of the parent <code>ApplicationContext</code> as its parent.
+In a module setup, this would mean that a message would first be looked up in the source of the module, and only afterwards in the source of the context.
+You can force the default behavior to apply by annotating a <strong>messageSource</strong> bean with <code>@Internal</code>.
+Note that in that case the <strong>messageSource</strong> will remain internal to the module where it&#8217;s declared.</p>
+</div>
+<div class="listingblock">
+<div class="title">Configuring a custom message source for a module with development mode support</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Configuration</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ModuleConfig</span>
+{
+        <span class="annotation">@Bean</span>
+        <span class="directive">public</span> MessageSource messageSource() {
+        AcrossModuleMessageSource source = <span class="keyword">new</span> AcrossModuleMessageSource();
+        source.setBasenames( <span class="string"><span class="delimiter">&quot;</span><span class="content">classpath:/my/module/messages</span><span class="delimiter">&quot;</span></span> );
+
+        <span class="keyword">return</span> source;
+        }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="installers"><a class="anchor" href="#installers"></a>5. Installers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A module can have one or more installer classes.
+The purpose of installers is setup data that modules need, before the actual application takes over.
+Examples: creating database schema, installing default or test data&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>An <code>@Installer</code> annotation marks a class as an installer and allows you to specify the important installer attributes.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">attribute</th>
+<th class="tableblock halign-left valign-top">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>name</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional (unique) name of the installer.
+If not specified, the fully qualified class name of the installer class will be used.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>description</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Descriptive text of what will be installed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>phase</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">When this installer should run during the context bootstrap.
+See <a href="index.adoc#installer-bootstrap-phases">bootstrap phases</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>runCondition</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Condition when this installer should run.  See <a href="#installer-run-conditions">run conditions</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>version</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Version number of the installer.
+This value should be incremented to enforce a new run of the same installer.
+Only relevant if the run condition is <code>VersionDifferent</code>.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>An <code>@InstallerMethod</code> annotation marks a method within an <code>@Installer</code> marked class as a method that should be executed when the installer is executed.
+Using the <strong>required</strong> attribute, it is possible to define the method&#8217;s parameters as optional, which means they will not be autowired if they are not found.</p>
+</div>
+<h3 id="installer-detection" class="discrete">Installer detection</h3>
+<div class="paragraph">
+<p>By default installers are detected from the classpath by scanning the <strong>installers</strong> package relative to the package of the <code>AcrossModule</code>.
+Changing the packages to scan for installers can be done by overriding the <code>getInstallerScanPackages()</code> method on <code>AcrossModule</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you manually want to specify a list of installers, you can do so by overriding the <code>getInstallers()</code> method.
+Though still possible for compatibility reasons, installers should be specified with their <code>Class</code>.
+</td>
+</tr>
+</table>
+</div>
+<h3 id="installer-tracking-and-synchronization" class="discrete">Installer tracking and synchronization</h3>
+<div class="paragraph">
+<p>The execution of installers is tracked using the <code>AcrossInstallerRepository</code>.
+This allows for installers to execute only if they have not yet been executed (see <a href="#installer-run-conditions">run conditions</a>).</p>
+</div>
+<div class="paragraph">
+<p>In addition, installer execution is synchronized for multiple applications connecting on the same database.
+This is done through the <code>DistributedLockRepository</code> that is created in the core schema.
+A lock will be taken on the database as soon as a single installer wishes to execute, and will be released once that installer has finished executing.</p>
+</div>
+<div class="paragraph">
+<p>The lock owner will contain the hostname of the computer running the application, as well as the <code>displayName</code> of the <code>AcrossContext</code>.</p>
+</div>
+<div class="paragraph">
+<p>Because of tracking and synchronization, a <a href="#installer-datasource">datasource</a> is required in order to execute installers.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>AcrossInstallerRepository</code> can be wired as a bean in installers.
+This can be helpful in migration trajectories for example to rename installers.
+</td>
+</tr>
+</table>
+</div>
+<h3 id="installer-bootstrap-phases" class="discrete">Bootstrap phases</h3>
+<div class="paragraph">
+<p>Installers are executed during a specific phase of the context bootstrap.
+This phase should be specified for every installer.
+The phase will determine which beans are available in the installer.</p>
+</div>
+<div class="paragraph">
+<p>The following bootstrap phases exist:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">BeforeContextBootstrap</dt>
+<dd>
+<p>The installer is executed before any of the modules in the AcrossContext are bootstrapped.
+Only beans from the parent <code>ApplicationContext</code> or the <a href="#installer-applicationcontext">installer <code>ApplicationContext</code></a> are available.</p>
+</dd>
+<dt class="hdlist1">BeforeModuleBootstrap</dt>
+<dd>
+<p>The installer is executed before the module that owns it bootstraps, but after all previous modules have bootstrapped.
+All beans from previous modules will also be available to the installer.</p>
+</dd>
+<dt class="hdlist1">AfterModuleBootstrap</dt>
+<dd>
+<p>The installer is executed after the module that owns it has bootstrapped, but before the next module bootstraps.
+All beans from the current module are available.</p>
+</dd>
+<dt class="hdlist1">AfterContextBootstrap</dt>
+<dd>
+<p>The installer is executed after all modules have bootstrapped, but before the <code>AcrossContextBootstrappedEvent</code> is published.
+All beans from all modules are available.</p>
+</dd>
+</dl>
+</div>
+<h3 id="installer-run-conditions" class="discrete">Run conditions</h3>
+<div class="paragraph">
+<p>The following run conditions are supported for an installer:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">AlwaysRun</dt>
+<dd>
+<p>The installer will always be executed, everytime the module bootstraps.</p>
+</dd>
+<dt class="hdlist1">VersionDifferent</dt>
+<dd>
+<p>The installer will only execute if the <em>version</em> attribute is higher than the version previously executed.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>In addition to the standard run conditions, you can use <a href="#installer-conditionals"><code>@Conditional</code> annotations on installer classes</a>.
+This includes for example the use of <code>@ConditionalOnAcrossModule</code> to execute installers if certain modules are active.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Using <strong>AlwaysRun</strong> installers will always cause the bootstrap lock to be taken.
+ This might cause a slowdown when starting multiple applications on the same datasource simultaneously.
+</td>
+</tr>
+</table>
+</div>
+<h3 id="installer-group" class="discrete">Installer group</h3>
+<div class="paragraph">
+<p>In addition to the standard <code>@Installer</code> attributes, an <code>@InstallerGroup</code> annotation can be specified.
+This allows grouping types of installers together (for example schema) and overruling their execution using <a href="#installer-settings"><code>InstallerSettings</code></a>.</p>
+</div>
+<h3 id="installer-execution-order" class="discrete">Installer execution order</h3>
+<div class="paragraph">
+<p>If all conditions are fulfilled, installers will be executed in a predetermined order:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>in <a href="#installer-bootstrap-phases">bootstrap phase</a> order</p>
+</li>
+<li>
+<p>in <a href="developing-applications.html#module-bootstrap-order">module bootstrap order</a></p>
+</li>
+<li>
+<p>in installer order (according to <code>@Order</code> annotations on the installer class)</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Installers without an <code>@Order</code> annotation behave as if they have an order index of <strong>0</strong>.
+In that case the installer registration order will be used as a fallback, with installers specified through <code>getInstallers()</code> having a higher precedence.
+</td>
+</tr>
+</table>
+</div>
+<h3 id="installer-datasource" class="discrete">Datasources and installers</h3>
+<div class="paragraph">
+<p>An <code>AcrossContext</code> requires at least one datasource if modules need to run installers.
+Certain core features like the <code>DistributedLockRepository</code> also require the core schema to be installed and will require a valid datasource to be configured.</p>
+</div>
+<div class="paragraph">
+<p>The main datasource is available for all modules as a bean named <code>acrossDataSource</code>.
+Optionally a separate installer datasource can be configured that will be available as <code>acrossInstallerDataSource</code>.
+If no separate installer datasource is specified, the default across datasource will be used.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+A valid default datasource is always required for installers to run.
+It is not possible to configure only an installer datasource as the distributed locking mechanism uses the default datasource.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The installer datasource is the default datasource used for all <code>AcrossLiquibaseInstaller</code> instances.</p>
+</div>
+<h3 id="installer-applicationcontext" class="discrete">Installer ApplicationContext</h3>
+<div class="paragraph">
+<p>If installers need to be run for a module, a specific <code>ApplicationContext</code> is created in which the installers will be wired as beans.
+This <code>ApplicationContext</code> can exist before the actual module <code>ApplicationContext</code> does.
+However, all beans from the parent Across context and the module context - when created - are available in installers.</p>
+</div>
+<div class="paragraph">
+<p>Installer contexts are temporary, once the Across context has bootstrapped they are closed.
+Configuration and other annotated classes can be added to the installer context by using <code>ApplicationContextConfigurer</code> implementations, either on the <code>AcrossContext</code> or on an <code>AcrossModule</code>.</p>
+</div>
+<div class="paragraph">
+<p>By default, the package <strong>installers.config</strong> relative to the module package will be scanned for beans to be added to the installer <code>ApplicationContext</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example using different datasource inside the modules</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Configuration</span>
+<span class="type">class</span> <span class="class">Config</span> <span class="directive">implements</span> AcrossContextConfigurer
+{
+    <span class="comment">/**
+     * Installer tracking will be done on this datasource.
+     */</span>
+    <span class="annotation">@Bean</span>
+    <span class="directive">public</span> EmbeddedDatabase acrossDataSource() {
+        <span class="keyword">return</span> <span class="keyword">new</span> EmbeddedDatabaseBuilder()
+                .setType( EmbeddedDatabaseType.HSQL )
+                .setName( <span class="string"><span class="delimiter">&quot;</span><span class="content">core</span><span class="delimiter">&quot;</span></span> )
+                .build();
+    }
+
+    <span class="annotation">@Bean</span>
+    <span class="directive">public</span> EmbeddedDatabase moduleDataSource() {
+        <span class="keyword">return</span> <span class="keyword">new</span> EmbeddedDatabaseBuilder()
+                .setType( EmbeddedDatabaseType.HSQL )
+                .setName( <span class="string"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span> )
+                .build();
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="type">void</span> configure( AcrossContext context ) {
+        ProvidedBeansMap beans = <span class="keyword">new</span> ProvidedBeansMap();
+        beans.put( AcrossContext.DATASOURCE, <span class="keyword">new</span> PrimarySingletonBean( moduleDataSource() ) );
+        beans.put( AcrossContext.INSTALLER_DATASOURCE, moduleDataSource() );
+
+        context.addApplicationContextConfigurer( <span class="keyword">new</span> ProvidedBeansConfigurer( beans ),
+                                                 ConfigurerScope.MODULES_ONLY );
+        context.addInstallerContextConfigurer( <span class="keyword">new</span> ProvidedBeansConfigurer( beans ) );
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The installer context has no web support as it is a direct implementation of <code>AcrossApplicationContext</code> but does not implement <code>WebApplicationContext</code>.
+</td>
+</tr>
+</table>
+</div>
+<div id="installer-conditionals" class="paragraph">
+<p>Installers are registered as bean definitions in the installer <code>ApplicationContext</code>.
+You can use any Spring <code>@Conditional</code> annotations to suppress installer execution, even if the run conditions are fulfilled.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+When registering bean definitions to the installer context, a good practice is to demarcate beans as <code>@Lazy</code>.
+ In that case they will never get created if the installer conditionals fail.
+</td>
+</tr>
+</table>
+</div>
+<h3 id="acrossliquibaseinstaller" class="discrete">AcrossLiquibaseInstaller</h3>
+<div class="paragraph">
+<p>Across core comes with an <code>AcrossLiquibaseInstaller</code> class.
+This is an abstract base class for executing liquibase XML resources.
+Simply extending the base class and annotating as installer will execute an XML resource in the same package as the installer class against the installer datasource.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example using different datasource inside the modules</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">package</span> <span class="namespace">my.package</span>;
+
+<span class="annotation">@Installer</span>(description = <span class="string"><span class="delimiter">&quot;</span><span class="content">Liquibase installer</span><span class="delimiter">&quot;</span></span>, runCondition = InstallerRunCondition.AlwaysRun)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">LiquibaseInstaller</span> <span class="directive">extends</span> AcrossLiquibaseInstaller
+{
+    <span class="comment">// Will execute the resource file 'my/package/LiquibaseInstaller.xml'</span>
+    <span class="comment">// As liquibase has its own locking mechanism, we can safely always run (even though you should avoid this when possible)</span>
+
+}</code></pre>
+</div>
+</div>
+<h4 id="schemaconfiguration" class="discrete">SchemaConfiguration</h4>
+<div class="paragraph">
+<p>An <code>AcrossLiquibaseInstaller</code> will use a <code>SchemaConfiguration</code> bean to configure its default schema and pass configuration properties.
+A <code>SchemaConfiguration</code> for the current module will be looked up first, if none is found a default bean will be used if it exists.</p>
+</div>
+<div class="paragraph">
+<p>The default <code>SchemaConfiguration</code> is a bean without any <code>@Module</code> annotations.
+The presence of a <code>@Module</code> annotation marks that <code>SchemaConfiguration</code> as applying only for that particular module.</p>
+</div>
+<div class="paragraph">
+<p>If no default or module <code>SchemaConfiguration</code> is found, the installer will continue without setting a default schema.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Adding <code>SchemaConfiguration</code> beans to a context directly via a <code>ProvidedBeansConfigurer</code> erases the visibility of bean declaration annotations.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">Example of a configuration class defining some <code>SchemaConfiguration</code> beans</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">package</span> <span class="namespace">my.package</span>;
+
+<span class="annotation">@EnableAcrossContext</span>
+<span class="annotation">@Configuration</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SchemaConfig</span>
+{
+    <span class="comment">/<strong>
+     * AcrossLiquibaseInstaller in the QuotationModule will automatically pick up this SchemaConfiguration.
+     * Liquibase scripts will run with 'MY_QUOTATIONS' as their default schema.
+     */</span>
+     <span class="annotation">@Bean</span>
+     <span class="annotation">@Module</span>( <span class="string"><span class="delimiter">&quot;</span><span class="content">QuotationModule</span><span class="delimiter">&quot;</span></span> )
+     <span class="directive">public</span> SchemaConfiguration userSchemaConfiguration() {
+        <span class="keyword">return</span> <span class="keyword">new</span> SchemaConfiguration( <span class="string"><span class="delimiter">&quot;</span><span class="content">MY_QUOTATIONS</span><span class="delimiter">&quot;</span></span> );
+     }
+
+     <span class="comment">/</strong>
+      * This is the default SchemaConfiguration.
+      * AcrossLiquibaseInstaller in other module will pick up this SchemaConfiguration.
+      */</span>
+     <span class="annotation">@Bean</span>
+     <span class="directive">public</span> SchemaConfiguration defaultSchemaConfiguration() {
+        <span class="keyword">return</span> <span class="keyword">new</span> SchemaConfiguration( <span class="string"><span class="delimiter">&quot;</span><span class="content">MY_SCHEMA</span><span class="delimiter">&quot;</span></span> );
+     }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">Fixing a default schema</div>
+<p>Alternatively the <code>SchemaConfiguration</code> bean schema can be ignored and a default schema fixed on the <code>AcrossLiquibaseInstaller</code>.
+This is done in the installer implementation through the <code>setDefaultSchema()</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example fixed schema configuration using <code>AcrossLiquibaseInstaller#setDefaultSchema</code></div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">package</span> <span class="namespace">my.package</span>;
+
+<span class="comment">/**
+ * Liquibase script of this installer will run with 'IM_SPECIAL' as default schema.
+ * Regardless of any defined SchemaConfiguration.
+ */</span>
+<span class="annotation">@Installer</span>(description = <span class="string"><span class="delimiter">&quot;</span><span class="content">Liquibase installer</span><span class="delimiter">&quot;</span></span>, runCondition = InstallerRunCondition.AlwaysRun)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">SpecialSchemaInstaller</span> <span class="directive">extends</span> AcrossLiquibaseInstaller
+{
+    <span class="directive">public</span> SpecialSchemaInstaller() {
+        setDefaultSchema( <span class="string"><span class="delimiter">&quot;</span><span class="content">IM_SPECIAL</span><span class="delimiter">&quot;</span></span> );
+    }
+}</code></pre>
+</div>
+</div>
+<h3 id="installer-settings" class="discrete">InstallerSettings</h3>
+<div class="paragraph">
+<p>For advanced configuration, both <code>AcrossContext</code> and <code>AcrossModule</code> allow <code>InstallerSettings</code> to be set.
+<code>InstallerSettings</code> can be used to set the action (eg. force executed, skip) to be performed for one or more installers or installer groups.</p>
+</div>
+<div class="paragraph">
+<p><code>InstallerSettings</code> accepts an <code>InstallerActionResolver</code> for determining install action at runtime.
+Alternatively an installer can implement <code>InstallerActionResolver</code> that will be used in a second stage only if the original action is <code>EXECUTE</code>.</p>
+</div>
+<div class="paragraph">
+<p>Please refer to the javadoc for more information.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="module-validation"><a class="anchor" href="#module-validation"></a>6. Validation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If a JSR-303 implementation (eg. Hibernate validator) is on the classpath, all modules can automatically use the Bean Validation 1.1 features.
+See the chapter on <a href="developing-applications.html#validation">validation in "Developing applications"</a> for more information.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="module-version-information"><a class="anchor" href="#module-version-information"></a>7. Module version information</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Across modules have version information attached in the form of an <code>AcrossVersionInfo</code> property.
+This object provides information like the current version and time when it was built.
+By default this information is fetched automatically from the <strong>META-INF/MANIFEST.MF</strong> resource.
+The following attributes are required for a fully configured <code>AcrossVersionInfo</code> instance:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. MANIFEST attributes</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Attribute</th>
+<th class="tableblock halign-left valign-top">Example</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Implementation-Title</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">across-web</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the project the class (<code>AcrossModule</code>) belongs to. Often also the JAR name.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Implementation-Version</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.0.0.RELEASE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Build version of the <code>AcrossModule</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Build-Time</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20150831-1011</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Timestamp when the version was built (in <strong>yyyyMMdd-HHmm</strong> format).</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Using Maven a valid MANIFEST file can automatically be created using the following plugin configuration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;plugin&gt;</span>
+       <span class="tag">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/groupId&gt;</span>
+       <span class="tag">&lt;artifactId&gt;</span>maven-jar-plugin<span class="tag">&lt;/artifactId&gt;</span>
+       <span class="tag">&lt;version&gt;</span>2.6<span class="tag">&lt;/version&gt;</span>
+       <span class="tag">&lt;configuration&gt;</span>
+           <span class="tag">&lt;archive&gt;</span>
+               <span class="tag">&lt;manifest&gt;</span>
+                   <span class="tag">&lt;addDefaultImplementationEntries&gt;</span>true<span class="tag">&lt;/addDefaultImplementationEntries&gt;</span>
+               <span class="tag">&lt;/manifest&gt;</span>
+               <span class="tag">&lt;manifestEntries&gt;</span>
+                   <span class="tag">&lt;Build-Time&gt;</span>${maven.build.timestamp}<span class="tag">&lt;/Build-Time&gt;</span>
+               <span class="tag">&lt;/manifestEntries&gt;</span>
+           <span class="tag">&lt;/archive&gt;</span>
+       <span class="tag">&lt;/configuration&gt;</span>
+   <span class="tag">&lt;/plugin&gt;</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 3.0.0.RELEASE<br>
+Last updated 2018-03-29 16:27:59 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "Across reference docs";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

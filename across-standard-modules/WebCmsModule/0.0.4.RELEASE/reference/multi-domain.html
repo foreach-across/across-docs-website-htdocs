@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>WebCmsModule - Multi-domain Support</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="multi-domain" class="book toc2 toc-left">
+<div id="header">
+<h1>WebCmsModule - Multi-domain Support</h1>
+<div class="details">
+<span id="revnumber">version 0.0.4.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Multi-domain/site</div>
+<ul class="sectlevel0">
+<li><a href="#multi-domain-multi-domain-and-site-support">Multi-domain and multi-site support</a>
+<ul class="sectlevel1">
+<li><a href="#configuring-multi-domain-support-in-your-application">1. Configuring multi-domain support in your application</a>
+<ul class="sectlevel5">
+<li><a href="#example-activating-multi-domain-support-with-default-configuration">Example activating multi-domain support with default configuration</a></li>
+<li><a href="#multi-domain-configuration-options">1.2. Multi-domain configuration options</a></li>
+<li><a href="#multi-domain-domain-metadata">1.3. Domain metadata</a></li>
+</ul>
+</li>
+<li><a href="#using-domains">2. Using domains</a>
+<ul class="sectlevel2">
+<li><a href="#accessing-the-current-domain">2.1. Accessing the current domain</a></li>
+<li><a href="#mapping-handler-methods-to-domain">2.2. Mapping handler methods to domain</a></li>
+<li><a href="#entity-query-language-extensions">2.3. Entity Query Language extensions</a></li>
+<li><a href="#resolving-the-current-domain">2.4. Resolving the current domain</a></li>
+</ul>
+</li>
+<li><a href="#using-no-domain-in-a-multi-domain-setup">3. Using no-domain in a multi-domain setup</a></li>
+<li><a href="#manually-adding-multi-domain-support-to-your-entities">4. Manually adding multi-domain support to your entities</a>
+<ul class="sectlevel4">
+<li><a href="#repositories-services">Repositories &amp; services</a></li>
+</ul>
+</li>
+<li><a href="#importing-domain-configuration">5. Importing domain configuration</a>
+<ul class="sectlevel5">
+<li><a href="#example-importing-a-webcmsdomain-with-webcmssiteconfiguration-metadata">Example importing a WebCmsDomain with WebCmsSiteConfiguration metadata</a></li>
+<li><a href="#importing-domain-configuration-for-webcmsobjects">5.2. Importing domain configuration for WebCmsObjects</a></li>
+<li><a href="#scoping-imports-to-a-domain">5.3. Scoping imports to a domain</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<h1 id="multi-domain-multi-domain-and-site-support" class="sect0"><a class="anchor" href="#multi-domain-multi-domain-and-site-support"></a>Multi-domain and multi-site support</h1>
+<div class="openblock partintro">
+<div class="content">
+<div class="paragraph">
+<p>The default configuration of WebCmsModule considers all entities as part of a single pool of data (the "domain").
+Usually a domain corresponds with a single website, often represented by an actual DNS record.</p>
+</div>
+<div class="paragraph">
+<p>WebCmsModule also supports multiple domains within a single application, with a domain being represented by a <code>WebCmsDomain</code> entity.
+Default configuration is provided for the use case where a domain corresponds with a website.
+However a <code>WebCmsDomain</code> is an abstract grouping of asset and configuration data, and the domain concept could be used in an entirely different fashion if so wanted.</p>
+</div>
+<div class="paragraph">
+<p>Any entity that can be attached to a particular <code>WebCmsDomain</code> should implement the <code>WebCmsDomainBound</code> interface.
+WebCmsModule will automatically reconfigure EntityModule settings for any <code>WebCmsDomainBound</code> entity, based on the multi-domain configuration provided.</p>
+</div>
+<div class="paragraph">
+<p>All default implementations provided by WebCmsModule implement this interface.
+When using one of the default base classes (eg. <code>WebCmsObjectSuperClass</code>), you automatically implement <code>WebCmsDomainBound</code>.</p>
+</div>
+<hr>
+<div class="paragraph">
+<p><strong>In a multi-domain setup, entities not attached to a specific domain are shared across all domains.  Entities attached to a single domain are available only on that specific domain.</strong></p>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="configuring-multi-domain-support-in-your-application"><a class="anchor" href="#configuring-multi-domain-support-in-your-application"></a>1. Configuring multi-domain support in your application</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, multi-domain support is disabled entirely.  Entities will never be attached to a domain and - if the administration UI is active - you will not be offered any domain related management options.</p>
+</div>
+<div class="paragraph">
+<p>You can activate multi-domain support by providing a <code>WebCmsMultiDomainConfiguration</code> bean in your application.
+WebCmsModule will inspect the configuration bean and setup its basic infrastructure accordingly.
+This does not alter the database schema in any way, but it does configure a lot of default behaviour of your application.</p>
+</div>
+<div class="sect5">
+<h6 id="example-activating-multi-domain-support-with-default-configuration"><a class="anchor" href="#example-activating-multi-domain-support-with-default-configuration"></a>Example activating multi-domain support with default configuration</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Bean</span>
+<span class="directive">public</span> WebCmsMultiDomainConfiguration multiDomainConfiguration() {
+    <span class="keyword">return</span> WebCmsMultiDomainConfiguration.managementPerDomain().build();
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Because a lot of configuration options are altered based on your <code>WebCmsMultiDomainConfiguration</code>, this bean should be available before the WebCmsModule bootstraps.
+You should either provide this bean on the application or AcrossContext level, or in a <code>@ModuleConfiguration</code> extension directly in the WebCmsModule.</p>
+</div>
+<div class="paragraph">
+<p>Once the application has been started, you can no longer modify the multi-domain configuration.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="multi-domain-configuration-options"><a class="anchor" href="#multi-domain-configuration-options"></a>1.2. Multi-domain configuration options</h3>
+<div class="paragraph">
+<p>The <code>WebCmsMultiDomainConfiguration</code> allows you to configure which entities are supposed to be domain-bound, and which are shared across domains.
+Any domain-bound entity will be linked to a specific <code>WebCmsDomain</code>, whereas shared entities will have a <code>null</code> value for their <code>WebCmsDomain</code>.</p>
+</div>
+<div class="sect3">
+<h4 id="administration-ui-presets"><a class="anchor" href="#administration-ui-presets"></a>1.2.1. Administration UI presets</h4>
+<div class="paragraph">
+<p>The <code>WebCmsMultiDomainConfiguration</code> has 2 configuration presets:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <code>managementPerDomain()</code> option will configure the EntityModule and administration UI so you select the specific domain you wish to manage. This is often the most practical use case where you never manually select the domain for an asset as it is determined by the context you are managing.</p>
+</li>
+<li>
+<p>The <code>managementPerEntity()</code> option will configure the administration UI to allow you to select the right domain per entity.  This is a much more complex configuration that allows the user to be very aware of how entities can be linked across domains.  Usually a lot more application specific configuration will be required for this option.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Either preset allows you to configure the domain bound entities in exactly the same way.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="configuring-domain-bound-entities"><a class="anchor" href="#configuring-domain-bound-entities"></a>1.2.2. Configuring domain-bound entities</h4>
+<div class="paragraph">
+<p>You can configure exactly which entities are domain-bound and which are not.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>a non-domain-bound entity only allows a <code>null</code> value for its <code>WebCmsDomain</code></p>
+</li>
+<li>
+<p>a domain-bound entity allows a specific value for its <code>WebCmsDomain</code> and - depending on the configuration - could possibly also allow a <code>null</code> value for its <code>WebCmsDomain</code></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In a management per domain configuration, non-domain-bound entities would be managed under the shared settings.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The default multi-domain configurations apply the following rules:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>any <code>WebCmsDomainBound</code> instance is configured as domain-bound and requiring a specific domain</p>
+</li>
+<li>
+<p>a <code>WebCmsTypeSpecifier</code> is configured as not-domain-bound - shared across all domains</p>
+</li>
+<li>
+<p>a <code>WebCmsComponent</code> is configured as domain-bound but no domain is required, allowing components to be set per domain or to be shared across all domains</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The more specific rules for <code>WebCmsTypeSpecifier</code> and <code>WebCmsComponent</code> overrule the initial <code>WebCmsDomainBound</code> rule.</p>
+</div>
+<div class="paragraph">
+<p>You can set configure domain-bound rules on the <code>WebCmsMultiDomainConfiguration</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>use <code>domainBoundTypes()</code> to specify types that should be domain bound</p>
+</li>
+<li>
+<p>use <code>domainIgnoredTypes(</code>\)  to specify non-domain-bound types</p>
+</li>
+<li>
+<p>use <code>noDomainAllowedTypes()</code> to specify for which domain-bound types the domain is optional</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you want to disable shared settings altogether, you can do so using the <code>noDomainAllowed()</code> option.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect5">
+<h6 id="example-multi-domain-configuration-that-shares-the-webcmsimage-asset-across-all-domains"><a class="anchor" href="#example-multi-domain-configuration-that-shares-the-webcmsimage-asset-across-all-domains"></a>Example multi-domain configuration that shares the WebCmsImage asset across all domains</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Bean</span>
+<span class="directive">public</span> WebCmsMultiDomainConfiguration multiDomainConfiguration() {
+    <span class="keyword">return</span> WebCmsMultiDomainConfiguration.managementPerEntity()
+                                         .domainIgnoredTypes( WebCmsImage.class )
+                                         .build();
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="configuring-domain-metadata-and-domain-filter"><a class="anchor" href="#configuring-domain-metadata-and-domain-filter"></a>1.2.3. Configuring domain metadata and domain filter</h4>
+<div class="paragraph">
+<p>The <code>WebCmsMultiDomainConfiguration</code> also allows you to specify the type of domain metadata your application should use, as well as the Servlet filter that should be used to select the domain in the front-end.
+These options will apply regardless of</p>
+</div>
+<div class="paragraph">
+<p>The default domain metadata is implemented as <code>WebCmsSiteConfiguration</code> and represents a single website.
+The default domain filter is an implementation of <code>WebCmsSiteConfigurationFilter</code> that selects the domain based on the hostname of the incoming request.</p>
+</div>
+<div class="paragraph">
+<p>For more information on domain metadata, see the <a href="#multi-domain-domain-metadata">separate chapter</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="webcmsdomain-used-to-represent-no-domain"><a class="anchor" href="#webcmsdomain-used-to-represent-no-domain"></a>1.2.4. WebCmsDomain used to represent "no-domain"</h4>
+<div class="paragraph">
+<p>If your application is configured in a single-domain, the actual <code>WebCmsDomain</code> used is the <code>null</code> value.  For programmatic purposes you can use the <code>WebCmsDomain.NONE</code> constant.</p>
+</div>
+<div class="paragraph">
+<p>In a multi-domain configuration,  <code>WebCmsDomain.NONE</code> (<code>null</code>) represents the items shared across all domains.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Switching from a single-domain to a multi-domain configuration (or vice versa) after data has been added to your application is not advised.
+It will usually require manual actions to ensure all data is still accessible and attached to the proper domain.</p>
+</div>
+<div class="paragraph">
+<p>If you switch from a multi-domain configuration to a single-domain configuration, you will only be able to access items that were not attached to a specific domain</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="entitymodule-auto-configuration"><a class="anchor" href="#entitymodule-auto-configuration"></a>1.2.5. EntityModule auto-configuration</h4>
+<div class="paragraph">
+<p>WebCmsModule attempts to auto-configure the EntityModule entities if multi-domain support is active.  Depending on your multi-domain configuration the following entity configurations will be modified:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>list views of <code>EntityConfiguration</code> and <code>EntityAssociation</code> will be modified with domain aware base predicates (this ensures that you will only see entities bound to the domain your are managing)</p>
+</li>
+<li>
+<p>options queries of entities (<code>EntityAttributes.OPTIONS_ENTITY_QUERY</code>) will be modified so you can only select entities of the currently selectable domains</p>
+</li>
+<li>
+<p>the <code>EntityModel</code> of <code>WebCmsDomainBound</code> entities will be adjusted with a custom <code>EntityFactory</code> that will pre-set the currently selected domain</p>
+</li>
+<li>
+<p>the <code>EntityConfigurationAllowableActionsBuilder</code> of all entities will be wrapped with a domain-aware actions builder that will deny any action attempting to modify an entity on a domain it does not belong to</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>In many cases the auto-configuration will be just what you need and there won&#8217;t be any need for tweaking.  However if you want to manually configure some of your entities, you can force the auto-configuration parts to be skipped.</p>
+</div>
+<div class="sect4">
+<h5 id="auto-configuration-related-attributes"><a class="anchor" href="#auto-configuration-related-attributes"></a>Auto-configuration related attributes</h5>
+<div class="paragraph">
+<p>Domain auto-configuration is performed during a post-processing of all entity configurations.
+ Custom attributes allow you to skip parts of the auto-configuration or to tweak auto-configuration settings.
+ For all WebCmsModule related entity attirbutes, see <a href="appendix.html#appendices-entity-module-attrs">the relevant appendix</a>.</p>
+</div>
+<div class="sect5">
+<h6 id="skipping-automatic-list-view-adjustment"><a class="anchor" href="#skipping-automatic-list-view-adjustment"></a>Skipping automatic list view adjustment</h6>
+<div class="paragraph">
+<p>When you manually configure a list view with a domain specific base predicate, you should set the attribute <code>WebCmsEntityAttributes.MultiDomainConfiguration.LIST_VIEW_ADJUSTED</code> to <code>true</code>.
+This attribute is supported on any <code>EntityConfiguration</code> or <code>EntityAssociation</code>.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="skipping-automatic-options-query-adjustment"><a class="anchor" href="#skipping-automatic-options-query-adjustment"></a>Skipping automatic options query adjustment</h6>
+<div class="paragraph">
+<p>When you manually configure the options filtering of an entity (e.g. by setting <code>EntityAttributes.OPTIONS_ENTITY_QUERY</code>) you should set the attribute <code>WebCmsEntityAttributes.MultiDomainConfiguration.OPTIONS_QUERY_ADJUSTED</code> to <code>true</code>.
+This attribute is supported on any <code>EntityConfiguration</code> or <code>EntityPropertyDescriptor</code>.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="skipping-automatic-entitymodel-adjustment"><a class="anchor" href="#skipping-automatic-entitymodel-adjustment"></a>Skipping automatic EntityModel adjustment</h6>
+<div class="paragraph">
+<p>If you don&#8217;t want the default <code>EntityFactory</code> to be modified, you should set the attribute <code>WebCmsEntityAttributes.MultiDomainConfiguration.ENTITY_MODEL_ADJUSTED</code> to <code>true</code> on the <code>EntityConfiguration</code>.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="skipping-automatic-allowableactions-adjustment"><a class="anchor" href="#skipping-automatic-allowableactions-adjustment"></a>Skipping automatic AllowableActions adjustment</h6>
+<div class="paragraph">
+<p>If you don&#8217;t want the default <code>EntityConfigurationAllowableActionsBuilder</code> to be modified, you should set the attribute <code>WebCmsEntityAttributes.MultiDomainConfiguration.ALLOWABLE_ACTIONS_ADJUSTED</code> to <code>true</code> on the <code>EntityConfiguration</code>.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="skipping-auto-configuration-of-an-entity-entirely"><a class="anchor" href="#skipping-auto-configuration-of-an-entity-entirely"></a>Skipping auto-configuration of an entity entirely</h6>
+<div class="paragraph">
+<p>If you want to skip the entire auto-configuration of an <code>EntityConfiguration</code> you should set the attribute <code>WebCmsEntityAttributes.MultiDomainConfiguration.FINISHED</code> to <code>true</code> on that <code>EntityConfiguration</code>.</p>
+</div>
+<div class="paragraph">
+<p>This will ensure no processing is done on the <code>EntityConfiguration</code> or any of its registered associations.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="setting-a-custom-property-representing-the-webcmsdomain"><a class="anchor" href="#setting-a-custom-property-representing-the-webcmsdomain"></a>Setting a custom property representing the WebCmsDomain</h6>
+<div class="paragraph">
+<p>If you want to activate (partial) multi-domain auto-configuration for entities not implementing <code>WebCmsDomainBound</code>, you can specify an explicit property that links to the <code>WebCmsDomain</code> by setting <code>WebCmsEntityAttributes.DOMAIN_PROPERTY</code> on the <code>EntityConfiguration</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>An example:</strong></p>
+</div>
+<div class="paragraph">
+<p><code>WebCmsUrl</code> does not implement <code>WebCmsDomainBound</code>.
+But a <code>WebCmsUrl</code> is linked to a <code>WebCmsEndpoint</code> that does  implement <code>WebCmsDomainBound</code>, so an URL is also bound implicitly.
+  To auto-configure the domain-based filtering for <code>WebCmsUrl</code>: set <code>WebCmsEntityAttributes.DOMAIN_PROPERTY</code> to <strong>endpoint.domain</strong>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="management-per-domain-options"><a class="anchor" href="#management-per-domain-options"></a>1.2.6. Management per domain options</h4>
+<div class="paragraph">
+<p>This section explains some additional configuration options related to a management per domain setup.</p>
+</div>
+<div class="sect4">
+<h5 id="domain-selector-menu"><a class="anchor" href="#domain-selector-menu"></a>Domain selector menu</h5>
+<div class="paragraph">
+<p>In management per domain configuration, the administration ui will show a domain selector menu if the user can access more than one domain.
+If no-domain is allowed according to the configuration and the user has the ability to manage domains themselves, a <em>shared settings</em> option will be added.</p>
+</div>
+<div class="paragraph">
+<p>Customizing the default labels can be done through the following message codes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>webCmsModule.menu.domainNav.switchDomain</code>: label for the selector itself (default: <em>Switch domain</em>)</p>
+</li>
+<li>
+<p><code>webCmsModule.menu.domainNav.noDomain</code>: label for the shared settings (default <em>Shared settings</em>)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="adding-a-shared-item-to-every-domain"><a class="anchor" href="#adding-a-shared-item-to-every-domain"></a>Adding a shared item to every domain</h5>
+<div class="paragraph">
+<p>A non-domain-bound entity is by default only available on the shared settings.
+You can add a shared entity to every domain by setting the attribute <code>WebCmsEntityAttributes.ALLOW_PER_DOMAIN</code> to true on the corresponding <code>EntityConfiguration</code>.</p>
+</div>
+<div class="sect5">
+<h6 id="example-sharing-webcmsimage-asset-across-all-domains-and-making-them-selectable-from-all-domains"><a class="anchor" href="#example-sharing-webcmsimage-asset-across-all-domains-and-making-them-selectable-from-all-domains"></a>Example sharing WebCmsImage asset across all domains and making them selectable from all domains</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Bean</span>
+<span class="directive">public</span> WebCmsMultiDomainConfiguration multiDomainConfiguration() {
+    <span class="keyword">return</span> WebCmsMultiDomainConfiguration.managementPerEntity()
+                                         .domainIgnoredTypes( WebCmsImage.class )
+                                         .build();
+}
+
+<span class="comment">/**
+ * Ensure that WebCmsImage will be shown on every domain,
+ * even though it is not domain-bound.
+ */</span>
+<span class="annotation">@Configuration</span>
+<span class="type">class</span> <span class="class">AdminUiConfiguration</span> <span class="directive">implements</span> EntityConfigurer
+{
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="type">void</span> configure( EntitiesConfigurationBuilder entities ) {
+        entities.withType( WebCmsImage.class )
+            .attribute( WebCmsEntityAttributes.ALLOW_PER_DOMAIN, <span class="predefined-constant">true</span> );
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="multi-domain-domain-metadata"><a class="anchor" href="#multi-domain-domain-metadata"></a>1.3. Domain metadata</h3>
+<div class="paragraph">
+<p><code>WebCmsDomain</code> is a simple entity with support for an infinite number of String based attributes.
+Because this is usually not very efficient to work with, you can implement a custom metadata class that wraps around a <code>WebCmsDomain</code> providing strong-typed access to domain-related configuration properties.</p>
+</div>
+<div class="paragraph">
+<p>The default metadata implementation is <code>WebCmsSiteConfiguration</code>.</p>
+</div>
+<div class="paragraph">
+<p>Metadata will get created as beans and can wire additional beans or services.
+For example: the default <code>WebCmsSiteConfiguration</code> metadata uses the <code>WebCmsDataConversionService</code> to provide methods for strong-typed fetching of attributes.</p>
+</div>
+<div class="sect4">
+<h5 id="webcmsdomainaware"><a class="anchor" href="#webcmsdomainaware"></a>WebCmsDomainAware</h5>
+<div class="paragraph">
+<p>A metadata implementation does not require a link to the actual <code>WebCmsDomain</code> it is for, but implementing <code>WebCmsDomainAware</code> will ensure that the actual domain will be set when the metadata is being created.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="webcmsdomainurlconfigurer"><a class="anchor" href="#webcmsdomainurlconfigurer"></a>WebCmsDomainUrlConfigurer</h5>
+<div class="paragraph">
+<p>The domain metadata can also implement the <code>WebCmsDomainUrlConfigurer</code> interface.
+This interface defines a URL prefix that should be applied to any link to an asset on that domain.
+When you use the <code>WebCmsUriComponentsService</code> to generate links to asset, these will automatically apply the correct domain settings.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="using-domains"><a class="anchor" href="#using-domains"></a>2. Using domains</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section explains how you can use the domain concept directly in your controllers or business logic.</p>
+</div>
+<div class="sect2">
+<h3 id="accessing-the-current-domain"><a class="anchor" href="#accessing-the-current-domain"></a>2.1. Accessing the current domain</h3>
+<div class="paragraph">
+<p>You can access the current domain or its metadata using one of the methods on the <code>WebCmsMultiDomainService</code>.
+From a static context, you can directly use the <code>WebCmsDomainContextHolder</code> and <code>WebCmsDomainContext</code>.</p>
+</div>
+<div class="paragraph">
+<p>Use the service wherever possible, as it will ensure correct behaviour in both a multi-domain and no-domain context.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="mapping-handler-methods-to-domain"><a class="anchor" href="#mapping-handler-methods-to-domain"></a>2.2. Mapping handler methods to domain</h3>
+<div class="paragraph">
+<p>Most web cms mapping annotations allow you to specify the domain for which they apply.
+If you want to create regular <code>@RequestMapping</code> handler methods for specific domains, you can add the <code>@WebCmsDomainMapping</code> annotation.</p>
+</div>
+<div class="sect5">
+<h6 id="example-declaring-a-domain-specific-handler-method"><a class="anchor" href="#example-declaring-a-domain-specific-handler-method"></a>Example declaring a domain-specific handler method</h6>
+<div class="listingblock">
+<div class="content">
+<pre>/**
+ * Declare a handler method that should only execute on the WebCmsDomain with domain key 'my-domain'.
+ */
+@GetMapping("/my-handler")
+@WebCmsDomainMapping("my-domain")
+public String domainSpecificMethod() {
+  ...
+}</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="entity-query-language-extensions"><a class="anchor" href="#entity-query-language-extensions"></a>2.3. Entity Query Language extensions</h3>
+<div class="paragraph">
+<p>WebCmsModule adds some domain-related functions that can be used in EQL statements:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>selectedDomain()</code> returns the current domain of the context</p>
+</li>
+<li>
+<p><code>visibleDomains()</code> returns the domain from which entities can be selected, usually this is the current domain together with non-domain bound entities</p>
+</li>
+<li>
+<p><code>accessibleDomains(ACTION, ACTION, &#8230;&#8203;)</code> returns the list of domains for which the user has any of the listed actions</p>
+</li>
+<li>
+<p>action should be String representing a valid <code>AllowableAction</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The multi-domain auto-configuration will adjust views and selections only be specifying default EQL predicates to apply, containing these functions.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="resolving-the-current-domain"><a class="anchor" href="#resolving-the-current-domain"></a>2.4. Resolving the current domain</h3>
+<div class="paragraph">
+<p>The current domain is resolved in 2 ways:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The <code>AbstractWebCmsDomainContextFilter</code> is used on every request to determine the initial domain.  The default implementation is the WebCmsSiteConfigurationFilter that will use the hostname of the request to lookup the matching WebCmsSiteConfiguration metadata and select the domain accordingly.</p>
+</li>
+<li>
+<p>The <code>CookieWebCmsDomainContextResolver</code> is used by AdminWebModule to determine the actual domain configured in a cookie.  This will overrule any previously configured domain by the filter.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You can alter the resolving mechanism by creating your own <code>AbstractWebCmsDomainContextFilter</code> implementation and registering it on the <code>WebCmsMultiDomainConfiguration</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="using-no-domain-in-a-multi-domain-setup"><a class="anchor" href="#using-no-domain-in-a-multi-domain-setup"></a>3. Using no-domain in a multi-domain setup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In a multi-domain setup items not attached to a specific domain are expected to be shared across all domains.
+In the default configuration, type specifiers are not domain-bound but shared across all domains.
+In the administration UI of per-domain management, you will only be able to modify types under Shared settings.</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s possible to define an item as domain-bound however, but at the same time making the domain optional.
+This means the entity can be either shared across all domains, or attached to a specific domain.</p>
+</div>
+<div class="paragraph">
+<p>The following default behaviour will be applied:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>if an entity is not domain-bound, it will always be looked for in the set of "no-domain" entities, regardless of any domain attached to the current context</p>
+</li>
+<li>
+<p>if an entity is domain-bound, it will be looked for in the entities attached to the domain of the current context (this could be "no-domain")</p>
+</li>
+<li>
+<p>if an entity is domain-bound but the domain is optional, it will be looked for in the set of "no-domain" entities if no entity could be found in the set of entities attached to the domain of the current context</p>
+</li>
+<li>
+<p>This allows you to use entities shared across all domains, but overrule them with domain-specific versions.  This can be especially useful in the case of type specifiers.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The available service beans all inspect the multi domain configuration of your application to determine which logic they should apply.
+This will usually be very transparent for the user \(developer\).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="manually-adding-multi-domain-support-to-your-entities"><a class="anchor" href="#manually-adding-multi-domain-support-to-your-entities"></a>4. Manually adding multi-domain support to your entities</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The auto-configuration of multi-domain support attempts to setup your administration UI as good as possible.
+Default auto-configuration changes for domain-bound entities are as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>customize the <code>EntityFactory</code> on the <code>EntityConfiguration</code></p>
+</li>
+<li>
+<p>default selection options for that type are set to match only the current domain</p>
+</li>
+<li>
+<p>list views are modified to only show the items attached to the current domain</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If auto-configuration is insufficient, you will need to manually add multi-domain support to your entities.  The following beans are available to help you:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the <code>WebCmsMultiDomainConfiguration</code> allows you to inquire the current configuration</p>
+</li>
+<li>
+<p>the <code>WebCmsMultiDomainService</code> provides access to all domains and there metadata, it also exposes the most frequently used <code>WebCmsMultiDomainConfiguration</code> data</p>
+</li>
+<li>
+<p>the <code>WebCmsMultiDomainAdminUiService</code> is available only if EntityModule is active and provides you with methods useful for filtering your administration UI</p>
+</li>
+</ul>
+</div>
+<div class="sect4">
+<h5 id="repositories-services"><a class="anchor" href="#repositories-services"></a>Repositories &amp; services</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Repositories are usually used in the backend - especially if you want to support both multi-domain and no-domain configurations.
+Repository methods always require you to explicitly specify the domain as well.</p>
+</li>
+<li>
+<p>Services usually use the current domain to interact with the repository, making them very easy to use in frontend business logic.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>See <a href="appendix.html#appendices-repositories-and-services">the appendix</a> for an overview of the available repositories and services.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="importing-domain-configuration"><a class="anchor" href="#importing-domain-configuration"></a>5. Importing domain configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>WebCmsDomain</code> is a <code>WebCmsObject</code> like most other entities provided by WebCmsModule.
+It has full support for being imported using YAML (or another format - see the section <a href="{doc-importing}.html#importing-data">Importing Data</a> for more information).</p>
+</div>
+<div class="sect5">
+<h6 id="example-importing-a-webcmsdomain-with-webcmssiteconfiguration-metadata"><a class="anchor" href="#example-importing-a-webcmsdomain-with-webcmssiteconfiguration-metadata"></a>Example importing a WebCmsDomain with WebCmsSiteConfiguration metadata</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">domains</span>:
+  <span class="key">foreach.be</span>:
+    <span class="key">name</span>: <span class="string"><span class="content">foreach.be</span></span>
+    <span class="key">description</span>: <span class="string"><span class="content">Main Foreach website.</span></span>
+    <span class="key">active</span>: <span class="string"><span class="content">true</span></span>
+    <span class="key">attributes</span>:
+      <span class="key">customString</span>: <span class="string"><span class="content">some text</span></span>
+      <span class="key">customNumber</span>: <span class="string"><span class="content">123</span></span>
+      <span class="key">hostNames</span>:
+        - <span class="string"><span class="content">foreach.be</span></span>
+        - <span class="error">*.foreach.be</span>
+      <span class="key">sortIndex</span>: <span class="string"><span class="content">1</span></span>
+      <span class="key">cookieDomain</span>: <span class="string"><span class="content">foreach.be</span></span>
+      <span class="key">defaultLocale</span>: <span class="string"><span class="content">en_UK</span></span>
+      <span class="key">urlPrefix</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">https://foreach.be/</span><span class="delimiter">&quot;</span></span>
+      <span class="key">alwaysPrefix</span>: <span class="string"><span class="content">true</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="importing-domain-configuration-for-webcmsobjects"><a class="anchor" href="#importing-domain-configuration-for-webcmsobjects"></a>5.2. Importing domain configuration for WebCmsObjects</h3>
+<div class="paragraph">
+<p>All default <code>WebCmsObject</code> s (<code>WebCmsPage</code>, <code>WebCmsMenu</code>&#8230;&#8203;) are domainbound. This means that their identifiers can be reused across different domains.
+To attach a <code>WebCmsObject</code> to a specific <code>WebCmsDomain</code> you only need to add the <em>domain</em> property in the yaml configuration. The domain property can be any of the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>objectId of the WebCmsDomain (e.g. <code>"wcm:domain:my-domain"</code> )</p>
+</li>
+<li>
+<p>the domainKey (e.g. <code>my-domain</code>)</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Example domainbound menu import</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">menus</span>:
+ <span class="key">topNav</span>:
+   <span class="key">description</span>: <span class="string"><span class="content">Top navigation</span></span>
+   <span class="key">domain</span>: <span class="string"><span class="content">my-domain</span></span>
+ <span class="key">sideNav</span>:
+   <span class="key">description</span>: <span class="string"><span class="content">Side navigation</span></span>
+   <span class="key">domain</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:domain:my-domain</span><span class="delimiter">&quot;</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To import a <code>WebCmsTypeSpecifier</code> you are required to prefix the <em>typeKey</em> with the attached domain for all <em>newly</em> created types. This is however not required when updating existing types.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example domainbound component type  import</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">types</span>:
+  <span class="key">component</span>:
+    <span class="error">my-domain:my-teaser</span>:
+      <span class="key">name</span>: <span class="string"><span class="content">My teaser</span></span>
+      <span class="key">domain</span>: <span class="string"><span class="content">my-domain</span></span>
+    <span class="error">my-domain:another-teaser</span>:
+      <span class="key">name</span>: <span class="string"><span class="content">Another teaser</span></span>
+      <span class="key">domain</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:domain:my-domain</span><span class="delimiter">&quot;</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="scoping-imports-to-a-domain"><a class="anchor" href="#scoping-imports-to-a-domain"></a>5.3. Scoping imports to a domain</h3>
+<div class="paragraph">
+<p>With the use of <code>wcm:domain</code> it is possible to set the domain of the surrounding block and it&#8217;s children to the specified domain.</p>
+</div>
+<div class="paragraph">
+<p>Example scoped imports:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="error">wcm:domain</span>: <span class="error">my-domain</span>
+<span class="key">types</span>:
+    <span class="key">component</span>:
+        <span class="key">my-teaser</span>:
+            <span class="key">name</span>: <span class="string"><span class="content">My teaser</span></span>
+            <span class="key">attributes</span>:
+                <span class="key">componentType</span>: <span class="string"><span class="content">fixed-container</span></span>
+            <span class="error">wcm:components</span>:
+                <span class="key">componentTemplate</span>:
+                    <span class="key">componentType</span>: <span class="string"><span class="content">container</span></span>
+                    <span class="error">wcm:components</span>:
+                        <span class="key">body</span>:
+                            <span class="key">componentType</span>: <span class="string"><span class="content">rich-text</span></span>
+
+<span class="key">assets</span>:
+    <span class="key">component</span>:
+        <span class="key">my-teaser</span>:
+            <span class="key">name</span>: <span class="string"><span class="content">My component</span></span>
+            <span class="key">componentType</span>: <span class="string"><span class="content">my-teaser</span></span>
+            <span class="error">wcm:components</span>:
+                <span class="key">body</span>:
+                    <span class="key">content</span>: <span class="string"><span class="content">My teaser body</span></span></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All <code>WebCmsDomainBound</code> objects will be imported under <em>my-domain</em></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">types</span>:
+    <span class="key">component</span>:
+        <span class="key">my-teaser</span>:
+            <span class="key">name</span>: <span class="string"><span class="content">My teaser</span></span>
+            <span class="key">attributes</span>:
+                <span class="key">componentType</span>: <span class="string"><span class="content">fixed-container</span></span>
+            <span class="error">wcm:components</span>:
+                <span class="key">componentTemplate</span>:
+                    <span class="key">componentType</span>: <span class="string"><span class="content">container</span></span>
+                    <span class="error">wcm:components</span>:
+                        <span class="key">body</span>:
+                            <span class="key">componentType</span>: <span class="string"><span class="content">rich-text</span></span>
+
+<span class="key">assets</span>:
+    <span class="error">wcm:domain</span>: <span class="error">my-domain</span>
+    <span class="key">component</span>:
+        <span class="key">my-teaser</span>:
+            <span class="key">name</span>: <span class="string"><span class="content">My component</span></span>
+            <span class="key">componentType</span>: <span class="string"><span class="content">my-teaser</span></span>
+            <span class="error">wcm:components</span>:
+                <span class="key">body</span>:
+                    <span class="key">content</span>: <span class="string"><span class="content">My teaser body</span></span></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All <code>WebCmsDomainBound</code> assets will be imported under <em>my-domain</em></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">types</span>:
+    <span class="key">component</span>:
+        <span class="key">my-teaser</span>:
+            <span class="key">name</span>: <span class="string"><span class="content">My teaser</span></span>
+            <span class="key">attributes</span>:
+                <span class="key">componentType</span>: <span class="string"><span class="content">fixed-container</span></span>
+            <span class="error">wcm:components</span>:
+                <span class="key">componentTemplate</span>:
+                    <span class="key">componentType</span>: <span class="string"><span class="content">container</span></span>
+                    <span class="error">wcm:components</span>:
+                        <span class="key">body</span>:
+                            <span class="key">componentType</span>: <span class="string"><span class="content">rich-text</span></span>
+
+<span class="key">assets</span>:
+    <span class="key">component</span>:
+        <span class="error">wcm:domain</span>: <span class="error">my-domain</span>
+        <span class="key">my-teaser</span>:
+            <span class="key">name</span>: <span class="string"><span class="content">My component</span></span>
+            <span class="key">componentType</span>: <span class="string"><span class="content">my-teaser</span></span>
+            <span class="error">wcm:components</span>:
+                <span class="key">body</span>:
+                    <span class="key">content</span>: <span class="string"><span class="content">My teaser body</span></span></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All <code>WebCmsDomainBound</code> component assets (=global components) and their children will be imported under <em>my-domain.</em></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">types</span>:
+    <span class="key">component</span>:
+        <span class="key">my-teaser</span>:
+            <span class="key">name</span>: <span class="string"><span class="content">My teaser</span></span>
+            <span class="key">attributes</span>:
+                <span class="key">componentType</span>: <span class="string"><span class="content">fixed-container</span></span>
+            <span class="error">wcm:components</span>:
+                <span class="key">componentTemplate</span>:
+                    <span class="key">componentType</span>: <span class="string"><span class="content">container</span></span>
+                    <span class="error">wcm:components</span>:
+                        <span class="key">body</span>:
+                            <span class="key">componentType</span>: <span class="string"><span class="content">rich-text</span></span>
+
+<span class="key">assets</span>:
+    <span class="key">component</span>:
+        <span class="key">my-teaser</span>:
+            <span class="error">wcm:domain</span>: <span class="error">my-domain</span>
+            <span class="key">name</span>: <span class="string"><span class="content">My component</span></span>
+            <span class="key">componentType</span>: <span class="string"><span class="content">my-teaser</span></span>
+            <span class="error">wcm:components</span>:
+                <span class="key">body</span>:
+                    <span class="key">content</span>: <span class="string"><span class="content">My teaser body</span></span></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The component <em>my-teaser</em> and it&#8217;s child component, <em>body</em>, will be imported under <em>my-domain</em>.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In a multi-domain supported setup, all newly created <code>WebCmsDomainBound</code> objects will be imported under their currently scoped domain \(by default: no domain\). The domain of a specific entry can still be changed by using the <em>domain</em> property.</p>
+</div>
+<div class="paragraph">
+<p>We strongly advise to scope entire imports for a specific domain in a multi-domain setup. If you do want to explicitly set the domain afterwards, we advise you to explicitly set it everywhere.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.0.4.RELEASE<br>
+Last updated 2018-03-30 16:02:35 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "WebCmsModule docs";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

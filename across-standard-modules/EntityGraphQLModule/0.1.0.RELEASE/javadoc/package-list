@@ -1,0 +1,9 @@
+com.foreach.across.modules.graphql.entity
+com.foreach.across.modules.graphql.entity.config
+com.foreach.across.modules.graphql.entity.configuration
+com.foreach.across.modules.graphql.entity.configuration.datafetcher
+com.foreach.across.modules.graphql.entity.datafetcher
+com.foreach.across.modules.graphql.entity.mutation
+com.foreach.across.modules.graphql.entity.schema
+com.foreach.across.modules.graphql.entity.settings
+com.foreach.across.modules.graphql.entity.support

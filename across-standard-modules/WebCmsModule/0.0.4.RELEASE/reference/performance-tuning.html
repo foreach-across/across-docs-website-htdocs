@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>WebCmsModule - Performance tuning</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="performance-tuning" class="book toc2 toc-left">
+<div id="header">
+<h1>WebCmsModule - Performance tuning</h1>
+<div class="details">
+<span id="revnumber">version 0.0.4.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Performance tuning</div>
+<ul class="sectlevel0">
+<li><a href="#performance-tuning">Performance tuning</a>
+<ul class="sectlevel1">
+<li><a href="#url-resolving">1. URL resolving</a>
+<ul class="sectlevel2">
+<li><a href="#url-resolve-path-properties">1.1. URL resolve path properties</a></li>
+</ul>
+</li>
+<li><a href="#caching">2. Caching</a>
+<ul class="sectlevel2">
+<li><a href="#webcmsmodule-custom-caches">2.1. WebCmsModule custom caches</a></li>
+<li><a href="#hibernate-level-2-cache">2.2. Hibernate level 2 cache</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<h1 id="performance-tuning" class="sect0"><a class="anchor" href="#performance-tuning"></a>Performance tuning</h1>
+<div class="openblock partintro">
+<div class="content">
+This chapter describes some recommended settings for improving the overall performance of WebCmsModule.
+</div>
+</div>
+<div class="sect1">
+<h2 id="url-resolving"><a class="anchor" href="#url-resolving"></a>1. URL resolving</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The mapping infrastructure (eg. <code>@WebCmsPageMapping</code>) has as a drawback that any request will be matched against all registered <code>WebCmsUrl</code> entries.  It is strongly advised to configure the <em>WebCmsUrlCache</em> to cache these lookups, as well as to limit the request paths for lookup if you can do so.</p>
+</div>
+<div class="paragraph">
+<p>By default all requests will be matched against the <code>WebCmsUrl</code> collection.  You can control which requests should be matched by specifying one ore more ANT path patterns in the relevant settings.</p>
+</div>
+<div class="sect2">
+<h3 id="url-resolve-path-properties"><a class="anchor" href="#url-resolve-path-properties"></a>1.1. URL resolve path properties</h3>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Property</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">webCmsModule.urls.included-path-patterns</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Paths to be included for <code>WebCmsUrl</code> mapping.  If empty, all non-excluded paths will be considered.  If not empty, only requests matching one of these paths will be mapped to a possible <code>WebCmsUrl</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">webCmsModule.urls.excluded-path-patterns</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Paths to always be excluded from <code>WebCmsUrl</code> mapping.  If empty, only included paths will be considered.  If not empty, requests matching these patterns will be excluded, even if they match the included patterns.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>WARNING</strong></p>
+</div>
+<div class="paragraph">
+<p>If URL resolving is disabled for a particular path, <code>@WebCmsEndpointMapping</code> handler methods that use a <code>WebCmsUrl</code> with that path will never match.  Disable URL resolving only if you are sure you will handle all requests for these paths manually.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="caching"><a class="anchor" href="#caching"></a>2. Caching</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>WebCmsModule uses some specific caches to improve performance.  It is recommended to configure these caches in any production application.</p>
+</div>
+<div class="sect2">
+<h3 id="webcmsmodule-custom-caches"><a class="anchor" href="#webcmsmodule-custom-caches"></a>2.1. WebCmsModule custom caches</h3>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cache name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WebCmsUrlCache</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maps request paths to matching <code>WebCmsUrl</code> instances.  Only caches the url id, requires 2nd level cache enabled for optimal performance gain.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WebCmsMenuCache</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Caches the menu structure that should be generated from corresponding <code>WebCmsMenu</code> items.  Prefer to cache these for a long time if possible.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WebCmsDomainCache</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Relevant in a multi-domain setup.  Caches domains and their metadata.  Domain lookups happen on pratically every request so this cache is very important.  Domain settings are usually quite static, so caching for a very long time is often feasible.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="hibernate-level-2-cache"><a class="anchor" href="#hibernate-level-2-cache"></a>2.2. Hibernate level 2 cache</h3>
+<div class="paragraph">
+<p>To improve overall performance of the domain model, configuring Hibernate level 2 cache is also strongly advised.</p>
+</div>
+<div class="paragraph">
+<p>The cache names for the Hibernate level 2 cache are always fully qualified class names.  The prefix <strong>c.f.a.m.w.d</strong> stands for <strong>com.foreach.across.modules.webcms.domain</strong>.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cache name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hints</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">c.f.a.m.w.d.url.WebCmsUrl</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Holds WebCmsUrl entity data.  The size of your WebCmsUrl cache should be a multiple of your WebCmsEndpoint cache and a minimum of one-to-one, as usually there are multiple urls per endpoint.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">c.f.a.m.w.d.endpoint.WebCmsEndpoint</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">References WebCmsRemoteEndpoint and WebCmsAssetEndpoint.  Size this cache according to the number of redirects or assets you expect to be frequently accessed.  Depending on your application setup a good guideline is at least the size of your <code>WebCmsAsset</code> cache.  If you use a lot of redirects, you should provide some additional space.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">c.f.a.m.w.d.type.WebCmsTypeSpecifier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The items in the <code>WebCmsTypeSpecifier</code> cache can usually be cached for a long time, because they do not change often.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">c.f.a.m.w.d.asset.WebCmsAsset</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The size and duration of your <code>WebCmsAsset</code> cache depend on how you use them. If you do not change existing assets often, you should opt for a longer duration.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">c.f.a.m.w.d.domain.WebCmsDomain</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The items in your <code>WebCmsDomain</code> cache are usually very static and are accessed frequently.  It&#8217;s usually best to cache these for a very long time.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.0.4.RELEASE<br>
+Last updated 2018-03-30 16:02:35 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "WebCmsModule docs";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

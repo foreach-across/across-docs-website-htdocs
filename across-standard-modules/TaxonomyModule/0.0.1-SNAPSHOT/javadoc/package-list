@@ -1,0 +1,9 @@
+com.foreach.across.modules.taxonomy
+com.foreach.across.modules.taxonomy.domain
+com.foreach.across.modules.taxonomy.domain.taxonomy
+com.foreach.across.modules.taxonomy.domain.term
+com.foreach.across.modules.taxonomy.domain.term.config
+com.foreach.across.modules.taxonomy.extensions
+com.foreach.across.modules.taxonomy.installers
+com.foreach.across.modules.taxonomy.views.bootstrapui
+com.foreach.across.modules.taxonomy.web

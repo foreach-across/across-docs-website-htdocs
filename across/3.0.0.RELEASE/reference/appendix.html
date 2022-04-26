@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>Appendices</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>Appendices</h1>
+<div class="details">
+<span id="revnumber">version 3.0.0.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Appendices</div>
+<ul class="sectlevel1">
+<li><a href="#troubleshooting">1. Troubleshooting</a>
+<ul class="sectlevel2">
+<li><a href="#module-not-found">1.1. Module not found</a></li>
+</ul>
+</li>
+<li><a href="#across-core-events">2. Across core events</a></li>
+<li><a href="#across-core-components">3. Across core components</a></li>
+<li><a href="#test-configuration-classes">4. Test configuration classes</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="troubleshooting"><a class="anchor" href="#troubleshooting"></a>1. Troubleshooting</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="module-not-found"><a class="anchor" href="#module-not-found"></a>1.1. Module not found</h3>
+<div class="paragraph">
+<p>By default modules are resolved using a <code>ClassPathScanningModuleDependencyResolver</code>.
+If a module can&#8217;t be resolved the reason is usually one of the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the package containing the module has not been added for module scanning</p>
+</li>
+<li>
+<p>there is no <code>public static final String NAME</code> field containing the unique module name</p>
+</li>
+<li>
+<p>there is no public constructor without parameters</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You can configure more verbose logging by setting the logger level for <code>com.foreach.across.core.context.ClassPathScanningCandidateModuleProvider</code> to <code>TRACE</code>.
+This will output all candidate modules that have been considered during scanning.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="across-core-events"><a class="anchor" href="#across-core-events"></a>2. Across core events</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following is a listing of all events published by Across core when starting the application.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Core events</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Event type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AcrossModuleBeforeBootstrapEvent</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Event that is sent right before the module is bootstrapped.
+The configuration of the module can still be modified at this point.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AcrossModuleBootstrappedEvent</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Event published when a module has bootstrapped.
+That means the module itself has started, but installers attached to the <code>AfterModuleBootstrap</code> phase have not yet been executed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AcrossContextBootstrappedEvent</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Event published after the AcrossContext has bootstrapped.
+That means full initialization has happened: all modules are started and all installers have been executed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="across-core-components"><a class="anchor" href="#across-core-components"></a>3. Across core components</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following is a listing of the default components (beans) that are created by the Across context.
+These beans are always available and accessible in every module.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Core components</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Component type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AcrossContextInfo</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Root context information of the Across context.
+Gives access to the actual modules started in the context and their underlying configuration or <code>ApplicationContext</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AcrossContextBeanRegistry</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Central registry allowing you to query to the entire <code>ApplicationContext</code> hierarchy that makes up the Across context.
+Allows retrieval of module internal components.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AcrossInstallerRepository</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The repository for accessing tracked installer information or manually manipulating the installer records.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ConversionService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The default <code>ConversionService</code> used by Across.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DistributedLockRepository</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A service component for creating locks that use the underlying RDBMS for synchronization.
+This is a simple locking mechanism that can be used for distributed locks in a multi server deploy.
+The lock repository is also used by the installer tracking mechanism.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AcrossDevelopmentMode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Utility bean that can be used to verify if <a href="developing-applications.html#development-mode">development mode</a> is active, and to get development locations for resources files.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>MessageSource</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The default Across <code>MessageSource</code> bean that represents the module based message source hierarchy.
+See the chapter on <a href="developing-modules.html#message-sources">Message sources</a> for more information.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CacheManager</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Exposes the <code>AcrossCompositeCacheManager</code>.
+A default <code>CacheManager</code> implementation where additional <code>CacheManager</code> instances can be registered.
+A <code>Cache</code> instance will always be returned, defaulting to a <code>NoOpCache</code> if no actual managers have been added.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="test-configuration-classes"><a class="anchor" href="#test-configuration-classes"></a>4. Test configuration classes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Across Test library has a number of <code>@Configuration</code> and <code>AcrossContextConfigurer</code> classes that can come in useful when setting up integration tests.
+These configurations can be found in the <code>com.foreach.across.test.support.config</code> package.</p>
+</div>
+<div class="paragraph">
+<p>Making use of these directly is only required when setting up integration tests without the Across <a href="testing.html#annotations">test annotations</a> or <a href="testing.html#test-context-builders">builders</a>.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 3. Test configuration classes</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>TestDataSourceConfigurer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AcrossContextConfigurer</code> that will configure the <a href="testing.html#test-datasources">test datasources</a> on the <code>AcrossContext</code> if no other datasource has been set.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ResetDatabaseConfigurer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AcrossContextConfigurer</code> that resets the datasources attached to the <code>AcrossContext</code> before it bootstraps.
+This will drop all tables, stored procedures etc in the database.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>MockMvcConfiguration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configures a <code>MockMvc</code> bean that will be created from a bootstrapped <code>AcrossContext</code>.
+If a <code>MockAcrossServletContext</code> is available, all registered filters will be configured on the <code>MockMvc</code> instance.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>MockAcrossServletContextInitializer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ApplicationContextInitializer</code> for use with <code>@ContextConfiguration</code> that ensures that <code>MockAcrossServletContext</code> is used instead of the default <code>MockServletContext</code>.
+Note that this initializer also requires that <code>@WebAppConfiguration</code> has been used on the test class.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 3.0.0.RELEASE<br>
+Last updated 2018-03-29 16:27:59 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "Across reference docs";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

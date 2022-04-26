@@ -1,0 +1,11 @@
+com.foreach.across.modules.mail
+com.foreach.across.modules.mail.domain.descriptor
+com.foreach.across.modules.mail.domain.transactional
+com.foreach.across.modules.mail.domain.transactional.attachment
+com.foreach.across.modules.mail.provider
+com.foreach.across.modules.mail.provider.executionresolvers
+com.foreach.across.modules.mail.provider.sendinblue
+com.foreach.across.modules.mail.provider.sendinblue.attachment
+com.foreach.across.modules.mail.provider.smtp
+com.foreach.across.modules.mail.provider.smtp.attachment
+com.foreach.across.modules.mail.services

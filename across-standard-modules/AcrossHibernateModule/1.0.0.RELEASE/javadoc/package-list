@@ -1,0 +1,15 @@
+com.foreach.across.modules.hibernate
+com.foreach.across.modules.hibernate.aop
+com.foreach.across.modules.hibernate.business
+com.foreach.across.modules.hibernate.config
+com.foreach.across.modules.hibernate.dto
+com.foreach.across.modules.hibernate.id
+com.foreach.across.modules.hibernate.installers
+com.foreach.across.modules.hibernate.modules.config
+com.foreach.across.modules.hibernate.provider
+com.foreach.across.modules.hibernate.repositories
+com.foreach.across.modules.hibernate.strategy
+com.foreach.across.modules.hibernate.types
+com.foreach.across.modules.hibernate.unitofwork
+com.foreach.across.modules.hibernate.util
+org.hibernate.engine.jdbc.batch.internal

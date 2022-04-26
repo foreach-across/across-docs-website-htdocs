@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>WebCmsModule - Appendices</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="appendices" class="book toc2 toc-left">
+<div id="header">
+<h1>WebCmsModule - Appendices</h1>
+<div class="details">
+<span id="revnumber">version 0.0.4.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Appendices</div>
+<ul class="sectlevel0">
+<li><a href="#appendix-message-codes">Message codes</a>
+<ul class="sectlevel1">
+<li><a href="#default-message-codes">1. Default message codes</a></li>
+<li><a href="#specific-message-codes">2. Specific message codes</a></li>
+<li><a href="#example">3. Example</a></li>
+</ul>
+</li>
+<li><a href="#appendices-thymeleaf-dialect">Thymeleaf dialect</a>
+<ul class="sectlevel1">
+<li><a href="#expression-objects">4. Expression objects</a>
+<ul class="sectlevel2">
+<li><a href="#render-utilities">4.1. Render utilities</a></li>
+</ul>
+</li>
+<li><a href="#html-attributes">5. HTML attributes</a>
+<ul class="sectlevel2">
+<li><a href="#attributes-for-rendering-components">5.1. Attributes for rendering components</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#appendices-entity-module-attrs">EntityModule attributes</a>
+<ul class="sectlevel3">
+<li><a href="#multi-domain-auto-configuration">1.1. Multi-domain auto-configuration</a></li>
+<li><a href="#appendices-repositories-and-services">1.2. Repositories and services overview</a></li>
+<li><a href="#repository-beans">6. Repository beans</a></li>
+<li><a href="#service-beans">7. Service beans</a>
+<ul class="sectlevel2">
+<li><a href="#core-services">7.1. Core services</a></li>
+<li><a href="#admin-ui-services">7.2. Admin UI services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#appendix-default-data">Default data</a>
+<ul class="sectlevel1">
+<li><a href="#default-types">8. Default types</a></li>
+<li><a href="#default-assets">9. Default assets</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<h1 id="appendix-message-codes" class="sect0"><a class="anchor" href="#appendix-message-codes"></a>Message codes</h1>
+<div class="openblock partintro">
+<div class="content">
+<div class="paragraph">
+<p>WebCmsModule allows you to customize the labels and messages shown with your custom component types in the administration UI.  The initial prefix of component type message codes is <strong>webCmsComponents.</strong><em><strong>yourComponentType</strong></em>.</p>
+</div>
+<div class="paragraph">
+<p>In case of a container component, every member can have its labels customized, the prefix for an individual member is <strong>webCmsComponents.</strong><em><strong>yourComponentType</strong></em><strong>.members.</strong><em><strong>memberName</strong></em>.  After the prefix, the same codes can be specified as with a regular component type.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="default-message-codes"><a class="anchor" href="#default-message-codes"></a>1. Default message codes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Default component type admin has 4 possible sections (tabs in the UI):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>content</strong>: contains the custom rendered view elements (eg. for a text-field type)</p>
+</li>
+<li>
+<p><strong>members</strong>: contains the member management in case of a container or fixed-container type</p>
+</li>
+<li>
+<p><strong>metadata</strong>: contains the metadata form, the form generated for the metadata type</p>
+</li>
+<li>
+<p><strong>settings</strong>: contains the general component information like name and title</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Every section supports the following keys:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>[description]</strong>: description text rendered on top of the section (before the controls)</p>
+</li>
+<li>
+<p><strong>[additionalDescription]</strong>: description text rendered at the bottom of the section (after the controls)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <strong>metadata</strong> section represents the custom metadata type registered.  As such all EntityModule message codes are available to customize the generated form.</p>
+</div>
+<div class="paragraph">
+<p>Examples of actual message codes resolved would be:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>webCmsComponents.myComponentType.content[description]</code></p>
+</li>
+<li>
+<p><code>webCmsComponents.myComponentType.members[additionalDescription]</code></p>
+</li>
+<li>
+<p><code>webCmsComponents.myComponentType.members.body.metadata[description]</code></p>
+</li>
+<li>
+<p><code>webCmsComponents.myComponentType.members.body.metadata.properties.title</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="specific-message-codes"><a class="anchor" href="#specific-message-codes"></a>2. Specific message codes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Specific message codes are available depending on the context or the component type.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>[placholder]</strong>: this key is available on the content section for any component type extending <code>WebCmsTextComponentModel</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="example"><a class="anchor" href="#example"></a>3. Example</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Example of component type message codes.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="properties"># add some description for the default text-field
+webCmsComponents.text-field.content[additionalDescription]=Enter a single line of text.
+webCmsComponents.text-field.content[placeholder]=Your text...
+
+# section is a custom component type extending fixed-container
+webCmsComponents.section.members[description]=This is a global description for the &quot;members&quot; tab.
+
+# image and body are members of the section container
+webCmsComponents.section.members.image.content[description]=Optionally select an image to display.
+webCmsComponents.section.members.body.content[additionalDescription]=Body of the section can be &lt;u&gt;rich-text&lt;/u&gt;.
+
+# metadata is a specific type, labels can be defined
+webCmsComponents.section.metadata[description]=This is a global description for the &quot;metadata&quot; tab.
+
+# since the metadata is a custom class, property labels can be configured just like EntityModule properties
+webCmsComponents.section.metadata.properties.shortTitle[placeholder]=Optional title
+webCmsComponents.section.metadata.properties.shortTitle[description]=Leave empty if you do not wish to display a title.</code></pre>
+</div>
+</div>
+</div>
+</div>
+<h1 id="appendices-thymeleaf-dialect" class="sect0"><a class="anchor" href="#appendices-thymeleaf-dialect"></a>Thymeleaf dialect</h1>
+<div class="openblock partintro">
+<div class="content">
+The following section gives an overview of the custom Thymeleaf dialect provided by WebCmsModule.
+</div>
+</div>
+<div class="sect1">
+<h2 id="expression-objects"><a class="anchor" href="#expression-objects"></a>4. Expression objects</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="render-utilities"><a class="anchor" href="#render-utilities"></a>4.1. Render utilities</h3>
+<div class="paragraph">
+<p>The <code>WebCmsRenderUtilityService</code> is available as the <code>#wcm</code> expression object.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="comment">/**
+ * Build the local application url for a particular asset.
+ */</span>
+<span class="error">$</span>{<span class="error">#</span>wcm.url(asset)}
+
+<span class="comment">/**
+ * Render the image url for either a WebCmsImage or a ImageWebCmsComponentModel.
+ */</span>
+<span class="error">$</span>{<span class="error">#</span>wcm.imageUrl(image)}
+<span class="error">$</span>{<span class="error">#</span>wcm.imageUrl(image,maxWidth,maxHeight)}
+
+<span class="comment">/**
+ * Get components from the WebCmsComponentModelHierarchy of the current request.
+ */</span>
+<span class="error">$</span>{<span class="error">#</span>wcm.component(componentName)}
+<span class="error">$</span>{<span class="error">#</span>wcm.componentFromScope(componentName,scopeName)}
+<span class="error">$</span>{<span class="error">#</span>wcm.componentFromScope(componentName,scopeName,searchParentScopes)}
+
+<span class="comment">/**
+ * Access container component members without exceptions if they are unavailable.
+ * Supports proxy components that point to an actual container.
+ */</span>
+<span class="error">$</span>{<span class="error">#</span>wcm.member(componentName,container)}
+<span class="error">$</span>{<span class="error">#</span>wcm.members(container)}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="html-attributes"><a class="anchor" href="#html-attributes"></a>5. HTML attributes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following HTML attributes are supported.</p>
+</div>
+<div class="sect2">
+<h3 id="attributes-for-rendering-components"><a class="anchor" href="#attributes-for-rendering-components"></a>5.1. Attributes for rendering components</h3>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wcm:component</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The body of the element will be replaced with the rendering of the component, if the component is found.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wcm:scope</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specify the name of the scope in which the component should be looked for - if omitted wil look in the default scope and all parent scopes.
+When specified, only that scope will be queried unless <em>search-parent-scopes</em> is explicitly present.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wcm:search-parent-scopes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set explicitly to <code>false</code> if you only want the component to be looked up in the scope specified (or the default scope) but none of the parent scopes.
+Otherwise adding the attribute will ensure that parent scopes are always searched, even if an explicit <em>wcm:scope</em> was specified.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wcm:always-replace</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If present the body of the element will always be replaced even if the component is not found.
+The actual (optional) value of this attribute is irrelevant.</p>
+<p class="tableblock">Default behaviour is to render the original template markup if a component is not found, use this attribute to force empty output instead.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wcm:auto-create</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If present, the component will be auto-created with the element body as input parameters.
+ Optionally the attribute value can be be the scope name in which the component should be created.
+If no value is present, the value of <em>wcm:scope</em> will be used to determine the scope in which to create the component.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wcm:type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type key of the <code>WebCmsComponentType</code> of the component.
+This will only be used for auto-creation of a component.
+If no type is specified, generic markup (<strong>html</strong>) will be assumed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wcm:parent-create-include</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Relevant only during auto-creation of a possible parent component.
+If the parent component is being auto-created nested components would by default be inserted as content markers or added as <code>ProxyWebCmsComponentModel</code> members.
+By providing this attribute (the actual value is ignored) you indicate the output of the component should be inserted instead.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wcm:parse-placeholders</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If present on an element attributed with <em>wcm:component</em>, the body of the element will always be parsed and all sections marked <em>wcm:placeholder</em> will be made available in the <code>WebCmsPlaceholderContentModel</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wcm:placeholder</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Attribute to indicate that a section should be rendered to a placeholder.
+ The name of the placeholder is the value of the attribute.
+ Note that the element itself will also be part of the placeholder content, not just the body of the element.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For more details, see the section <a href="components.html#components-thymeleaf-integration">web components Thymeleaf integration</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<h1 id="appendices-entity-module-attrs" class="sect0"><a class="anchor" href="#appendices-entity-module-attrs"></a>EntityModule attributes</h1>
+<div class="openblock partintro">
+<div class="content">
+<div class="paragraph">
+<p>This section lists the different attributes that can be configured on EntityModule configuration to influence configuration of the WebCmsModule administration UI.  All attributes described here are constant fields on <code>WebCmsEntityAttributes</code>.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Attribute constant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Use on</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ALLOW_PER_DOMAIN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EntityConfiguration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean value that specifies if an entity should be manageable per domain.  This will overrule the default domain-bound or not-domain-bound behaviour.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DOMAIN_PROPERTY</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EntityConfiguration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String value that contains the name of the property that links to the <code>WebCmsDomain</code>.
+By default only <code>WebCmsDomainBound</code> entities support multi-domain, where the implicit value of this attribute would then be <em>domain</em>.</p>
+<p class="tableblock">The presence of this attribute would activate multi-domain auto-configuration for entities not implementing <code>WebCmsDomainBound</code> directly.
+Examples include <code>WebCmsUrl</code> and <code>WebCmsMenuItem</code> that have their domain linked transitively (resp. via <em>endpoint.domain</em> and <em>menu.domain</em>).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="multi-domain-auto-configuration"><a class="anchor" href="#multi-domain-auto-configuration"></a>1.1. Multi-domain auto-configuration</h4>
+<div class="paragraph">
+<p>The following attributes influence the multi-domain auto-configuration and are constant fields on <code>WebCmsEntityAttributes.MultiDomainConfiguration</code>.  Setting these values indicates that configuration has been performed manually and will make sure the auto-configuration for the corresponding part is skipped.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Attribute constant</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Use on</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LIST_VIEW_ADJUSTED</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EntityConfiguration</code></p>
+<p class="tableblock"><code>EntityAssociation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean value that indicates the list view has already been adjusted for multi-domain support.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ENTITY_MODEL_ADJUSTED</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EntityConfiguration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean value that indicates that the <code>EntityModel</code> has been modified for multi-domain support.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ALLOWABLE_ACTIONS_ADJUSTED</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EntityConfiguration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean value that indicates that the <code>EntityConfigurationAllowableActionsBuilder</code> has been modified for multi-domain support.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>OPTIONS_QUERY_ADJUSTED</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EntityConfiguration</code></p>
+<p class="tableblock"><code>EntityPropertyDescriptor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean value that indicates that the <code>EntityAttributes.OPTIONS_QUERY</code> has been modified for multi-domain support.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>FINISHED</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EntityConfiguration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean value that indicates that the entity mulit-domain configuration has been performed manually.  Setting</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="appendices-repositories-and-services"><a class="anchor" href="#appendices-repositories-and-services"></a>1.2. Repositories and services overview</h3>
+<div class="paragraph">
+<p>This section lists the most important repositories and services that are provided by WebCmsModule.
+These beans are all exposed and can be use in all modules that depend on WebCmsModule.</p>
+</div>
+<div class="paragraph">
+<p>Use repositories to directly access the datastore.
+Repository methods are multi-domain agnostic and usually require an explicit WebCmsDomain as parameter to your queries.
+Repositories will also never return cached items.</p>
+</div>
+<div class="paragraph">
+<p>Repositories are all implemented using Spring Data JPA.</p>
+</div>
+<div class="paragraph">
+<p>Services usually are domain aware and will inspect the WebCmsMultiDomainConfiguration to automatically adjust queries to match for the domain bound to a thread.
+This makes them transparent in use, especially for front-end application building.
+Services will also use available caches and can return cached items.</p>
+</div>
+<div class="paragraph">
+<p>Administration UIs will often require more direct use of repositories, whereas services provide convenience methods to avoid too much domain related clotter in your application code.</p>
+</div>
+</div>
+<div class="sect1">
+<h2 id="repository-beans"><a class="anchor" href="#repository-beans"></a>6. Repository beans</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Repositories provide direct access to the stored entities.
+Use these if you want to interact directly with the datastore.
+All repositories of WebCmsModule entities implement both <code>JpaSpecificationExecutor</code> and <code>QueryDslPredicateExecutor</code>.
+Q classes (e.g. <code>QWebCmsArticle</code>) are also available for all WebCmsModule entities.  Pretty much every entity has its own repository.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>general</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>WebCmsDomainRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsComponentRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsMenuRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsMenuItemRepository</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>types</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>WebCmsTypeSpecifierRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsArticleTypeRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsComponentTypeRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsPageTypeRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsPublicationTypeRepository</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>assets</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>WebCmsAssetRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsArticleRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsImageRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsPageRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsPublicationRepository</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>endpoints</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>WebCmsEndpointRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsAssetEndpointRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsRemoteEndpointRepository</code></p>
+</li>
+<li>
+<p><code>WebCmsUrlRepository</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>entity links</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>WebCmsTypeSpecifierLinkRepository</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Working with <code>WebCmsComponent</code> is usually not done directly but through a <code>WebCmsComponentModel</code>.  The <code>WebCmsComponentModelService</code> is probably all you need, but if not, you will almost always want to build the <code>WebCmsComponentModel</code> for your fetched components using the <code>WebCmsComponentModelService</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>When implementing your own <code>WebCmsAsset</code>, <code>WebCmsTypeSpecifier</code> or basic <code>WebCmsObject</code>, you should check the generic interfaces for reuse:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>WebCmsObjectRepository</code>: basic contract for fetching a <code>WebCmsObject</code> by object id</p>
+</li>
+<li>
+<p><code>WebCmsObjectEntityRepository</code>: base Spring Data repository interface for entities extending <code>WebCmsObjectSuperClass</code></p>
+</li>
+<li>
+<p><code>BaseWebCmsTypeSpecifier</code>: base Spring Data repository for custom <code>WebCmsTypeSpecifier</code> implementations</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="service-beans"><a class="anchor" href="#service-beans"></a>7. Service beans</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="core-services"><a class="anchor" href="#core-services"></a>7.1. Core services</h3>
+<div class="paragraph">
+<p>The core services are always created when WebCmsModule is enabled in your application.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Service</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsArticleService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsArticle</code> and <code>WebCmsArticleType</code> functionality.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsAssetService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Generic asset related functions (e.g. generate preview URL for an asset).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsEndpointService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">URL (for asset) related functions.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsMenuService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsMenu</code> functionality.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsPageService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsPage</code> and <code>WebCmsPageType</code> functionality.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsPublicationService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsPublication</code> functionality.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsComponentModelService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Loading and updating components.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsComponentModelHierarchy</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Request scoped bean that can be used to register components to render on the current request.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsContentMarkerService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Functionality for working with <a href="components.html#components-content-markers">content markers</a> in text.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsDataConversionService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specific Spring <code>ConversionService</code> implementation used for data importing.  Contains specific converters for WebCmsModule types.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsDataImportService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">General service for importing WebCmsModule data from generic <code>Map&lt;String,Object&gt;</code> structures.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsDefaultComponentsService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Service for creating default components for any <code>WebCmsAsset</code> by checking for a <strong>contentTemplate</strong> attached to the <code>WebCmsAssetType</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsDomainService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Service for retrieving domains and related metadata.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsMultiDomainService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Service for accessing the current domain context and inspecting the multi-domain configuration.  Extends the <code>WebCmsDomainService</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsPlaceholderLookupService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Request scoped service for retrieving placeholder content registered on the current request.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsPlaceholderContentModel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Request scoped bean to set and retrieve placeholder data for the current request.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsRenderUtilityService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Provides <a href="#appendices-thymeleaf-dialect">utility functions</a> for using during output rendering.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsTypeSpecifierService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Functionality for retrieving type specifiers.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsUriComponentsService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Utility service for creating a <code>UriComponentsBuilder</code> for either <code>WebCmsAsset</code>, <code>WebCmsEndpoint</code> or <code>WebCmsUrl</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsComponentAutoCreateService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Service for automatic creation of <code>WebCmsComponent</code> based on parsed template content.  Mostly used internally, you can use this service if you want to implement your own auto-create functionality.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="admin-ui-services"><a class="anchor" href="#admin-ui-services"></a>7.2. Admin UI services</h3>
+<div class="paragraph">
+<p>These are only available when EntityModule and AdminWebModule are enabled in your application.  The focus of these services is to help you build or customize the administration UI.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Service</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsComponentModelAdminRenderService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Service for building <code>WebCmsComponentModel</code> administration form elements.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebCmsMultiDomainAdminUiService</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Helper service for retrieving multi-domain configuration for the current request in an admin web context.  Utility functions for building domain-aware filters.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<h1 id="appendix-default-data" class="sect0"><a class="anchor" href="#appendix-default-data"></a>Default data</h1>
+<div class="openblock partintro">
+<div class="content">
+<div class="paragraph">
+<p>WebCmsModule installs some default assets and types when starting for the first time.
+You usually want to extend or customize the default data installed.</p>
+</div>
+<div class="paragraph">
+<p>If you want to start from an entirely blank slate, you can disable the default data by setting the <code>webCmsModule.default-data.assets.enabled</code> property to <code>false</code>.</p>
+</div>
+<div class="paragraph">
+<p>This section lists the default data that will be imported.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="default-types"><a class="anchor" href="#default-types"></a>8. Default types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>classpath:installers/WebCmsModule/default-types.yml</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">types</span>:
+  <span class="comment"># Default component types</span>
+  <span class="key">component</span>:
+    <span class="key">proxy</span>:
+      <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:type:component:proxy</span><span class="delimiter">&quot;</span></span>
+      <span class="key">name</span>: <span class="string"><span class="content">Proxy component</span></span>
+      <span class="key">description</span>: <span class="string"><span class="content">A proxy for another component that will be rendered instead.</span></span>
+      <span class="key">attributes</span>:
+        <span class="key">type</span>: <span class="string"><span class="content">proxy</span></span>
+        <span class="key">componentRestricted</span>: <span class="string"><span class="content">true</span></span>
+    <span class="key">placeholder</span>:
+      <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:type:component:placeholder</span><span class="delimiter">&quot;</span></span>
+      <span class="key">name</span>: <span class="string"><span class="content">Placeholder</span></span>
+      <span class="key">description</span>: <span class="string"><span class="content">Represents a placeholder for content provided by code or templates.</span></span>
+      <span class="key">attributes</span>:
+        <span class="key">type</span>: <span class="string"><span class="content">placeholder</span></span>
+        <span class="key">componentRestricted</span>: <span class="string"><span class="content">true</span></span>
+    <span class="key">container</span>:
+      <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:type:component:container</span><span class="delimiter">&quot;</span></span>
+      <span class="key">name</span>: <span class="string"><span class="content">Container</span></span>
+      <span class="key">description</span>: <span class="string"><span class="content">Container of multiple ordered components.</span></span>
+      <span class="key">attributes</span>:
+        <span class="key">type</span>: <span class="string"><span class="content">container</span></span>
+    <span class="key">fixed-container</span>:
+      <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:type:component:fixed-container</span><span class="delimiter">&quot;</span></span>
+      <span class="key">name</span>: <span class="string"><span class="content">Fixed container</span></span>
+      <span class="key">description</span>: <span class="string"><span class="content">Container of a fixed set of components.</span></span>
+      <span class="key">attributes</span>:
+        <span class="key">type</span>: <span class="string"><span class="content">fixed-container</span></span>
+        <span class="key">componentRestricted</span>: <span class="string"><span class="content">true</span></span>
+    <span class="key">text-field</span>:
+      <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:type:component:text-field</span><span class="delimiter">&quot;</span></span>
+      <span class="key">name</span>: <span class="string"><span class="content">Text field</span></span>
+      <span class="key">description</span>: <span class="string"><span class="content">A single line of plain text.</span></span>
+      <span class="key">attributes</span>:
+        <span class="key">type</span>: <span class="string"><span class="content">plain-text</span></span>
+        <span class="key">multiLine</span>: <span class="string"><span class="content">false</span></span>
+    <span class="key">plain-text</span>:
+      <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:type:component:plain-text</span><span class="delimiter">&quot;</span></span>
+      <span class="key">name</span>: <span class="string"><span class="content">Plain text</span></span>
+      <span class="key">description</span>: <span class="string"><span class="content">Plain text component.</span></span>
+      <span class="key">attributes</span>:
+        <span class="key">type</span>: <span class="string"><span class="content">plain-text</span></span>
+        <span class="key">rows</span>: <span class="string"><span class="content">1</span></span>
+    <span class="key">rich-text</span>:
+      <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:type:component:rich-text</span><span class="delimiter">&quot;</span></span>
+      <span class="key">name</span>: <span class="string"><span class="content">Rich text</span></span>
+      <span class="key">description</span>: <span class="string"><span class="content">Rich text component - supporting HTML markup and default assets if enabled by other modules.</span></span>
+      <span class="key">attributes</span>:
+        <span class="key">type</span>: <span class="string"><span class="content">rich-text</span></span>
+        <span class="key">profile</span>: <span class="string"><span class="content">rich-text</span></span>
+    <span class="key">html</span>:
+      <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:type:component:html</span><span class="delimiter">&quot;</span></span>
+      <span class="key">name</span>: <span class="string"><span class="content">HTML</span></span>
+      <span class="key">description</span>: <span class="string"><span class="content">A snippet of HTML.</span></span>
+      <span class="key">attributes</span>:
+        <span class="key">type</span>: <span class="string"><span class="content">markup</span></span>
+    <span class="key">image</span>:
+      <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:type:component:image</span><span class="delimiter">&quot;</span></span>
+      <span class="key">name</span>: <span class="string"><span class="content">Image</span></span>
+      <span class="key">description</span>: <span class="string"><span class="content">Image asset or external image link.</span></span>
+      <span class="key">attributes</span>:
+        <span class="key">type</span>: <span class="string"><span class="content">image</span></span>
+
+  <span class="comment"># Default article types: blog and news</span>
+  <span class="key">article</span>:
+    <span class="key">blog</span>:
+      <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:type:article:blog</span><span class="delimiter">&quot;</span></span>
+      <span class="key">name</span>: <span class="string"><span class="content">Blog</span></span>
+      <span class="error">wcm:components</span>:
+        <span class="comment"># Default component name that contains the content components for this article type</span>
+        <span class="key">contentTemplate</span>:
+          <span class="key">title</span>: <span class="string"><span class="content">Article components</span></span>
+          <span class="key">componentType</span>: <span class="string"><span class="content">container</span></span>
+          <span class="error">wcm:components</span>:
+            <span class="key">content</span>:
+              <span class="key">title</span>: <span class="string"><span class="content">Article content</span></span>
+              <span class="key">componentType</span>: <span class="string"><span class="content">container</span></span>
+              <span class="error">wcm:components</span>:
+                <span class="key">body</span>:
+                  <span class="key">title</span>: <span class="string"><span class="content">Body</span></span>
+                  <span class="key">componentType</span>: <span class="string"><span class="content">rich-text</span></span>
+                  <span class="key">content</span>: <span class="string"><span class="delimiter">|</span><span class="content">
+                    &lt;h1&gt;@@title@@&lt;/h1&gt;
+                    &lt;p&gt;&lt;/p&gt;</span></span>
+                  <span class="key">sortIndex</span>: <span class="string"><span class="content">0</span></span>
+    <span class="key">news</span>:
+      <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:type:article:news</span><span class="delimiter">&quot;</span></span>
+      <span class="key">name</span>: <span class="string"><span class="content">News</span></span>
+      <span class="key">attributes</span>:
+        <span class="comment"># Key of the parent type from which the attributes (and component) should be inherited</span>
+        <span class="key">parent</span>: <span class="string"><span class="content">blog</span></span>
+
+  <span class="comment"># Default publication types: blog and news</span>
+  <span class="key">publication</span>:
+    <span class="key">blog</span>:
+      <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:type:publication:blog</span><span class="delimiter">&quot;</span></span>
+      <span class="key">name</span>: <span class="string"><span class="content">Blog</span></span>
+      <span class="error">wcm:types</span>:
+        - <span class="string"><span class="content">typeSpecifier: wcm:type:article:blog</span></span>
+          <span class="key">linkType</span>: <span class="string"><span class="content">article</span></span>
+    <span class="key">news</span>:
+      <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:type:publication:news</span><span class="delimiter">&quot;</span></span>
+      <span class="key">name</span>: <span class="string"><span class="content">News</span></span>
+      <span class="error">wcm:types</span>:
+        - <span class="string"><span class="content">typeSpecifier: wcm:type:article:news</span></span>
+          <span class="key">linkType</span>: <span class="string"><span class="content">article</span></span>
+
+  <span class="comment"># Default page types</span>
+  <span class="key">page</span>:
+    <span class="key">default</span>:
+      <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:type:page:default</span><span class="delimiter">&quot;</span></span>
+      <span class="key">name</span>: <span class="string"><span class="content">Default</span></span>
+    <span class="key">template</span>:
+      <span class="key">objectId</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:type:page:template</span><span class="delimiter">&quot;</span></span>
+      <span class="key">name</span>: <span class="string"><span class="content">Template</span></span>
+      <span class="key">attributes</span>:
+        <span class="key">hasEndpoint</span>: <span class="string"><span class="content">false</span></span>
+        <span class="key">isPublishable</span>: <span class="string"><span class="content">false</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="default-assets"><a class="anchor" href="#default-assets"></a>9. Default assets</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Some sample assets get imported if multi-domain configuration is disabled.
+In a multi-domain setup, only the default types get imported.</p>
+</div>
+<div class="paragraph">
+<p><strong>classpath:installers/WebCmsModule/default-assets.yml</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">assets</span>:
+  <span class="comment"># Article template pages for publications</span>
+  <span class="key">page</span>:
+    - <span class="string"><span class="content">objectId: &quot;wcm:asset:page:blog-detail&quot;</span></span>
+      <span class="key">title</span>: <span class="string"><span class="content">Blog detail template</span></span>
+      <span class="key">canonicalPath</span>: <span class="string"><span class="content">/blog/*</span></span>
+      <span class="key">canonicalPathGenerated</span>: <span class="string"><span class="content">false</span></span>
+      <span class="key">pageType</span>: <span class="string"><span class="content">template</span></span>
+    - <span class="string"><span class="content">objectId: &quot;wcm:asset:page:news-detail&quot;</span></span>
+      <span class="key">title</span>: <span class="string"><span class="content">News detail template</span></span>
+      <span class="key">canonicalPath</span>: <span class="string"><span class="content">/news/*</span></span>
+      <span class="key">canonicalPathGenerated</span>: <span class="string"><span class="content">false</span></span>
+      <span class="key">pageType</span>: <span class="string"><span class="content">template</span></span>
+
+  <span class="comment"># Default publications: News and Blogs</span>
+  <span class="key">publication</span>:
+    <span class="key">blogs</span>:
+      <span class="key">name</span>: <span class="string"><span class="content">Blogs</span></span>
+      <span class="key">publicationType</span>: <span class="string"><span class="content">blog</span></span>
+      <span class="key">published</span>: <span class="string"><span class="content">true</span></span>
+      <span class="key">articleTemplatePage</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:asset:page:blog-detail</span><span class="delimiter">&quot;</span></span>
+    <span class="key">news</span>:
+      <span class="key">name</span>: <span class="string"><span class="content">News</span></span>
+      <span class="key">publicationType</span>: <span class="string"><span class="content">news</span></span>
+      <span class="key">published</span>: <span class="string"><span class="content">true</span></span>
+      <span class="key">articleTemplatePage</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">wcm:asset:page:news-detail</span><span class="delimiter">&quot;</span></span>
+
+  <span class="comment"># Custom shared component</span>
+  <span class="key">component</span>:
+    <span class="key">sample-shared-component</span>:
+      <span class="key">title</span>: <span class="string"><span class="content">Sample global shared component</span></span>
+      <span class="key">componentType</span>: <span class="string"><span class="content">rich-text</span></span>
+      <span class="key">content</span>: <span class="string"><span class="delimiter">|</span><span class="content">
+        &lt;h1&gt;Sample component&lt;/h1&gt;
+        &lt;p&gt;This is a sample component - defined on the global scope.&lt;/p&gt;</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.0.4.RELEASE<br>
+Last updated 2018-03-30 16:02:35 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "WebCmsModule docs";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

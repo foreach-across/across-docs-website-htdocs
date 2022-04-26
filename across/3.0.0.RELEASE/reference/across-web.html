@@ -1,0 +1,2418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>Across Web</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="across-web" class="book toc2 toc-left">
+<div id="header">
+<h1>Across Web</h1>
+<div class="details">
+<span id="revnumber">version 3.0.0.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">AcrossWebModule</div>
+<ul class="sectlevel1">
+<li><a href="#general-information">1. General information</a>
+<ul class="sectlevel2">
+<li><a href="#about">1.1. About</a></li>
+<li><a href="#artifact">1.2. Artifact</a></li>
+<li><a href="#module-settings">1.3. Module settings</a></li>
+</ul>
+</li>
+<li><a href="#spring-mvc-configuration">2. Spring MVC configuration</a></li>
+<li><a href="#acrosswebmodule-and-conversionservice">3. AcrossWebModule and ConversionService</a></li>
+<li><a href="#view-engines">4. View engines</a>
+<ul class="sectlevel2">
+<li><a href="#thymeleaf-support">4.1. Thymeleaf support</a></li>
+<li><a href="#jsp-support">4.2. JSP support</a></li>
+</ul>
+</li>
+<li><a href="#static-resources">5. Static resources</a>
+<ul class="sectlevel2">
+<li><a href="#conventions">5.1. Conventions</a></li>
+<li><a href="#client-side-caching">5.2. Client-side caching</a></li>
+<li><a href="#resource-url-versioning">5.3. Resource URL versioning</a></li>
+<li><a href="#web-resource-registry">5.4. WebResourceRegistry</a></li>
+</ul>
+</li>
+<li><a href="#error-handling">6. Error handling</a>
+<ul class="sectlevel2">
+<li><a href="#custom-error-pages">6.1. Custom error pages</a></li>
+</ul>
+</li>
+<li><a href="#menu-infrastructure">7. Working with menus</a>
+<ul class="sectlevel2">
+<li><a href="#creating-a-menu">7.1. Creating a menu</a></li>
+<li><a href="#sorting-a-menu">7.2. Sorting a menu</a></li>
+<li><a href="#selecting-menu-items">7.3. Selecting menu items</a></li>
+<li><a href="#building-a-menu">7.4. Path based menu building</a></li>
+<li><a href="#publishing-a-menu">7.5. Publishing a menu</a></li>
+<li><a href="#rendering-a-menu">7.6. Rendering a menu</a></li>
+</ul>
+</li>
+<li><a href="#web-validation">8. Validation</a></li>
+<li><a href="#viewelement-infrastructure">9. ViewElement infrastructure</a>
+<ul class="sectlevel2">
+<li><a href="#viewelement">9.1. ViewElement</a></li>
+<li><a href="#default-properties">9.2. Default properties</a></li>
+<li><a href="#viewelementbuilder">9.3. ViewElementBuilder</a></li>
+<li><a href="#development-mode-rendering">9.4. Development mode rendering</a></li>
+</ul>
+</li>
+<li><a href="#layout-templates">10. Layout templates</a>
+<ul class="sectlevel2">
+<li><a href="#creating-a-template">10.1. Creating a template</a></li>
+<li><a href="#linking-template-to-controller">10.2. Linking a template to a controller</a></li>
+<li><a href="#linking-template-to-exception-handler">10.3. Linking a template to an exception handler</a></li>
+<li><a href="#registering-default-template">10.4. Registering the default template</a></li>
+</ul>
+</li>
+<li><a href="#partial-rendering">11. Partial rendering</a></li>
+<li><a href="#localized-text">12. Localizing text</a></li>
+<li><a href="#generating-urls">13. Generating URLs</a>
+<ul class="sectlevel2">
+<li><a href="#web-app-path-resolver-and-path-prefixing">13.1. WebAppPathResolver and path prefixing</a></li>
+<li><a href="#web-app-link-builder">13.2. WebAppLinkBuilder</a></li>
+</ul>
+</li>
+<li><a href="#thymeleaf-dialect">14. Thymeleaf dialect</a>
+<ul class="sectlevel2">
+<li><a href="#element-processors">14.1. Element processors</a></li>
+<li><a href="#attribute-processors">14.2. Attribute processors</a></li>
+<li><a href="#expression-objects">14.3. Expression objects</a></li>
+<li><a href="#url-support">14.4. URL support</a></li>
+</ul>
+</li>
+<li><a href="#request-mapping-extensions">15. @RequestMapping extensions</a>
+<ul class="sectlevel2">
+<li><a href="#custom-request-mapping">15.1. @CustomRequestMapping</a></li>
+<li><a href="#prefixed-request-mappings">15.2. Prefixed request mappings</a></li>
+</ul>
+</li>
+<li><a href="#default-http-encoding">16. Default HTTP encoding</a></li>
+<li><a href="#registering-servlets-and-filters">17. Registering servlets and filters</a></li>
+<li><a href="#multipart-support">18. Multipart support</a></li>
+<li><a href="#development-mode-support">19. Development mode support</a></li>
+<li><a href="#published-events">20. Published events</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="general-information"><a class="anchor" href="#general-information"></a>1. General information</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="about"><a class="anchor" href="#about"></a>1.1. About</h3>
+<div class="paragraph">
+<p>AcrossWebModule is the only module included in the Across framework project.
+It is the base module added to pretty much any Across web application.</p>
+</div>
+<div class="paragraph">
+<p>AcrossWebModule activates Spring MVC support for all modules in an AcrossContext.
+This means modules can configure the Spring MVC support, add controllers, servlets and filters.</p>
+</div>
+<div class="paragraph">
+<p>On top of that, the out-of-the-box Spring MVC functionality is extended in several ways:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>a <a href="#thymeleaf-dialect">Thymeleaf dialect</a> is provided for interacting with the Across web infrastructure</p>
+</li>
+<li>
+<p>AcrossWebModule provides infrastructure for <a href="#layout-templates">templates</a>, <a href="#menu-infrastructure">menu building</a> and <a href="#web-resource-registry">registering web resources</a></p>
+</li>
+<li>
+<p>adding a <a href="#viewelement-infrastructure">programmatic model for creating UI components</a> from code</p>
+</li>
+<li>
+<p>adding support for <a href="#request-mapping-extensions">prefixing request mappings and adding custom request condition</a></p>
+</li>
+<li>
+<p>auto configuration of a <a href="#multipart-support">Multipart filter</a></p>
+</li>
+<li>
+<p>auto configuration of static resources with <a href="#client-side-caching">client-side caching</a> and <a href="#resource-url-versioning">url versioning</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AcrossWebModule is not a Web CMS, it only supplies some common infrastructure generally useful when building web applications.
+Other modules like <a href="https://across.foreach.be/modules/WebCmsModule">WebCmsModule</a> provide CMS features on top of Across Web.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="artifact"><a class="anchor" href="#artifact"></a>1.2. Artifact</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependencies&gt;</span>
+        <span class="tag">&lt;dependency&gt;</span>
+                <span class="tag">&lt;groupId&gt;</span>com.foreach.across<span class="tag">&lt;/groupId&gt;</span>
+                <span class="tag">&lt;artifactId&gt;</span>across-web<span class="tag">&lt;/artifactId&gt;</span>
+                <span class="tag">&lt;version&gt;</span>3.0.0.RELEASE<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;/dependency&gt;</span>
+<span class="tag">&lt;/dependencies&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="module-settings"><a class="anchor" href="#module-settings"></a>1.3. Module settings</h3>
+<div class="paragraph">
+<p>All properties start with the <strong>acrossWebModule.</strong> prefix.
+Note that several Spring (Boot) properties can also influence behaviour of the AcrossWebModule, for example the <code>spring.http.multipart.*</code> properties.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">views.thymeleaf.enabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Should Thymeleaf view support be enabled.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>true</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">views.jsp.enabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Should JSP/JSTL view support be enabled.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>false</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">resources.path</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Relative path for serving all static resources.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/across/resources</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">resources.folders</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default subfolders of <em>views</em> that should be served as static resources.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">js,css,static</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">resources.versioning.enabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Auto configure versioning of the default resource resolvers.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>true</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">resources.versioning.version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fixed version if resource versioning is enabled.  Default will use build number or module version.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>null</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">resources.caching.enabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Auto configure client-side caching of static resources.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>true</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">resources.caching.period</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Integer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Period for client-side resource caching (if enabled).  Defaults to 1 year.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>60*60*24*365</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">registerGlobalBuilderContext</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Should a request-bound <code>ViewElementBuilderContext</code> be created.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>false</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">templates.enabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Should support for <a href="#layout-templates">web templates</a> be enabled.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>true</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">templates.auto-register</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If <a href="#layout-templates">web templates</a> are enabled, should named templates be autodetected.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>true</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">development-views</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Map&lt;String,String&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Map of physical locations for views resources.  Only used if development mode is active.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Collections.emptyMap()</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-mvc-configuration"><a class="anchor" href="#spring-mvc-configuration"></a>2. Spring MVC configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AcrossWebModule sets up Spring MVC configuration including a single <code>DispatcherServlet</code> and default <code>HandlerMapping</code> beans.
+In addition to the standard Spring MVC configuration, AcrossWebModule configures extra:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#static-resources">static resource resolving and versioning</a></p>
+</li>
+<li>
+<p>support for <a href="#request-mapping-extensions">custom request conditions and prefixed request mappings</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>AcrossWebModule activates support for <code>WebMvcConfigurer</code> beans in other modules.
+Any <code>WebMvcConfigurer</code>(often an extension of <code>WebMvcConfigurerAdapter</code>) will be detected and used to configure the mvc support.
+Note that <code>WebMvcConfigurer</code> beans do not need to be exposed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="acrosswebmodule-and-conversionservice"><a class="anchor" href="#acrosswebmodule-and-conversionservice"></a>3. AcrossWebModule and ConversionService</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AcrossWebModule requires a <code>FormattingConversionService</code> bean named <strong>mvcConversionService</strong> to be present.
+If there is none, one will be created and exposed.  By default the parent <strong>conversionService</strong> bean will be reused if
+it implements the right interface.  If you want to manage the <strong>mvcConversionService</strong> separately, simply create
+ a <code>FormattingConversionService</code> with the right name in the parent context.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Configuration</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ManualConversionServiceConfiguration</span>
+{
+        <span class="annotation">@Bean</span>(name = AcrossWebModule.CONVERSION_SERVICE_BEAN)
+        <span class="directive">public</span> FormattingConversionService mvcConversionService() {
+            <span class="keyword">return</span> <span class="keyword">new</span> FormattingConversionService();
+        }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <strong>mvcConversionService</strong> will be passed to all <code>WebMvcConfigurer</code> instances in order to add formatters.  It is also
+the default <code>ConversionService</code> attached to the <code>WebDataBinder</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+There will be at least 2 <code>ConversionService</code> beans in the across context when <code>AcrossWebModule</code> is enabled:
+<strong>conversionService</strong> and <strong>mvcConversionService</strong>.  If you have duplicate bean exceptions due to unqualified autowiring,
+you should make one of both primary.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="view-engines"><a class="anchor" href="#view-engines"></a>4. View engines</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="thymeleaf-support"><a class="anchor" href="#thymeleaf-support"></a>4.1. Thymeleaf support</h3>
+<div class="paragraph">
+<p>AcrossWebModule automatically activates <a href="http://www.thymeleaf.org">Thymeleaf</a> support for server-side templating.
+Thymeleaf is a powerful templating language that allows its templates to be embedded inside the JAR files (something that is more cumbersome with regular JSP).</p>
+</div>
+<div class="paragraph">
+<p>AcrossWebModule itself - as well as many other modules - use Thymeleaf extensively and add additional features for it (like <a href="#thymeleaf-dialect">custom dialects</a>).</p>
+</div>
+<div class="paragraph">
+<p>When Thymeleaf support is enabled, the <a href="https://github.com/thymeleaf/thymeleaf-extras-java8time">Thymeleaf Java 8 Time dialect</a> is also included.</p>
+</div>
+<div class="paragraph">
+<p>The Thymeleaf templates embedded in modules are expected to be located in the <strong>views/th/<em>moduleResourceKey</em></strong> resources folder.
+The supported file extension is <strong>*.html</strong>.
+See the chapter on <a href="#conventions">static resource conventions</a> for an example project layout.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="jsp-support"><a class="anchor" href="#jsp-support"></a>4.2. JSP support</h3>
+<div class="paragraph">
+<p>Support for regular JSP/JSTL can be enabled by setting the property <strong>acrossWebModule.views.jsp.enabled</strong> to <code>true</code>.</p>
+</div>
+<div class="sect3">
+<h4 id="combining-jsp-and-thymeleaf"><a class="anchor" href="#combining-jsp-and-thymeleaf"></a>4.2.1. Combining JSP and Thymeleaf</h4>
+<div class="paragraph">
+<p>If both JSP and Thymeleaf support are enabled, you can easily use both view types at the same time.
+The AcrossWebModule also provides a JSP tag that can be used to import Thymeleaf templates or fragments in a JSP rendering pipeline.
+The same model (request attributes) should be available in the Thymeleaf template as in the calling JSP.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="error">&lt;</span>%@ taglib prefix=&quot;across&quot; uri=&quot;http://across.foreach.com/tags&quot; %<span class="error">&gt;</span>
+<span class="doctype">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;</span>
+<span class="tag">&lt;html</span> <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.w3.org/1999/xhtml</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">xml:lang</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">en</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">lang</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">en</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+        <span class="tag">&lt;title&gt;</span>JSP including a Thymeleaf template<span class="tag">&lt;/title&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+        <span class="tag">&lt;across:thymeleaf</span> <span class="attribute-name">template</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">th/mymodule/thymeleaf-from-jsp-include</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">child</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+                <span class="tag">&lt;across:thymeleaf</span> <span class="attribute-name">template</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">th/mymodule/thymeleaf-from-jsp-include :: fragment</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></code></pre>
+</div>
+</div>
+<h3 id="using-other-templating-engines" class="discrete">Using other templating engines</h3>
+<div class="paragraph">
+<p>It is still possible to use additional templating engines.
+You can do so by extending the AcrossWebModule configuration and registering custom Spring <code>ViewResolver</code> beans.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="static-resources"><a class="anchor" href="#static-resources"></a>5. Static resources</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AcrossWebModule automatically enables serving of static resources bundled with modules.
+With the default settings static resources will be configured with <a href="#resource-url-versioning">versioned urls</a> and <a href="#client-side-caching">client-side caching</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="conventions"><a class="anchor" href="#conventions"></a>5.1. Conventions</h3>
+<div class="paragraph">
+<p>The default resources are served from the <strong>/views</strong> folder on the classpath.
+By default AcrossWebModule will serve resources from <em>/views/static</em>.
+Additional subfolders can be configured with the <strong>acrossWebModule.resources.folders</strong> property.</p>
+</div>
+<div class="paragraph">
+<p>By convention (and for best development mode support) module specific resources should be located in a subfolder with the <code>resourcesKey</code> of the module.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example resources layout for MyModule</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="text">src/main/resources
+   views/
+     static/
+       MyModule/
+         js/controller.js
+         css/my-module.css
+         img/logo.png
+     th/
+       MyModule/
+         controller.html
+         user-profile.html</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The relative path under which the static resources are available is determined by the <strong>acrossWebModule.resources.path</strong> property.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="client-side-caching"><a class="anchor" href="#client-side-caching"></a>5.2. Client-side caching</h3>
+<div class="paragraph">
+<p>By default static resources will be cached on the client-side for a period of 1 year.
+Disabling client-side caching is done with the <strong>acrossWebModule.resources.caching.enabled</strong> property.
+If client-side caching is disabled, no cache headers will be sent to the client.</p>
+</div>
+<div class="paragraph">
+<p>Configuring the caching period is done separately with the <strong>acrossWebModule.resources.caching.period</strong> property.
+Setting the value to <strong>0</strong> with caching enabled will sent <strong>no-cache</strong> headers.
+This is also the default if development mode is active.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="resource-url-versioning"><a class="anchor" href="#resource-url-versioning"></a>5.3. Resource URL versioning</h3>
+<div class="paragraph">
+<p>By default AcrossWebModule enables <a href="http://docs.spring.io/spring-framework/docs/current/spring-framework-reference/html/mvc.html#mvc-config-static-resources">Spring versioning of static resources</a>.
+This will generate versioned URLs, create a <code>ResourceUrlProvider</code> bean and add a <code>ResourceUrlEncodingFilter</code> and <code>ResourceUrlProviderExposingInterceptor</code> to the request handlers.</p>
+</div>
+<div class="paragraph">
+<p>Using versioned resource URLs is transparent:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>in Thymeleaf all relative links added with <code>@{/relative/path}</code> will be rewritten if necessary</p>
+</li>
+<li>
+<p>in JSP the equivalent is the <code>&lt;spring:url value="/relative/path" var="url"/&gt;</code> tag</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Using these will work both with or without resource versioning.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+If versioning is disabled, the <code>ResourceUrlProvider</code> will not be available on the request.
+Modules using accessing the <code>ResourceUrlProvider</code> directly should built-in support for this.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="fixed-version-strategy"><a class="anchor" href="#fixed-version-strategy"></a>5.3.1. Fixed version strategy</h4>
+<div class="paragraph">
+<p>AcrossWebModule supports automatic configuration of resource versioning using a single fixed version.
+When enabled this means that resources of the form <strong>/across/resources/static/mymodule/mymodule.css</strong> will get rewritten to <strong>/across/resources/static/VERSION/mymodule/mymodule.css</strong>.</p>
+</div>
+<div class="paragraph">
+<p>The fixed version used is determined as follows:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>acrossWebModule.resources.versioning.version</strong> property</p>
+</li>
+<li>
+<p><strong>build.number</strong> property</p>
+</li>
+<li>
+<p>version of the AcrossWebModule</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Using the fixed version strategy works well for relative includes in both CSS and JS files, avoiding the need to rewrite URLs inside those files.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="customizing-the-version-strategy"><a class="anchor" href="#customizing-the-version-strategy"></a>5.3.2. Customizing the version strategy</h4>
+<div class="paragraph">
+<p>It is possible to keep configuration of the default resources active but only change the version strategy used.
+This can be done by injecting your own <code>VersionResourceResolver</code> bean named <strong>versionResourceResolver</strong> the AcrossWebModule context.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example providing custom version strategy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@ModuleConfiguration</span>(AcrossWebModule.NAME)
+<span class="directive">public</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">CustomVersionResourceResolver</span>
+{
+        <span class="annotation">@Bean</span>
+        <span class="directive">public</span> VersionResourceResolver versionResourceResolver() {
+                <span class="keyword">return</span> <span class="keyword">new</span> VersionResourceResolver()
+                                .addVersionStrategy( <span class="keyword">new</span> FixedVersionStrategy( <span class="string"><span class="delimiter">&quot;</span><span class="content">1.0</span><span class="delimiter">&quot;</span></span> ), <span class="string"><span class="delimiter">&quot;</span><span class="content">/**/*.css</span><span class="delimiter">&quot;</span></span> )
+                                .addVersionStrategy( <span class="keyword">new</span> FixedVersionStrategy( <span class="string"><span class="delimiter">&quot;</span><span class="content">2.0</span><span class="delimiter">&quot;</span></span> ), <span class="string"><span class="delimiter">&quot;</span><span class="content">/**</span><span class="delimiter">&quot;</span></span> );
+        }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Because of limitations of the <code>CssLinkTransformer</code> in combination with a fixed version strategy, AcrossWebModule does not rewrite links inside css files.
+If you absolutely need this in your application, you will have to disable the automatic resource versioning and configure it yourself.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="web-resource-registry"><a class="anchor" href="#web-resource-registry"></a>5.4. WebResourceRegistry</h3>
+<div class="paragraph">
+<p>AcrossWebModule allows for programatically registering web resources through the use of a <code>WebResourceRegistry</code>.
+A new <code>WebResourceRegistry</code> is attached to every request and can be accessed as a request attribute or a handler method parameter.</p>
+</div>
+<div class="paragraph">
+<p>Resources can be added in a group (eg: css, javascript) and with a specific location (eg: relative, views, external).
+The groups can be used for retrieval of related resources, the location determines the <code>WebResourceTranslator</code> that will be used.
+Web resource translating happens before the actual view is rendered and allows for the data to be converted into a more appropriate format for the view rendering.
+Using the <code>WebResource.VIEWS</code> location for a web resource will have the relative path prefixed with the configured across web views resources prefix.</p>
+</div>
+<div class="paragraph">
+<p>Resources can be identified with a unique key, ensuring they are added only once.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example controller registering specific web resources</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Controller</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyController</span>
+{
+  <span class="annotation">@ModelAttribute</span>
+  <span class="directive">public</span> <span class="type">void</span> registerWebResources( WebResourceRegistry webResourceRegistry ) {
+    webResourceRegistry.add( WebResource.CSS, <span class="string"><span class="delimiter">&quot;</span><span class="content">//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css</span><span class="delimiter">&quot;</span></span>, WebResource.EXTERNAL );
+    webResourceRegistry.add( WebResource.CSS, <span class="string"><span class="delimiter">&quot;</span><span class="content">/static/mymodule/css/main.css</span><span class="delimiter">&quot;</span></span>, WebResource.VIEWS );
+  }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Views can access the <code>WebResourceRegistry</code> under the <strong>webResourceRegistry</strong> attribute.
+It is however the view implementation that will determine how resources are handled: for example the Thymeleaf template rendering them in the head section of a page.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="webresourcepackage"><a class="anchor" href="#webresourcepackage"></a>5.4.1. WebResourcePackage</h4>
+<div class="paragraph">
+<p>To avoid adding single items, web resources can be bundled into a <code>WebResourcePackage</code> and registered with the <code>WebResourcePackageManager</code>.
+Adding an entire package can then be done by calling <code>WebResourceRegistry#addPackage</code> with the right package name.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example creating a WebResourcePackage</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Component</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">BootstrapUiWebResources</span> <span class="directive">extends</span> SimpleWebResourcePackage
+{
+  <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">String</span> VERSION = <span class="string"><span class="delimiter">&quot;</span><span class="content">3.3.5</span><span class="delimiter">&quot;</span></span>;
+  <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">String</span> NAME = <span class="string"><span class="delimiter">&quot;</span><span class="content">bootstrap</span><span class="delimiter">&quot;</span></span>;
+
+  <span class="directive">public</span> BootstrapUiWebResources() {
+    setDependencies( JQueryWebResources.NAME );     <span class="comment">// Install the jquery package first</span>
+    setWebResources(
+      <span class="keyword">new</span> WebResource( WebResource.CSS, NAME,
+                       <span class="string"><span class="delimiter">&quot;</span><span class="content">//maxcdn.bootstrapcdn.com/bootstrap/</span><span class="delimiter">&quot;</span></span> + VERSION + <span class="string"><span class="delimiter">&quot;</span><span class="content">/css/bootstrap.min.css</span><span class="delimiter">&quot;</span></span>,
+                       WebResource.EXTERNAL ),
+      <span class="keyword">new</span> WebResource( WebResource.JAVASCRIPT_PAGE_END, NAME,
+                       <span class="string"><span class="delimiter">&quot;</span><span class="content">//maxcdn.bootstrapcdn.com/bootstrap/</span><span class="delimiter">&quot;</span></span> + VERSION + <span class="string"><span class="delimiter">&quot;</span><span class="content">/js/bootstrap.min.js</span><span class="delimiter">&quot;</span></span>,
+                       WebResource.EXTERNAL )
+      );
+  }
+
+  <span class="annotation">@Autowired</span>
+  <span class="directive">public</span> <span class="type">void</span> registerPackage( WebResourcePackageManager packageManager ) {
+    packageManager.register( NAME, <span class="local-variable">this</span> );
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="error-handling"><a class="anchor" href="#error-handling"></a>6. Error handling</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When working with <code>@AcrossApplication</code> and auto-configuration, a customized version of <a href="https://docs.spring.io/spring-boot/docs/1.5.10.RELEASE/reference/htmlsingle/#boot-features-error-handling">Spring Boot error handling</a> will be activated.
+The main difference is in the automatic detection of custom error pages, most other features work in exactly the same way.</p>
+</div>
+<div class="sect2">
+<h3 id="custom-error-pages"><a class="anchor" href="#custom-error-pages"></a>6.1. Custom error pages</h3>
+<div class="paragraph">
+<p>Across Web error handling will only auto-detect Thymeleaf templates in the application module resources.
+It <strong>does not support</strong> the default Spring Boot <code>/templates</code> locations.</p>
+</div>
+<div class="paragraph">
+<p>Add a template with the right conventional path (<code>error</code> subfolder and status code or series file name) to have it picked up.</p>
+</div>
+<div class="listingblock">
+<div class="title">Error template location for MyApplication</div>
+<div class="content">
+<pre class="CodeRay highlight"><code>src/
+ +- main/
+     +- java/
+     |   + &lt;source code&gt;
+     +- resources/
+         +- views/
+             +- my/
+                 +- error/
+                 |   +- 404.html
+                 |   +- 5xx.html
+                 +- &lt;other templates&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you want another module to automatically look for error templates in its resources, you should register a <code>AcrossModuleDefaultErrorViewResolver</code> in that module.</p>
+</div>
+<div class="paragraph">
+<p>Any module can provide a <code>ErrorViewResolver</code> or <code>ErrorController</code> component for more advanced customization options</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="menu-infrastructure"><a class="anchor" href="#menu-infrastructure"></a>7. Working with menus</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Across Web provides some infrastructure to build a tree-like menu.
+This can be used for rendering for example hierarchical menus on a web page, though the class structure can be used for many things.</p>
+</div>
+<div class="paragraph">
+<p>Several standard modules like <a href="https://across.foreach.be/modules/AdminWebModule">AdminWebModule</a>, <a href="https://across.foreach.be/modules/EntityModule">EntityModule</a> or <a href="https://across.foreach.be/modules/BootstrapUiModule">BootstrapUiModule</a> use these features to allow creation, customization and easy rendering of menus.
+In this section we will explain the basics of working with the Across Web menu features.</p>
+</div>
+<div class="sect2">
+<h3 id="creating-a-menu"><a class="anchor" href="#creating-a-menu"></a>7.1. Creating a menu</h3>
+<div class="paragraph">
+<p>The base class for the menu tree structure is <code>com.foreach.across.modules.web.menu.Menu</code>.
+A single <code>Menu</code> can have several child <code>Menu</code> items, which in turn can have children of their own.
+As such, a <code>Menu</code> can optionally have a single parent <code>Menu</code>.
+The top-most item without a parent is called the <em>root</em> of the menu tree.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example menu tree</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="text">ROOT
++ l1: item one
+  - l2: item one
+  + l2: item two
+    - l3: item one
+- l1: item two</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>Menu</code> class has some properties that are common for visual menu rendering, like a <code>title</code> and an <code>url</code>.
+Every <code>Menu</code> also has a <code>path</code> property which is usually used to uniquely identify an item inside the entire menu tree.</p>
+</div>
+<div class="paragraph">
+<p>Apart from some other direct properties, every <code>Menu</code> has an <code>attributes</code> property which is a <code>Map</code> of custom key/value pairs.
+These can be used to store additional custom information on a menu item, something which is used by many implementation.</p>
+</div>
+<div class="paragraph">
+<p>Suppose you have a menu item that links to a web page, backed by a <code>WebPage</code> object.
+You could put the title of the web page as the <code>Menu</code> title, and the url to the request path where the page is served.
+The <code>attributes</code> collection could then hold the actual <code>WebPage</code> instance that the menu item represents.</p>
+</div>
+<div class="paragraph">
+<p>The following table gives a short overview of the different <code>Menu</code> properties:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Menu property descriptions</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parent</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Holds the optional parent <code>Menu</code> that owns the current menu.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code>, <code>path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Properties mainly used to identify a <code>Menu</code> in its subtree.
+See <a href="#building-a-menu">path based menu building</a> for a common use of the <code>path</code> property.
+The <code>name</code> property is mostly relevant for the top-most <code>Menu</code> when <a href="#publishing-a-menu">publishing a menu</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code>, <code>url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Common (visualization) metadata for a <code>Menu</code> item.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>attributes</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Map</code> of custom attributes attached to this <code>Menu</code>.
+The value of an attribute is artibitrary, but every attribute is identified by a unique <code>String</code> key.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>group</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This flag is mostly used to indicate an item that has children, but is not a regular item in itself.
+Though implementation dependent, this is often used for an item that for example has no url set (and would not be clickable), but is still expected to be a heading in a visualized menu tree.</p>
+<p class="tableblock">Note that the value of <code>group</code> has no impact on the actual presence of child items.
+Child items are represented by the <code>items</code> property and related methods.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>order</code>, <code>comparator</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Properties to influence how a menu tree should be sorted.
+See <a href="#sorting-a-menu">the section on sorting a menu</a> for more information.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>selected</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates if the <code>Menu</code> item is part of the selected path of the menu tree.
+See <a href="#selecting-menu-items">the section on selecting menu items</a> for more information.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>disabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indicates if a <code>Menu</code> item is considered disabled.
+This usually implies the entire sub-tree the item represents is disabled.
+The meaning of disabled is application dependant, but usually it means the menu item is still part of the tree but should not be shown.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>items</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contains the list of direct children of this <code>Menu</code>.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+How the different properties of a <code>Menu</code> are being used is entirely up to the developer.
+<code>Menu</code> in itself is nothing more than a class structure for representing a tree of items with those properties.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>A <code>Menu</code> can be constructed and modified directly, it is never an immutable instance.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example of simple menu creation</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="predefined-type">Menu</span> root = <span class="keyword">new</span> <span class="predefined-type">Menu</span>( <span class="string"><span class="delimiter">&quot;</span><span class="content">ROOT</span><span class="delimiter">&quot;</span></span> );
+<span class="predefined-type">Menu</span> childOne = <span class="keyword">new</span> <span class="predefined-type">Menu</span>( <span class="string"><span class="delimiter">&quot;</span><span class="content">l1: item one</span><span class="delimiter">&quot;</span></span> );
+<span class="predefined-type">Menu</span> childOfChildOne = <span class="keyword">new</span> <span class="predefined-type">Menu</span>( <span class="string"><span class="delimiter">&quot;</span><span class="content">l2: item one</span><span class="delimiter">&quot;</span></span> );
+<span class="predefined-type">Menu</span> childTwo = <span class="keyword">new</span> <span class="predefined-type">Menu</span>( <span class="string"><span class="delimiter">&quot;</span><span class="content">l1: item two</span><span class="delimiter">&quot;</span></span> );
+
+root.addItem( childOne );
+root.addItem( childTwo );
+childOne.addItem( childOfChildOne );</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Because of the hierarchical nature of a menu however, usually constructing a complex <code>Menu</code> is done using a <a href="#building-a-menu">path based builder</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sorting-a-menu"><a class="anchor" href="#sorting-a-menu"></a>7.2. Sorting a menu</h3>
+<div class="paragraph">
+<p>A <code>Menu</code> can be sorted once its items have been added, simply by calling the <code>sort()</code> method.
+Sorting a menu will sort its direct child items, and in turn call <code>sort()</code> on every child item, resulting in the entire menu tree being sorted.</p>
+</div>
+<div class="paragraph">
+<p>Sorting is done using a <code>Comparator&lt;Menu&gt;</code> instance.
+The default comparator will sort menu items first on the value of their <code>order</code> property, and then alphabetically on their <code>title</code>.</p>
+</div>
+<div class="paragraph">
+<p>You can set a different <code>Comparator</code> that should be used directly on a <code>Menu</code> instance.
+This means you can use different comparators for sub-trees of a menu tree.
+Usually a single comparator is responsible for the entire sub-tree, but you can make exceptions there as well.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="selecting-menu-items"><a class="anchor" href="#selecting-menu-items"></a>7.3. Selecting menu items</h3>
+<div class="paragraph">
+<p>A <code>Menu</code> item in the tree can be <code>selected</code>.
+When a <code>Menu</code> is selected and it has a parent, its parent <code>Menu</code> will also be selected, all the way up to the root of the tree.</p>
+</div>
+<div class="paragraph">
+<p>As a result, as soon as there is a single item selected, you can retrieve a <em>selected path</em> containing all the <code>Menu</code> items that are selected top-down.
+This is a useful feature if you want to create a breadcrumb for example.</p>
+</div>
+<div class="paragraph">
+<p>Useful methods for <code>Menu</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>isSelected()</code> to check if the <code>Menu</code> itself is selected</p>
+</li>
+<li>
+<p><code>getSelectedItem()</code> to get its first selected child</p>
+</li>
+<li>
+<p><code>getLowestSelectedItem()</code> to get the leaf item oo the selected path</p>
+</li>
+<li>
+<p><code>getSelectedItemPath()</code> to retrieve the full selected path starting from this <code>Menu</code>.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The current <code>Menu</code> implementation only allows a single selected path in a menu tree.
+You cannot have more than one leaf item selected.
+</td>
+</tr>
+</table>
+</div>
+<h4 id="using-a-menuselector" class="discrete">Using a MenuSelector</h4>
+<div class="paragraph">
+<p><code>MenuSelector</code> is a strategy interface for finding or selecting a <code>Menu</code> in a tree.
+There are several implementations available as factory methods on the <code>MenuSelector</code> class.
+The default implementations will traverse the entire <code>Menu</code> tree to find the lowest item that matches the predicate.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example selecting a menu with a specific path</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">myMenu.select( MenuSelector.byPath( <span class="string"><span class="delimiter">&quot;</span><span class="content">path-to-select</span><span class="delimiter">&quot;</span></span> ) );</code></pre>
+</div>
+</div>
+<h4 id="request-menu-selector" class="discrete">HTTP request selector</h4>
+<div class="paragraph">
+<p>A common case for using <code>Menu</code> in a web scenario is selecting the menu item based on the path of the current web request.
+The <code>RequestMenuSelector</code> is a specific <code>MenuSelector</code> implementation that does exactly that.</p>
+</div>
+<div class="listingblock">
+<div class="title">Selecting the menu item based on the current http request</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">HttpServletRequest currentRequest;
+myMenu.select( MenuSelector.byHttpServletRequest( currentRequest ) );</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>RequestMenuSelector</code> uses a scoring mechanism to find the best matching item for the current request.
+It will look at the current url, servlet path and query string, and will select the menu item that has the best match.
+It will inspect the <code>url</code> property of a <code>Menu</code> but also take the value of <code>RequestMenuSelector.ATTRIBUTE_MATCHERS</code> into account.
+The latter is an optional attribute that can be registered on a <code>Menu</code>, with its value expected to be a <code>Collection</code> of strings that represent urls or paths this item represents.</p>
+</div>
+<div class="paragraph">
+<p>Suppose the current url is <code>http://my.domain/my-page?id=10</code>, then <code>RequestMenuSelector</code> would select the items the following order:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>http://my.domain/my-page/create?id=10</code></p>
+</li>
+<li>
+<p><code>/my-page/create?id=10</code></p>
+</li>
+<li>
+<p><code>/my-page/create</code></p>
+</li>
+<li>
+<p><code>/my-page</code></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Note that even if an item matches only a prefix of the requested path, it will match if there is none more specific.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The <code>RequestMenuSelector</code> is the default selector that is automatically used when using the `MenuFactory`to <a href="#publishing-a-menu">publish a menu for configuration</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="building-a-menu"><a class="anchor" href="#building-a-menu"></a>7.4. Path based menu building</h3>
+<div class="paragraph">
+<p>Instead of manually assembling a <code>Menu</code>, it is usually easier to use a <code>PathBasedMenuBuilder</code> for configuration of an entire menu tree using a single class.
+The fastest way to create a new <code>PathBasedMenuBuilder</code> builder is with <code>Menu.builder()</code>.</p>
+</div>
+<div class="paragraph">
+<p>The builder allows you to register items as a flat list, with each item being identified by a unique path.
+The path can have several segments which are separate with a <code>/</code> (forward slash) character.
+Every item with a path that is also the prefix of another item&#8217;s path, will become the parent item of those other items.
+The flat list of items will only be turned into a <code>Menu</code> tree when calling the <code>build()</code> method.</p>
+</div>
+<div class="paragraph">
+<p>A <code>PathBasedMenuBuilder</code> not only allows you to create a new <code>Menu</code> instance using <code>build()</code>, it can also be used to update/extend already existing menu trees using the <code>merge(Menu)</code> method.</p>
+</div>
+<h4 id="a-simple-example" class="discrete">A simple example</h4>
+<div class="paragraph">
+<p>Suppose you register the following menu items in order:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>/my-group/item-1</code></p>
+</li>
+<li>
+<p><code>/my-group</code></p>
+</li>
+<li>
+<p><code>/my-item</code></p>
+</li>
+<li>
+<p><code>/my-group/item-2</code></p>
+</li>
+<li>
+<p><code>/my-other-group/single-item</code></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>In Java code this would look like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="predefined-type">Menu</span> menu = <span class="predefined-type">Menu</span>.builder()
+                .item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/my-group/item-1</span><span class="delimiter">&quot;</span></span> ).and()
+                .item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/my-group</span><span class="delimiter">&quot;</span></span> ).and()
+                .item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/my-item</span><span class="delimiter">&quot;</span></span> ).and()
+                .item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/my-group/item-2</span><span class="delimiter">&quot;</span></span> ).and()
+                .item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/my-other-group/single-item</span><span class="delimiter">&quot;</span></span> ).and()
+                .item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/my-group:item-3</span><span class="delimiter">&quot;</span></span> ).and()
+                .build()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The resulting <code>Menu</code> then contains the following hierarchy:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="text"> ROOT <i class="conum" data-value="1"></i><b>(1)</b>
+   + /my-group <i class="conum" data-value="2"></i><b>(2)</b>
+   |   + /my-group/item-1
+   |   + /my-group/item-2
+   + /my-group:item-3 <i class="conum" data-value="3"></i><b>(3)</b>
+   + /my-item
+   + /my-other-group/single-item <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>By default the top-most item of the menu has no specific path.
+Setting a path on the root item can be done by calling its item builder using <code>builder.root(String)</code>, but this will have no impact on the hierarchy being created.
+The root path of a <code>Menu</code> is only relevant in specialized cases where you want to merge the result of a builder into an already existing <code>Menu</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The presence of the item with path <code>/my-group</code> causes the other 2 items starting with the same path prefix to be added as child items of this one.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Because <code>/my-group:item-3</code> does not have the right path separator (it has a <code>:</code> instead of a <code>/</code>), it is still a separate item instead of a child of <code>/my-group</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>A parent item does not automatically get created based on path separation.
+There is no item <code>/my-other-group</code>, so this item remains a direct child of the root.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Items should peferably not be registered with a trailing slash to ensure correct conversion to a menu tree.
+</td>
+</tr>
+</table>
+</div>
+<h4 id="fluent-api-examples" class="discrete">Fluent API examples</h4>
+<div class="paragraph">
+<p>The <code>PathBasedMenuBuilder</code> provides a fluent API to add items, modify them and remove them, and <em>move them around</em>  by manipulating their paths.
+It allows you to change the registered paths of an item before <code>Menu</code> building, thus influencing the actual menu tree that gets created.</p>
+</div>
+<div class="paragraph">
+<p><strong>Creating an item</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">builder.item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/item-path</span><span class="delimiter">&quot;</span></span> )</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will create an item with that path if it does not yet exist.
+Once the item has been registered, the same item builder will always be returned on subsequent calls.</p>
+</div>
+<div class="paragraph">
+<p><strong>Setting item properties</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">builder.item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/item-path</span><span class="delimiter">&quot;</span></span> ).title( <span class="string"><span class="delimiter">&quot;</span><span class="content">My item</span><span class="delimiter">&quot;</span></span>).attribute( <span class="string"><span class="delimiter">&quot;</span><span class="content">key</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span> )</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Changing an item only if it is present</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">builder.optionalItem( <span class="string"><span class="delimiter">&quot;</span><span class="content">/item-path</span><span class="delimiter">&quot;</span></span> ).url( <span class="string"><span class="delimiter">&quot;</span><span class="content">update url</span><span class="delimiter">&quot;</span></span> )</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will return a valid item builder that allows all actions to be performed, but will in fact do nothing unless that item was registered previously.
+Useful if you are not sure the item has been added, for example in  <a href="#publishing-a-menu">menu publishing</a> scenarios.</p>
+</div>
+<div class="paragraph">
+<p><strong>Removing an item and all items that would become children</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">builder.item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/item-path</span><span class="delimiter">&quot;</span></span> ).remove( <span class="predefined-constant">true</span> )
+builder.removeItems( <span class="string"><span class="delimiter">&quot;</span><span class="content">/item-path</span><span class="delimiter">&quot;</span></span>, <span class="predefined-constant">true</span> );</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>true</code> argument indicates that all other items having the specified path as prefix should also be removed.</p>
+</div>
+<div class="paragraph">
+<p><strong>Removing an item but not its possible children</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">builder.item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/item-path</span><span class="delimiter">&quot;</span></span> ).remove( <span class="predefined-constant">false</span> )
+builder.removeItems( <span class="string"><span class="delimiter">&quot;</span><span class="content">/item-path</span><span class="delimiter">&quot;</span></span>, <span class="predefined-constant">false</span> );</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>false</code> argument indicates that only the item with that exact path should be removed.</p>
+</div>
+<div class="paragraph">
+<p><strong>Removing an item that might not be present</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">builder.optionalItem( <span class="string"><span class="delimiter">&quot;</span><span class="content">/item-path</span><span class="delimiter">&quot;</span></span> ).remove( <span class="predefined-constant">true</span>|<span class="predefined-constant">false</span> ) <i class="conum" data-value="1"></i><b>(1)</b>
+builder.removeItems( <span class="string"><span class="delimiter">&quot;</span><span class="content">/item-path</span><span class="delimiter">&quot;</span></span>, <span class="predefined-constant">true</span>|<span class="predefined-constant">false</span> ) <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>In this case nothing will be removed if the original <code>/item-path</code> item is not present, even if the method argument is <code>true</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>When the argument is <code>true</code>, this will always attempt to remove all items starting with that prefix.
+It does not matter if the exact <code>/item-path</code> is present or not.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><strong>Changing the path of an item and all its possible children</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">builder.item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/original</span><span class="delimiter">&quot;</span></span> ).changePathTo( <span class="string"><span class="delimiter">&quot;</span><span class="content">/new</span><span class="delimiter">&quot;</span></span> )
+builder.changeItemPath( <span class="string"><span class="delimiter">&quot;</span><span class="content">/original</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/new</span><span class="delimiter">&quot;</span></span> )</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will replace the <code>/original</code> path prefix in all items with the <code>/new</code> value.</p>
+</div>
+<div class="paragraph">
+<p><strong>Changing the path of an item but not its possible children</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">builder.item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/original</span><span class="delimiter">&quot;</span></span> ).changePathTo( <span class="string"><span class="delimiter">&quot;</span><span class="content">/new</span><span class="delimiter">&quot;</span></span>, <span class="predefined-constant">false</span> )
+builder.changeItemPath( <span class="string"><span class="delimiter">&quot;</span><span class="content">/original</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/new</span><span class="delimiter">&quot;</span></span>, <span class="predefined-constant">false</span> )</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>false</code> argument indicates that only the item with the exact path should updated.
+In this case <code>/original</code> would be changed to <code>/new</code>, but <code>/original/item</code> would not be modified.</p>
+</div>
+<div class="paragraph">
+<p><strong>Changing the path of child items to-be, but not their parent item</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">builder.changeItemPath( <span class="string"><span class="delimiter">&quot;</span><span class="content">/original/</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/new/</span><span class="delimiter">&quot;</span></span> )</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case I update all items where the path starts with <code>/original/</code>.
+It is the trailing slash that ensures we do not modify the <code>/original</code> item.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Actions performed on a builder are immediate, that means after you change an item path, or remove an item, you can no longer refer to it in the same way.
+If you do you will simply re-create a new item with that path.
+</td>
+</tr>
+</table>
+</div>
+<h4 id="delayed-configuration" class="discrete">Delayed configuration</h4>
+<div class="paragraph">
+<p>Builders are used extensively when <a href="#publishing-a-menu">publishing a menu</a>, allowing different classes to configure a single menu using event listeners.
+The same builder is then passed to the different event handling methods, and these modify the previous configuration performed on the builder.</p>
+</div>
+<div class="paragraph">
+<p>Sometimes you want to modify a menu builder, but you want to be sure that all other configuration has been applied first.
+You can do so by registering an additional consumer using <code>andThen()</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example using delayed configuration</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="comment">// This will NOT work </span><i class="conum" data-value="1"></i><b>(1)</b>
+builder.item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/one</span><span class="delimiter">&quot;</span></span> ).title( <span class="string"><span class="delimiter">&quot;</span><span class="content">One</span><span class="delimiter">&quot;</span></span> ).and()
+       .item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/one</span><span class="delimiter">&quot;</span></span> ).changePathTo( <span class="string"><span class="delimiter">&quot;</span><span class="content">/two</span><span class="delimiter">&quot;</span></span> ).and()
+       .item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/one/child</span><span class="delimiter">&quot;</span></span> ).title( <span class="string"><span class="delimiter">&quot;</span><span class="content">Child of one</span><span class="delimiter">&quot;</span></span> );
+
+<span class="comment">// This will work as expected </span><i class="conum" data-value="2"></i><b>(2)</b>
+builder.item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/one</span><span class="delimiter">&quot;</span></span> ).title( <span class="string"><span class="delimiter">&quot;</span><span class="content">One</span><span class="delimiter">&quot;</span></span> ).and()
+       .andThen( builder -&gt; builder.item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/one</span><span class="delimiter">&quot;</span></span> ).changePathTo( <span class="string"><span class="delimiter">&quot;</span><span class="content">/two</span><span class="delimiter">&quot;</span></span> ) );
+builder.item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/one/child</span><span class="delimiter">&quot;</span></span> ).title( <span class="string"><span class="delimiter">&quot;</span><span class="content">Child of one</span><span class="delimiter">&quot;</span></span> );</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>In this case the path of <code>/one</code> is changed to <code>/two</code> before item <code>/one/child</code> is registered.
+The resulting menu tree will contain 2 children of the root node: <code>/two</code> and <code>/one/child</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The path prefix <code>/one</code> is updated after the initial configuration has been applied, by calling the separate consumer.
+The resulting menu tree will have a single child of the root node and two items in total: <code>/two</code> and <code>/two/child</code>.</td>
+</tr>
+</table>
+</div>
+<h4 id="menuitembuilderprocessor" class="discrete">MenuItemBuilderProcessor</h4>
+<div class="paragraph">
+<p>The <code>PathBasedMenuBuilder</code> also allows you to register a <code>MenuItemBuilderProcessor</code> instance, that can be used to post-process generated <code>Menu</code> items right after they have been created.</p>
+</div>
+<div class="paragraph">
+<p>An example where this could be useful is to transparently translate context-relative urls to absolute or domain relative urls.
+Please see the javadoc and source code for more information on this.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="publishing-a-menu"><a class="anchor" href="#publishing-a-menu"></a>7.5. Publishing a menu</h3>
+<div class="paragraph">
+<p>Menus are often used to allow other modules to configure items to them.
+An example is <a href="https://across.foreach.be/modules/AdminWebModule">AdminWebModule</a> which builds a custom <code>Menu</code> for the navigation items on the UI.
+It publishes an event that any component in any module can listen for, and use it to register its own navigational items.</p>
+</div>
+<div class="paragraph">
+<p>Behind the scenes <a href="#request-menu-selector">request based selecting</a> is then used to automatically select &amp; highlight the active nav item.</p>
+</div>
+<div class="paragraph">
+<p>Anyone can publish an event for building a menu, using the <code>MenuFactory</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example publishing a new menu with the MenuFactory</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Autowired</span>
+MenuFactory menuFactory;
+
+<span class="predefined-type">Menu</span> myMenu = <span class="keyword">new</span> <span class="predefined-type">Menu</span>( <span class="string"><span class="delimiter">&quot;</span><span class="content">myMenu</span><span class="delimiter">&quot;</span></span> );
+menuFactory.buildMenu( myMenu );</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When publishing a menu with the <code>MenuFactory</code> this way, the following things happen:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>a <code>PathBasedMenuBuilder</code> for the menu is created</p>
+</li>
+<li>
+<p>a <code>RequestMenuSelector</code> is created for <a href="#selecting-menu-items">selecting the active menu items</a></p>
+</li>
+<li>
+<p>a <code>BuildMenuEvent</code> is published, embedding the original menu, the selector and the builder</p>
+<div class="ulist">
+<ul>
+<li>
+<p>any event listener can make modifications, register items, change paths or replace the selector</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>after the event has been handled the menu is sorted and the active items are selected (using the configured selector)</p>
+</li>
+<li>
+<p>if there are any post-processors registered on the <code>BuildMenuEvent</code>, these will be executed before returning to the original caller</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Simple event listening can be used to customize a published menu.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example customizing myMenu</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@EventListener</span>( condition = <span class="string"><span class="delimiter">&quot;</span><span class="content">#menu.menuName == 'myMenu'</span><span class="delimiter">&quot;</span></span> )
+<span class="type">void</span> registerMenuItem( BuildMenuEvent menu ) {
+    menu.item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/my-item</span><span class="delimiter">&quot;</span></span> ).title( <span class="string"><span class="delimiter">&quot;</span><span class="content">my custom item</span><span class="delimiter">&quot;</span></span> );
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A <code>BuildMenuEvent</code> has both a generic type (the specific class of the <code>Menu</code> instance) and a <code>menuName</code> (name of menu instance), that can be used to match the specific event.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example publishing and customizing a typed menu</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">MyCustomMenu</span> <span class="directive">extends</span> <span class="predefined-type">Menu</span> {
+}
+
+MyCustomMenu myMenu = <span class="keyword">new</span> MyCustomMenu();
+menuFactory.buildMenu( myMenu );
+
+<span class="annotation">@EventListener</span>
+<span class="type">void</span> registerMenuItem( BuildMenuEvent&lt;MyCustomMenu&gt; menu ) {
+    menu.item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/my-item</span><span class="delimiter">&quot;</span></span> ).title( <span class="string"><span class="delimiter">&quot;</span><span class="content">my custom item</span><span class="delimiter">&quot;</span></span> );
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>MenuFactory</code> has several other variations for building events.
+Please refer to the javadoc for an overview.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+More advanced configurations often have custom types for both <code>Menu</code> and <code>BuildMenuEvent</code>, exposing more context information.
+This requires you to customize the <code>MenuFactory</code> configuration.
+We invite you to look at both the javadoc and source code if you want to implement a similar scenario.
+</td>
+</tr>
+</table>
+</div>
+<h4 id="post-processing-a-menu" class="discrete">Post-processing a menu</h4>
+<div class="paragraph">
+<p>If you need to post-process a generated <code>Menu</code> after all items have been registered, the menu has been built, sorted and active items selected; you can register a <code>Consumer&lt;Menu&gt;</code> using <code>event.addMenuPostProcessor()</code>.</p>
+</div>
+<h4 id="automatic-menu-publishing-from-handler-methods" class="discrete">Automatic menu publishing from handler methods</h4>
+<div class="paragraph">
+<p><code>MenuFactory</code> provides integration with handler methods through means of an argument resolver.
+If you specify a menu argument, the instance will be created and published automatically, provided there is a parameter-less constructor available if you use a specific menu type.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example handler method with a menu</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@GetMapping</span>( <span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span> )
+<span class="predefined-type">String</span> renderHomepage( MyCustomMenu navMenu ) {
+    ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When the handler method is being called, the <code>MenuFactory</code> will be checked for the presence of a menu named <code>navMenu</code>.
+If there is none available, a new <code>MyCustomMenu</code> will be created with name <code>navMenu</code>, and the menu will be published.</p>
+</div>
+<div class="paragraph">
+<p>When a menu is generated this way, it is also available as a request attribute with the menu name.
+In our example, a request attribute called <code>navMenu</code> would be available in the <code>View</code>.</p>
+</div>
+<div class="paragraph">
+<p>A single handler method can have as many menu references as it wants, as long as the names are different.
+Every menu will only be built once per request.
+In the above example, subsequent calls to <code>menuFactory.buildMenu( "navMenu" )</code> would always return the same instance.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="rendering-a-menu"><a class="anchor" href="#rendering-a-menu"></a>7.6. Rendering a menu</h3>
+<div class="paragraph">
+<p>Across Web itself does not in any way determine how a <code>Menu</code> is visualized, this is up to the application.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example Thymeleaf snippet rendering a Bootstrap markup breadcrumb</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="tag">&lt;ol</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">breadcrumb</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+<span class="tag">&lt;li</span> <span class="attribute-name">th:each</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">item : ${menu.selectedItemPath}</span><span class="delimiter">&quot;</span></span>
+        <span class="attribute-name">th:unless</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${item.disabled}</span><span class="delimiter">&quot;</span></span>
+        <span class="attribute-name">th:classappend</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${itemStat.last} ? 'active'</span><span class="delimiter">&quot;</span></span>
+        <span class="attribute-name">th:if</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${item.hasTitle()}</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+
+        <span class="tag">&lt;span</span> <span class="attribute-name">th:if</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${itemStat.last}</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">th:text</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${item.title}</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+            title selected item
+        <span class="tag">&lt;/span&gt;</span>
+
+        <span class="tag">&lt;div</span> <span class="attribute-name">th:unless</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${itemStat.last}</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">th:remove</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">tag</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+                <span class="tag">&lt;span</span> <span class="attribute-name">th:if</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${!item.hasUrl() and (!item.isGroup() or !item.firstItem.hasUrl())}</span><span class="delimiter">&quot;</span></span>
+                      <span class="attribute-name">th:text</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${item.title}</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>title if no url<span class="tag">&lt;/span&gt;</span>
+                <span class="tag">&lt;a</span> <span class="attribute-name">th:if</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${item.hasUrl() and !itemStat.last}</span><span class="delimiter">&quot;</span></span>
+                   <span class="attribute-name">th:href</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">@{${item.url}}</span><span class="delimiter">&quot;</span></span>
+                   <span class="attribute-name">th:text</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${item.title}</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>title with url<span class="tag">&lt;/a&gt;</span>
+                <span class="tag">&lt;a</span> <span class="attribute-name">th:if</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${!item.hasUrl() and item.isGroup() and item.firstItem.hasUrl()}</span><span class="delimiter">&quot;</span></span>
+                   <span class="attribute-name">th:href</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">@{${item.firstItem.url}}</span><span class="delimiter">&quot;</span></span>
+                   <span class="attribute-name">th:text</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${item.title}</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>title with first item url<span class="tag">&lt;/a&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ol&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A module like <a href="https://across.foreach.be/modules/BootstrapUiModule">BootstrapUiModule</a> provides components for rendering <code>Menu</code> instances.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="web-validation"><a class="anchor" href="#web-validation"></a>8. Validation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Across Web supports all <a href="https://docs.spring.io/spring/docs/4.3.14.RELEASE/spring-framework-reference/htmlsingle/#validation">Spring MVC validation</a> options on data binding and controllers.</p>
+</div>
+<div class="paragraph">
+<p>If a JSR-303 implementation (eg. Hibernate validator) is on the classpath, annotation/constraint based validation is also automatically enabled.
+See the chapter on <a href="developing-applications.html#validation">validation in "Developing applications"</a> for more information.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="viewelement-infrastructure"><a class="anchor" href="#viewelement-infrastructure"></a>9. ViewElement infrastructure</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AcrossWebModule provides a programmatic model for rendering UI components.
+A single UI component in this context is called a <code>ViewElement</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="viewelement"><a class="anchor" href="#viewelement"></a>9.1. ViewElement</h3>
+<div class="paragraph">
+<p><code>ViewElement</code> implementations usually correspond to one or more HTML nodes.
+AcrossWebModule comes with a default set <code>ViewElement</code> implementation for rendering Bootstrap markup elements.
+This is done through a collection of Thymeleaf processors for rendering <code>ViewElement</code> components.</p>
+</div>
+<div class="paragraph">
+<p>You can render a <code>ViewElement</code> available on the model anywhere in a Thymeleaf template by using the <em>across:view</em> tag.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;across:view</span> <span class="attribute-name">element</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${myViewElement}</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span></code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+You usually do not want to cache and reuse <code>ViewElement</code> components.
+It is better to cache <code>ViewElementBuilder</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="default-properties"><a class="anchor" href="#default-properties"></a>9.2. Default properties</h3>
+<div class="paragraph">
+<p>In its most simple form, a <code>ViewElement</code> has the following properties:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>name</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An optional internal name of the element.
+This name can be used to retrieve the element from a <code>ContainerViewElement</code>.
+Use <code>ContainerViewElementUtils</code> to query and modify containers.</p>
+<p class="tableblock">See <a href="developing-applications.html#development-mode">development mode rendering</a> for more information to retrieve generated view names.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>elementType</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A <strong>required</strong> type identification for the element.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>customTemplate</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An optional template name.
+If a custom template is specified, it will be used to render the <code>ViewElement</code> instead of the default processor.
+By default only Thymeleaf templates are supported.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect3">
+<h4 id="custom-template"><a class="anchor" href="#custom-template"></a>9.2.1. Custom template</h4>
+<div class="paragraph">
+<p>Every <code>ViewElement</code> allows you to configure a <strong>customTemplate</strong>.
+Only Thymeleaf fragments are supported, if you specify a Thymeleaf template without a fragment, a <strong>render(component)</strong> fragment will be appended.
+The <strong>component</strong> variable will always contain the <code>ViewElement</code> instance that is being rendered.</p>
+</div>
+<div class="paragraph">
+<p>You can use a different input variable by specifying the <strong>${component}</strong> manually in your template specification.</p>
+</div>
+<div class="ulist">
+<div class="title">Examples:</div>
+<ul>
+<li>
+<p><code>th/mymodule/mytemplate</code> results in <code>th/mymodule/mytemplate :: render(component)</code></p>
+</li>
+<li>
+<p><code>th/mymodule/mytemplate :: myfragment</code> results in <code>th/mymodule/mytemplate :: myfragment(component)</code></p>
+</li>
+<li>
+<p><code>th/mymodule/mytemplate :: myfragment(${someModelAttribute},${component})</code> results in <code>th/mymodule/mytemplate :: myfragment(attributeValue,component)</code></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You should only use model attributes that are sure to be available when the template is being rendered.
+It is usually best to pass the required values as attributes on the <code>ViewElement</code> itself.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can use the <code>TemplateViewElement</code> if you only want to render a custom template and optionally pass it some attributes.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="viewelementbuilder"><a class="anchor" href="#viewelementbuilder"></a>9.3. ViewElementBuilder</h3>
+<div class="paragraph">
+<p>A <code>ViewElementBuilder</code> is a simple API for creating a <code>ViewElement</code> instance based on a configuration and a given <code>ViewElementBuilderContext</code>.</p>
+</div>
+<div class="paragraph">
+<p>The <code>ViewElementBuilderContext</code> represents the runtime context when creating the element.
+It is a way to pass attributes required for building the elements, and it also gives access to default request related beans like the <code>WebResourceRegistry</code> or the <code>WebAppLinkBuilder</code>.</p>
+</div>
+<div class="paragraph">
+<p>AcrossWebModule comes with a number of default <code>ViewElementBuilder</code> implementations for both simple elements and more complex components.</p>
+</div>
+<div class="sect3">
+<h4 id="global-viewelementbuildercontext"><a class="anchor" href="#global-viewelementbuildercontext"></a>9.3.1. Global ViewElementBuilderContext</h4>
+<div class="paragraph">
+<p>Most <code>ViewElementBuilder</code> implementations extend <code>GlobalContextSupportingViewElementBuilder</code>.
+This class provides a parameterless <code>build()</code> method that will attempt to retrieve a <code>ViewElementBuilderContext</code> from the current thread, or from the request attached to the thread.
+If no global <code>ViewElementBuilderContext</code> is registered however, calls to <code>build()</code> will throw an exception.</p>
+</div>
+<div class="paragraph">
+<p>See the <code>ViewElementBuilderContextInterceptor</code> for an interceptor that creates a global <code>ViewElementBuilderContext</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="viewelementbuildercontext-in-controllers"><a class="anchor" href="#viewelementbuildercontext-in-controllers"></a>9.3.2. ViewElementBuilderContext in controllers</h4>
+<div class="paragraph">
+<p>If there is a global <code>ViewElementBuilderContext</code> available, you can also <code>ViewElementBuilderContext</code> as a method argument in web controller methods.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="creating-application-links"><a class="anchor" href="#creating-application-links"></a>9.3.3. Creating application links</h4>
+<div class="paragraph">
+<p>The <code>ViewElementBuilderContext</code> provides a <code>buildLink(String)</code> method that will resolve a link using the <code>WebAppLinkBuilder</code> attribute that is available on the builder context.
+By default the request-bound <code>WebAppLinkBuilder</code> is already set.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="development-mode-rendering"><a class="anchor" href="#development-mode-rendering"></a>9.4. Development mode rendering</h3>
+<div class="paragraph">
+<p>If development mode is active, all <code>ViewElement</code> names will be rendered in the markup.
+Start and end of the element rendering will be marked by a HTML comment.
+If the <code>ViewElement</code> is a node (xml-type element) it will also have a data attribute <strong>data-ax-dev-view-element</strong> containing the name.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example markup when rendered in development mode</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="comment">&lt;!--[ax:title]--&gt;</span>
+<span class="tag">&lt;input</span> <span class="attribute-name">name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">entity.title</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">entity.title</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">data-ax-dev-view-element</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">type</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">text</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">form-control</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">value</span>=<span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">required</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">required</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
+<span class="comment">&lt;!--[/ax:title]--&gt;</span></code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It is not required for a <code>ViewElement</code> to have a name, nor is it required for that name to be unique.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="layout-templates"><a class="anchor" href="#layout-templates"></a>10. Layout templates</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AcrossWebModule provides support for simple layout processing.
+A controller method can be linked to a specific template which will determine some pre- and post-processing that might be done.
+The base infrastructure is provided by <code>WebTemplateProcessor</code>, <code>WebTemplateInterceptor</code> and <code>WebTemplateRegistry</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="creating-a-template"><a class="anchor" href="#creating-a-template"></a>10.1. Creating a template</h3>
+<div class="paragraph">
+<p>The easiest way to create a new template is to create a bean extending <code>LayoutTemplateProcessorAdapterBean</code>.
+Your implementation should get a unique name and a path to the template view file.
+This basic template implementation has adapter methods for registering of web resources and generating one or more menu structures.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example layout template implementation</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Component</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyTemplate</span> <span class="directive">extends</span> LayoutTemplateProcessorAdapterBean {
+
+    <span class="directive">public</span> MyTemplate() {
+        <span class="local-variable">super</span>( <span class="string"><span class="delimiter">&quot;</span><span class="content">MyTemplate</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">th/mysite/layout</span><span class="delimiter">&quot;</span></span> );
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">protected</span> <span class="type">void</span> registerWebResources( WebResourceRegistry registry ) {
+        registry.add( WebResource.CSS, <span class="string"><span class="delimiter">&quot;</span><span class="content">/static/mysite/css/main.css</span><span class="delimiter">&quot;</span></span>, WebResource.VIEWS );
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">protected</span> <span class="type">void</span> buildMenus( MenuFactory menuFactory ) {
+        menuFactory.buildMenu( <span class="string"><span class="delimiter">&quot;</span><span class="content">topMenu</span><span class="delimiter">&quot;</span></span> );
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When the template is applied it will take the original view name and put it as a model attribute with the key <strong>childPage</strong>.
+The actual template view can then dispatch to the original view (or parts of it) when building the final layout.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example Thymeleaf template that renders the content fragment of the original view</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="attribute-name">xmlns:th</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.thymeleaf.org</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+    <span class="tag">&lt;title&gt;</span>My Site<span class="tag">&lt;/title&gt;</span>
+
+    <span class="tag">&lt;script</span> <span class="attribute-name">th:each</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">javascript : ${webResourceRegistry.getResources('javascript')}</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">th:src</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">@{${javascript.data}}</span><span class="delimiter">&quot;</span></span>
+            <span class="attribute-name">th:if</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${javascript.location != 'inline'}</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/script&gt;</span>
+
+    <span class="tag">&lt;link</span> <span class="attribute-name">rel</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">stylesheet</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">type</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">text/css</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">th:each</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">css : ${webResourceRegistry.getResources('css')}</span><span class="delimiter">&quot;</span></span>
+          <span class="attribute-name">th:href</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">@{${css.data}}</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attribute-name">th:replace</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${childPage} :: content</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+        Insert original view
+    <span class="tag">&lt;/div&gt;</span>
+
+    <span class="tag">&lt;script</span> <span class="attribute-name">th:each</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">javascript : ${webResourceRegistry.getResources('javascript-page-end')}</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">th:src</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">@{${javascript.data}}</span><span class="delimiter">&quot;</span></span>
+            <span class="attribute-name">th:if</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${javascript.location != 'inline'}</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/script&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After the initial <code>registerWebResources(WebResourceRegistry)</code> has been executed by the template component, an <code>BuildTemplateWebResourcesEvent</code> with the template name will be published.
+This allows event listeners to add additional resources for a specific template.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="linking-template-to-controller"><a class="anchor" href="#linking-template-to-controller"></a>10.2. Linking a template to a controller</h3>
+<div class="paragraph">
+<p>Any controller method can specify the template to use by setting the <code>@Template</code> annotation with the unique template name.
+The <code>@Template</code> annotation can be set on the <code>@Controller</code> itself (in which case it will apply to all mapping methods) or on mapping method directly.
+The latter will always take precedence.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You can always clear a template from being applied by setting a <code>@ClearTemplate</code> annotation on a method.
+Special Spring MVC return options (like methods annotated with <code>@ResponseBody</code>) will automatically suppress the template.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Methods in a <code>@Controller</code> do not take any <code>@Template</code> annotations of their <code>@ControllerAdvice</code> beans into account and vice versa.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="linking-template-to-exception-handler"><a class="anchor" href="#linking-template-to-exception-handler"></a>10.3. Linking a template to an exception handler</h3>
+<div class="paragraph">
+<p>Just like <code>@Template</code> can be used on any <code>@RequestMapping</code> method, it can also be used on a <code>@ExceptionHandler</code> method.
+Since an exception handler uses its own template, a template might be executed twice if an exception occurs.
+Initially a template might have been executed for the controller method.
+In case of an exception, that template will be cleared and a new <code>WebResourceRegistry</code> will be created for the <code>@ExceptionHandler</code> along with the optional template.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="registering-default-template"><a class="anchor" href="#registering-default-template"></a>10.4. Registering the default template</h3>
+<div class="paragraph">
+<p>If no explicit template is specified, the default template will be used it there is one.
+The default template must be set on the <code>WebTemplateRegistry</code>.
+ set on the <code>WebTemplateRegistry</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example template registering itself as default</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Component</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyTemplate</span> <span class="directive">extends</span> LayoutTemplateProcessorAdapterBean {
+    ...
+
+    <span class="annotation">@Autowired</span>
+    <span class="directive">public</span> <span class="type">void</span> registerAsDefaultTemplate( WebTemplateRegistry webTemplateRegistry ) {
+        webTemplateRegistry.setDefaultTemplateName( getName() );
+    }
+
+    ...
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="partial-rendering"><a class="anchor" href="#partial-rendering"></a>11. Partial rendering</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Apart from <a href="#layout-templates">layout templates</a>, AcrossWebModule also activates support for partial rendering: rendering only a specific fragment of a (Thymeleaf) template, or even a single <code>ViewElement</code>.
+This can be done by simply specifying the fragment to render as a <strong>_partial</strong> request parameter.</p>
+</div>
+<div class="paragraph">
+<p>Partial rendering is done by specifying the Thymeleaf fragment name in the <strong>_partial</strong> request parameter.
+If you want to render a single <code>ViewElement</code>, you should specify the <code>ViewElement</code> name prefixed with <strong>::</strong>.</p>
+</div>
+<div class="paragraph">
+<p>If a partial fragment is specified, the entire <code>WebTemplateProcessor</code> will be skipped, only the target view will be rendered.
+All other controller code will still be executed, all markup will still be built, but only the markup of the selected elements will be written to the response.</p>
+</div>
+<div class="paragraph">
+<div class="title">Example</div>
+<p>Assume we create a single <code>ViewElement</code> with a specific name.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@GetMapping</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/render</span><span class="delimiter">&quot;</span></span>)
+<span class="predefined-type">String</span> get() {
+  model.addAttribute( <span class="string"><span class="delimiter">&quot;</span><span class="content">myViewElement</span><span class="delimiter">&quot;</span></span>, <span class="keyword">new</span> TextViewElement( <span class="string"><span class="delimiter">&quot;</span><span class="content">myViewElement</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">some text</span><span class="delimiter">&quot;</span></span> ) );
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And we render it in the following snippet:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;h1&gt;</span>title<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;div</span> <span class="attribute-name">th:fragment</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">mycontent</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+        <span class="tag">&lt;across:view</span> <span class="attribute-name">element</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">${myViewElement}</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
+<span class="tag">&lt;/div&gt;</span></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>/render</em> would output <em>&lt;h1&gt;title&lt;/h1&gt;&lt;div&gt;some text&lt;/div&gt;</em></p>
+</li>
+<li>
+<p><em>/render?_partial=mycontent</em> would output <em>&lt;div&gt;some text&lt;/div&gt;</em></p>
+</li>
+<li>
+<p><em>/render?_partial=::myViewElement</em> would output <em>some text</em></p>
+</li>
+<li>
+<p><em>/render?_partial=mycontent::myViewElement</em> would also output <em>some text</em></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="localized-text"><a class="anchor" href="#localized-text"></a>12. Localizing text</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Text message codes can be translated into text messages via the <code>MessageSource</code>.
+AcrossWebModule also provides a utility bean that wraps the <code>MessageSource</code> for optional resolving of message codes.</p>
+</div>
+<h3 id="localizedtextresolver" class="discrete">LocalizedTextResolver</h3>
+<div class="paragraph">
+<p>The <code>LocalizedTextResolver</code> can be used to localize text snippets.
+A text snippet can either be the final text, or a message code construct.</p>
+</div>
+<div class="paragraph">
+<p>If the snippet is a message code construct, the message code will be resolved and the return value used.
+Otherwise the original text will be used.
+This makes the <code>LocalizedTextResolver</code> useful for integrating with previously existing code where fixed text has been provided.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>LocalizedTextResolver</code> is a simple generic interface.
+You could easily plug in another implementation by registering another implementation as the primary bean.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">Examples of text snippet resolving</div>
+<ul>
+<li>
+<p><strong>Some text</strong> will always return <em>Some text</em></p>
+</li>
+<li>
+<p><strong>#{message.code}</strong> will resolve <em>message.code</em> and either return the resolved message or the unresolved code</p>
+</li>
+<li>
+<p><strong>#{message.code=Default message}</strong> will resolve <em>message.code</em> and return the resolved message or <em>Default message</em> if unresolvable</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="generating-urls"><a class="anchor" href="#generating-urls"></a>13. Generating URLs</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="web-app-path-resolver-and-path-prefixing"><a class="anchor" href="#web-app-path-resolver-and-path-prefixing"></a>13.1. WebAppPathResolver and path prefixing</h3>
+<div class="paragraph">
+<p>AcrossWebModule introduces the <code><a href="#prefixed-request-mappings">PrefixingRequestMappingHandlerMapping</a></code>.
+This allows <code>@RequestMapping</code> methods to be prefixed at runtime, based on configuration.</p>
+</div>
+<div class="paragraph">
+<p>Some standard Across modules like AdminWebModule and DebugWebModule make use of this functionality.</p>
+</div>
+<div class="paragraph">
+<p>Because the actual relative path of a controller is then not known during development, you can define a relative path with a prefix.
+If you provide your path to the <code>WebAppPathResolver</code> bean, the prefix will then be replaced at runtime by the final path.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="#thymeleaf-dialect">AcrossWebModule Thymeleaf dialect</a> integrates with the <code>WebAppPathResolver</code> so prefix based paths are supported directly in templates.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you want to ensure your relative path is never prefixed, start it with an exclamation mark (!).
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="default-prefixes"><a class="anchor" href="#default-prefixes"></a>13.1.1. Default prefixes</h4>
+<div class="paragraph">
+<p>AcrossWebModule registers default prefixers for static resources:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>@resource</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Static resources in the root resources folder.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>@static</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Static resources in the <em>static</em> subfolder.
+This is a short-hand for <em>@resource:/static/&lt;path&gt;</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="path-resolving-examples"><a class="anchor" href="#path-resolving-examples"></a>13.1.2. Path resolving examples</h4>
+<div class="paragraph">
+<p>The examples assume that <em>res</em> is the configured <strong>acrossWebModule.resources.path</strong>:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Input</th>
+<th class="tableblock halign-left valign-top">Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>/my/path</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>/my/path</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>@resource:/my/path</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>/res/my/path</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>@static:/my/path?id=10#home</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>/res/static/my/path?id=10#home</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>redirect:@resource/my/path</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>redirect:/res/my.path</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>!@resource/my/path</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>@resource/my/path</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="registering-your-own-prefixing-handler-mapping-and-resolver"><a class="anchor" href="#registering-your-own-prefixing-handler-mapping-and-resolver"></a>13.1.3. Registering your own prefixing handler mapping and resolver</h4>
+<div class="paragraph">
+<p>See <code>PrefixingHandlerMappingConfiguration</code> and <code>PrefixingPathContext</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="web-app-link-builder"><a class="anchor" href="#web-app-link-builder"></a>13.2. WebAppLinkBuilder</h3>
+<div class="paragraph">
+<p>The <code>WebAppPathResolver</code> will only replace the relative path prefix, but to generate a valid application link you would still need to prepend the possible context path as wel as encode the URL.
+If you want to generate a complete link from code, you can use the <code>WebAppLinkBuilder</code> bean.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+You should only use the the <code>WebAppLinkBuilder</code> if your links will not be processed additionally.
+To generate redirect paths, or links for a <code>spring:url</code> or Thymeleaf link builder <code>@{}</code>, use the <code>WebAppPathResolver</code>.<br>
+<br>
+Otherwise you could end up with links having the context path added twice.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="thymeleaf-dialect"><a class="anchor" href="#thymeleaf-dialect"></a>14. Thymeleaf dialect</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AcrossWebModule also registers a custom Thymeleaf dialect.
+The Thymeleaf dialect uses the prefix <strong>across</strong> and offers a number of utility elements, attributes and expression objects.</p>
+</div>
+<div class="sect2">
+<h3 id="element-processors"><a class="anchor" href="#element-processors"></a>14.1. Element processors</h3>
+<div class="paragraph">
+<p>The <code>AcrossWebDialect</code> adds the following elements that can be used in HTML templates:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Attributes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>across:view</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Takes a <code>ViewElement</code> as <em>element</em> attribute and will be replaced by the rendering of that <code>ViewElement</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>element</em> : <code>ViewElement</code> instance</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="attribute-processors"><a class="anchor" href="#attribute-processors"></a>14.2. Attribute processors</h3>
+<div class="paragraph">
+<p>The <code>AcrossWebDialect</code> adds the following attributes that can be used in HTML templates:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 37.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>across:resource</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Takes a relative path to a static resource.
+Will generate a valid url path to that static resource and will write the value as a new attribute.
+The name of the attribute that will be written depends on the element the attribute is used on.</p>
+<p class="tableblock">All HTML5 elements supporting <strong>src</strong> or <strong>href</strong> attributes are supported, along with <em>image</em> and <em>use</em> elements</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;a across:resource="/img"/&gt;</em><br>
+output: <em>&lt;a href="/res/img"&gt;</em></p>
+<p class="tableblock"><em>&lt;script across:resource="/js/my.js"/&gt;</em><br>
+output: <em>&lt;script src="/res/js/my.js"/&gt;</em></p>
+<p class="tableblock"><em>&lt;image across:resource="/img"/&gt;</em><br>
+output: <em>&lt;image xlink:href="/res/img"/&gt;</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>across:static</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Takes a relative path to a resource in the <em>static</em> subfolder.
+Using <em>across:static="/img"</em> would be the same as using <em>across:resource="/static/img"</em>.
+Supports the same elements as <em>across:resource</em>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;a across:static="/img"/&gt;</em><br>
+ output: <em>&lt;a href="/res/static/img"&gt;</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>across:resource-attr-name</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Same as <strong>across:resource</strong> except the resulting attribute name will be <em>attr-name</em>.<br>
+Any double dash (--) will be replaced by a colon (:).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;a across:resource-data-url="/img"/&gt;</em><br>
+ output: <em>&lt;a data-url="/res/img"&gt;</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>across:static-attr-name</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Same as <strong>across:static</strong> except the resulting attribute name will be <em>attr-name</em>.<br>
+Any double dash (--) will be replaced by a colon (:).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;a across:static-data-url="/img"/&gt;</em><br>
+ output: <em>&lt;a data-url="/res/static/img"&gt;</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="expression-objects"><a class="anchor" href="#expression-objects"></a>14.3. Expression objects</h3>
+<div class="paragraph">
+<p>The <code>AcrossWebDialect</code> makes the following expression objects available for script execution:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 60%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>#webapp</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WebAppPathResolver</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Used for generating prefixed links based on a relative path.
+For example to static resources.</p>
+<p class="tableblock">These links can still be processed by the Thymeleaf link builder (<code>@{..}</code>).
+Usually not necessary to use the <code>#webapp</code> however, see the <a href="#url-support">URL support section</a>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>#htmlIdStore</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>HtmlIdStore</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Holds the generated HTML id attribute for a <code>ViewElement</code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="url-support"><a class="anchor" href="#url-support"></a>14.4. URL support</h3>
+<div class="paragraph">
+<p>Apart from the availability of <strong>#webapp</strong>, AcrossWebModule activates transparent support for the <a href="#web-app-path-resolver-and-path-prefixing"><code>WebAppPathResolver</code></a> on Thymeleaf URL generation.<br></p>
+</div>
+<div class="paragraph">
+<p>Example:
+<em>&lt;img th:src="@{@static:/img}"&gt;</em> would produce <em>&lt;img src="/res/static/img"&gt;</em></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="request-mapping-extensions"><a class="anchor" href="#request-mapping-extensions"></a>15. @RequestMapping extensions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AcrossWebModule adds several extensions to the out-of-the-box Spring MVC functionality.</p>
+</div>
+<div class="sect2">
+<h3 id="custom-request-mapping"><a class="anchor" href="#custom-request-mapping"></a>15.1. @CustomRequestMapping</h3>
+<div class="paragraph">
+<p>Default <code>@RequestMapping</code> implementations can be further specified by adding custom request conditions using <code>@CustomRequestMapping</code> annotations.
+The latter allows you to restrict a <code>@RequestMapping</code> on any annotation attribute value on the handler method, or even any attribute value that is available on the <code>HttpServletRequest</code>.</p>
+</div>
+<div class="paragraph">
+<p>A <code>@CustomRequestMapping</code> allows you to specify a number of <code>CustomRequestCondition</code> classes.
+When building the request mapping info, AcrossWebModule will create beans of every <code>CustomRequestCondition</code> and will supply them with the <code>AnnotatedElement</code> that represents the handler method or handler type they were configured on.
+Multiple <code>CustomRequestCondition</code> classes can be specified and they can be combined on both handler type and handler method, just like the regular <code>@RequestMapping</code>.</p>
+</div>
+<div class="paragraph">
+<p>You can also use <code>@CustomRequestMapping</code> as a meta-annotation, which is often much easier in use.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+When adding multiple <code>CustomRequestCondition</code> to a mapping, the mapping will only be applied if <strong>all</strong> conditions match.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<div class="title">Example @CustomRequestMapping</div>
+<p>The following example creates an additional request mapping condition that will only use that mapping if the request has a specific referrer header value.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Controller</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">TestController</span> {
+    <span class="comment">/**
+     * Example mapping that accepts only GET requests made to the
+     * fromGoogle path if the request referrer header contains
+     * http://www.google.com.
+     */</span>
+    <span class="annotation">@GetMapping</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/fromGoogle</span><span class="delimiter">&quot;</span></span>)
+    <span class="annotation">@ReferrerMapping</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.google.com</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">public</span> <span class="predefined-type">String</span> google() {
+        ...
+    }
+}
+
+<span class="comment">/**
+ * Custom mapping that will only match if any of the referrers are set.
+ * If both type and method level annotation is present, the method level annotation
+ * attributes will replace the type level attributes.  This is taken care of in the
+ * combine() method of the ReferrerRequestCondition.
+ */</span>
+<span class="annotation">@Target</span>({ <span class="predefined-type">ElementType</span>.METHOD, <span class="predefined-type">ElementType</span>.TYPE })
+<span class="annotation">@Retention</span>(<span class="predefined-type">RetentionPolicy</span>.RUNTIME)
+<span class="annotation">@Documented</span>
+<span class="annotation">@CustomRequestMapping</span>(ReferrerRequestCondition.class)
+<span class="directive">private</span> <span class="annotation">@interface</span> ReferrerMapping
+{
+    <span class="comment">// possible header values - the mapping will apply if the request</span>
+    <span class="comment">// referrer has any of these values</span>
+    <span class="predefined-type">String</span><span class="type">[]</span> value();
+}
+
+<span class="comment">/**
+ * Condition implementation.  This will be instantiated as a bean,
+ * so wiring other components is possible as well as long as they are
+ * visible in the AcrossWebModule context.
+ */</span>
+<span class="directive">private</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">ReferrerRequestCondition</span> <span class="directive">extends</span> AbstractCustomRequestCondition&lt;ReferrerRequestCondition&gt;
+{
+    <span class="directive">private</span> <span class="predefined-type">String</span><span class="type">[]</span> referrers = <span class="keyword">new</span> <span class="predefined-type">String</span>[<span class="integer">0</span>];
+
+    <span class="comment">// get the configured headers from the annotation</span>
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="type">void</span> setAnnotatedElement( <span class="predefined-type">AnnotatedElement</span> element ) {
+        referrers = AnnotatedElementUtils.findMergedAnnotation( element, ReferrerMapping.class )
+                                         .value();
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">protected</span> <span class="predefined-type">Collection</span>&lt;<span class="predefined-type">String</span>&gt; getContent() {
+        <span class="keyword">return</span> <span class="predefined-type">Arrays</span>.asList( referrers );
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">protected</span> <span class="predefined-type">String</span> getToStringInfix() {
+        <span class="keyword">return</span> <span class="string"><span class="delimiter">&quot;</span><span class="content"> || </span><span class="delimiter">&quot;</span></span>;
+    }
+
+    <span class="comment">// no relevant combination - other simply replaces this one</span>
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> ReferrerRequestCondition combine( ReferrerRequestCondition other ) {
+        <span class="keyword">return</span> other;
+    }
+
+    <span class="comment">// return self if headers matches, else there is no matching condition</span>
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> ReferrerRequestCondition getMatchingCondition( HttpServletRequest request ) {
+        <span class="keyword">if</span> ( StringUtils.containsAny( request.getHeader( HttpHeaders.REFERER ), referrers ) ) {
+            <span class="keyword">return</span> <span class="local-variable">this</span>;
+        }
+        <span class="keyword">return</span> <span class="predefined-constant">null</span>;
+    }
+
+    <span class="comment">// always consider them equal</span>
+    <span class="comment">// there is no relevant ordering if headers are different</span>
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="type">int</span> compareTo( ReferrerRequestCondition other, HttpServletRequest request ) {
+        <span class="keyword">return</span> <span class="integer">0</span>;
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="prefixed-request-mappings"><a class="anchor" href="#prefixed-request-mappings"></a>15.2. Prefixed request mappings</h3>
+<div class="paragraph">
+<p>AcrossWebModule contains a <code>PrefixingRequestMappingHandlerMapping</code> implementation.
+The <code>PrefixingRequestMappingHandlerMapping</code> allows request mappings to be prefixed at runtime.
+Core infrastructure is the <code>PrefixingRequestMappingHandlerMapping</code> and the <code>PrefixingHandlerMappingConfigurer</code>.
+The latter can be used to add interceptors only to request mappings attached to a specific <code>PrefixingRequestMappingHandlerMapping</code> instance.</p>
+</div>
+<div class="paragraph">
+<p><code>PrefixingRequestMappingHandlerMapping</code> also fully supports <a href="#custom-request-mapping">custom request conditions</a>.</p>
+</div>
+<div class="paragraph">
+<p>Examples of prefixing request mappings can be found in the <a href="https://across.foreach.be/modules/AdminWebModule">AdminWebModule</a> and <a href="https://across.foreach.be/modules/DebugWebModule">DebugWebModule</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="default-http-encoding"><a class="anchor" href="#default-http-encoding"></a>16. Default HTTP encoding</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AcrossWebModule registers a default <code>CharacterEncodingFilter</code> that forces the request and response encoding to use UTF-8.
+This is done through the <code>HttpEncodingAutoConfiguration</code> from Spring Boot and can be controlled with the following properties:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>spring.http.encoding.enabled</p>
+</li>
+<li>
+<p>spring.http.encoding.charset</p>
+</li>
+<li>
+<p>spring.http.encoding.force</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If a <code>CharacterEncodingFilter</code> bean is found in the parent <code>ApplicationContext</code> but default HTTP encoding is enabled, AcrossWebModule will take care of registering that filter bean.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="registering-servlets-and-filters"><a class="anchor" href="#registering-servlets-and-filters"></a>17. Registering servlets and filters</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is possible to register <code>Servlet</code> and <code>Filter</code> instances from within an Across module by providing <code>ServletContextInitializer</code> beans.
+During bootstrap, AcrossWebModule will detect these beans and execute them <a href="developing-applications.html#bean-order">in order</a>.</p>
+</div>
+<div class="paragraph">
+<p>For the <code>ServletContext</code> to be customized, the <code>AcrossContext</code> must be bootstrapped during the <code>ServletContext</code> initialization.
+This is the default when you use <code>@AcrossApplication</code> with an embedded container (Spring Boot application).
+When deploying to a separate container, you can use <code>AbstractAcrossServletInitializer</code> to achieve the same.</p>
+</div>
+<div class="paragraph">
+<div class="title">Conditionals</div>
+<p><code>@ConditionalOnConfigurableServletContext</code> can be used to verify that the context is being bootstrapped in a web configuration where the <code>ServletContext</code> allows customization.
+Likewise <code>@ConditionalOnNotConfigurableServletContext</code> can be used to check the opposite is true.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example registering the resourceUrlEncodingFilter after all other filters</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Bean</span>
+<span class="annotation">@ConditionalOnProperty</span>(prefix = <span class="string"><span class="delimiter">&quot;</span><span class="content">acrossWebModule.resources.versioning</span><span class="delimiter">&quot;</span></span>, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">enabled</span><span class="delimiter">&quot;</span></span>, matchIfMissing = <span class="predefined-constant">true</span>)
+<span class="annotation">@ConditionalOnConfigurableServletContext</span>
+<span class="directive">public</span> FilterRegistrationBean resourceUrlEncodingFilterRegistration() {
+    FilterRegistrationBean registration = <span class="keyword">new</span> FilterRegistrationBean();
+    registration.setName( RESOURCE_URL_ENCODING_FILTER );
+    registration.setFilter( <span class="keyword">new</span> ResourceUrlEncodingFilter() );
+    registration.setAsyncSupported( <span class="predefined-constant">true</span> );
+    registration.setMatchAfter( <span class="predefined-constant">true</span> );
+    registration.setUrlPatterns( <span class="predefined-type">Collections</span>.singletonList( <span class="string"><span class="delimiter">&quot;</span><span class="content">/*</span><span class="delimiter">&quot;</span></span> ) );
+    registration.setDispatcherTypes( DispatcherType.REQUEST, DispatcherType.ERROR, DispatcherType.ASYNC );
+    registration.setOrder( Ordered.LOWEST_PRECEDENCE );
+
+    <span class="keyword">return</span> registration;
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<code>ServletContextInitializer</code> beans can be ordered but the order between initializers defined inside the Across context and outside the context (on application configuration level) is <em>non deterministic</em>.
+To enforce overall ordering, it might be easiest to add those initializers to a module using <code>@ModuleConfiguration</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="multipart-support"><a class="anchor" href="#multipart-support"></a>18. Multipart support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default AcrossWebModule will attempt to automatically configure a <code>MultipartFilter</code> to support multipart form data.
+When correctly configured, this will enable multipart support for all servlets and web requests.</p>
+</div>
+<div class="paragraph">
+<div class="title">Servlet container support</div>
+<p>By default a <code>StandardServletMultipartFilter</code> is being added, that builds on top of the Servlet 3.0 specification.
+Servlets will still need a <code>MultipartConfigElement</code> set for multipart data to be handled correctly.
+The latter is done automatically for the <code>DispatcherServlet</code>.</p>
+</div>
+<div class="paragraph">
+<div class="title">Customizing the multipart configuration</div>
+<p>Multipart settings can be configured using the <code>spring.http.multipart.*</code> properties from Spring Boot (<code>MultipartProperties</code> class).
+Alternatively you can provide a custom <code>MultipartConfigElement</code> bean.
+This bean will be automatically picked up for the configuration.
+If none is present, AcrossWebModule will create a default bean.</p>
+</div>
+<div class="paragraph">
+<div class="title">Disabling multipart configuration</div>
+<p>Disabling the automatic multipart resolving configuration can be done by setting property <code>spring.http.multipart.enabled</code> to <code>false</code>.</p>
+</div>
+<div class="paragraph">
+<div class="title">Apache Commons support</div>
+<p>If <a href="http://commons.apache.org/proper/commons-fileupload/">Apache Commons Fileupload</a> is available on the classpath, the filter will be configured using a <code>CommonsMultipartResolver</code> instead.</p>
+</div>
+<div class="paragraph">
+<div class="title">Manually creating a MultipartResolver</div>
+<p>It is also possible to manually create a <code>MultipartResolver</code> bean.
+The bean name will determine how multipart resolving is applied:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><strong>filterMultipartResolver</strong></dt>
+<dd>
+<p>Will still enable the <code>MultipartFilter</code> to be registered but will use the configured bean as its internal resolver.</p>
+</dd>
+<dt class="hdlist1"><strong>multipartResolver</strong></dt>
+<dd>
+<p>Will disable the <code>MultipartFilter</code> registration, but will register the resolver on the <code>DispatcherServlet</code>.
+Multipart support will only be enabled on requests made through the <code>DispatcherServlet</code>.</p>
+</dd>
+</dl>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Spring Boot will automatically rename any <code>MultipartResolver</code> bean to <strong>multipartResolver</strong> so it will be picked up by the <code>DispatcherServlet</code>.
+If you want to use the <code>MultipartFilter</code> but want to customize the <code>MultipartResolver</code> it uses, you should ensure that the resolver bean is injected in the AcrossWebModule and not exposed.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="development-mode-support"><a class="anchor" href="#development-mode-support"></a>19. Development mode support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AcrossWebModule supports development mode retrieval of physical resources.
+If the conventions for static resources and Thymeleaf templates were followed, these will be fetched automatically from their physical location.
+This ensures that an application restart is not required for static resources or Thymeleaf rendering.</p>
+</div>
+<div class="paragraph">
+<p>If development mode is active AcrossWebModule will also send no-cache headers for static resources and will use a generated fixed version if versioning is enabled.</p>
+</div>
+<div class="paragraph">
+<p><code>ViewElement</code> rendering will also <a href="#development-mode-rendering">output debugging information</a> when development mode is active.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="published-events"><a class="anchor" href="#published-events"></a>20. Published events</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following is a listing of possible events published by the AcrossWebModule or one of its components.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Core events</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Event type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BuildMenuEvent&lt;&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Event fired by the <code>MenuFactory</code> whenever a menu is being generated.
+Allows configuring the menu using the <code>PathBasedMenuBuilder</code>.
+Event discriminator is the menu name or custom menu type.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BuildMenuFinishedEvent</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Event fired by the <code>MenuFactory</code> whenever a menu has been build, sorted and the corresponding item has been selected.
+Can be used to modify the menu after build has completed.
+Event discriminator is the menu name.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BuildTemplateWebResourcesEvent</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Event published by a <code>LayoutTemplateProcessorAdapterBean</code> after a named template has been prepared.
+Allows event handlers to register additional web resources for that template.
+Event discriminator is the template name.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 3.0.0.RELEASE<br>
+Last updated 2018-03-29 16:27:59 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "Across reference docs";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>WebCmsModule - Importing data</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="importing-data" class="book toc2 toc-left">
+<div id="header">
+<h1>WebCmsModule - Importing data</h1>
+<div class="details">
+<span id="revnumber">version 0.0.4.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">How-tos</div>
+<ul class="sectlevel0">
+<li><a href="#importing-importing-data">Importing data</a>
+<ul class="sectlevel1">
+<li><a href="#webcmsdataimportservice">1. WebCmsDataImportService</a></li>
+<li><a href="#importing-installer">2. Using an installer</a></li>
+<li><a href="#importing-yaml">3. YAML structure</a>
+<ul class="sectlevel2">
+<li><a href="#root-key-values">3.1. Root key values</a></li>
+<li><a href="#data-importers">3.2. Data importers</a></li>
+<li><a href="#generic-importers">3.3. Generic importers</a></li>
+<li><a href="#importing-importing-action">3.4. Import action</a></li>
+<li><a href="#creating-a-custom-importer">3.5. Creating a custom importer</a></li>
+<li><a href="#debugging-imports">3.6. Debugging imports</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<h1 id="importing-importing-data" class="sect0"><a class="anchor" href="#importing-importing-data"></a>Importing data</h1>
+<div class="openblock partintro">
+<div class="content">
+WebCmsModule provides infrastructure for easy importing of data using YAML files.
+The data import services are also the ones used for the default data of WebCmsModule, see the <a href="appendix.html#appendix-default-data">appendix</a> for the YAML version of the default types and assets.
+</div>
+</div>
+<div class="sect1">
+<h2 id="webcmsdataimportservice"><a class="anchor" href="#webcmsdataimportservice"></a>1. WebCmsDataImportService</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>WebCmsDataImportService</code> allows importing data from <code>Map</code> structures.
+The <code>Map</code> based data could for example be sourced from YAML, JSON or XML files.</p>
+</div>
+<div class="paragraph">
+<p>When converting to the domain model, the <code>WebCmsDataImportService</code> will dispatch to <code>WebCmsDataImporter</code> beans for handling data items.
+The <code>WebCmsDataConversionService</code> is used to convert from raw values (for example <code>String</code>) to the actual data type (for example <code>WebCmsPage</code>).</p>
+</div>
+<div class="listingblock">
+<div class="title">Example importing from YAML file data</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">Yaml yaml = <span class="keyword">new</span> Yaml();
+<span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt; data = (<span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt;) yaml.load( inputStream );
+dataImportService.importData( data );</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="importing-installer"><a class="anchor" href="#importing-installer"></a>2. Using an installer</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>AbstractWebCmsDataInstaller</code> is a base class for an installer that imports one or more YAML files using the <code>WebCmsDataImportService</code>.
+The files specified will be imported in registration order.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example YAML data installer</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Installer</span>(description = <span class="string"><span class="delimiter">&quot;</span><span class="content">Install some test data</span><span class="delimiter">&quot;</span></span>, phase = InstallerPhase.AfterContextBootstrap, version = <span class="integer">1</span>)
+<span class="annotation">@RequiredArgsConstructor</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">TestDataInstaller</span> <span class="directive">extends</span> AbstractWebCmsDataInstaller
+{
+    <span class="annotation">@Override</span>
+        <span class="directive">protected</span> <span class="type">void</span> registerResources( <span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt; locations ) {
+                locations.add( <span class="string"><span class="delimiter">&quot;</span><span class="content">classpath:installers/test-data/my-types.yml</span><span class="delimiter">&quot;</span></span> );
+                locations.add( <span class="string"><span class="delimiter">&quot;</span><span class="content">classpath:installers/test-data/my-assets.yml</span><span class="delimiter">&quot;</span></span> );
+        }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="importing-yaml"><a class="anchor" href="#importing-yaml"></a>3. YAML structure</h2>
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+In this chapter we focus on the key structure for importing data and use YAML examples.
+The <code>WebCmsDataImportService</code> acts on <code>Map</code>/<code>Collection</code> data structures however, so JSON, XML or native structures could be used as well.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">Example YAML data: updating a <code>WebCmsPage</code> with a component and menu item</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">assets</span>:
+  <span class="error">wcm:action</span>: <span class="error">update</span>
+  <span class="key">page</span>:
+    - <span class="string"><span class="content">objectId: &quot;wcm:asset:page:test-render-components&quot;</span></span>
+      <span class="key">published</span>: <span class="string"><span class="content">true</span></span>
+      <span class="error">wcm:components</span>:
+        <span class="key">page-title</span>:
+          <span class="key">componentType</span>: <span class="string"><span class="content">plain-text</span></span>
+          <span class="key">title</span>: <span class="string"><span class="content">Page title</span></span>
+          <span class="key">content</span>: <span class="string"><span class="content">Demo titel</span></span>
+      <span class="error">wcm:menu-items</span>:
+        - <span class="string"><span class="content">title: test-1</span></span>
+          <span class="key">group</span>: <span class="string"><span class="content">true</span></span>
+          <span class="key">path</span>: <span class="string"><span class="content">/my/generic/path</span></span>
+          <span class="key">menu</span>: <span class="string"><span class="content">sidenav</span></span></code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="root-key-values"><a class="anchor" href="#root-key-values"></a>3.1. Root key values</h3>
+<div class="paragraph">
+<p>By default, WebCmsModule supports 4 top-level keywords:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>assets</code>: specifies the children define <code>WebCmsAsset</code> import data</p>
+</li>
+<li>
+<p><code>types</code>: specifies the children define <code>WebCmsTypeSpecifier</code> import data</p>
+</li>
+<li>
+<p><code>menus</code>: specifies the children define <code>WebCmsMenu</code> import data</p>
+</li>
+<li>
+<p><code>redirects</code> : specifies the children define <code>WebCmsRemoteEndpoint</code> import data</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For <code>assets</code> and <code>types</code> the child key (eg. <code>page</code>) determines the sub-type that is being imported (eg. <code>WebCmsPage</code>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="data-importers"><a class="anchor" href="#data-importers"></a>3.2. Data importers</h3>
+<div class="paragraph">
+<p>WebCmsModule provides importers for most default assets like <code>WebCmsPage</code>, <code>WebCmsMenu</code> etc.</p>
+</div>
+<div class="paragraph">
+<p>See the relevant chapters for examples and more details:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="domain-model.html#menu-web-cms-menu-import">importing menus</a></p>
+</li>
+<li>
+<p><a href="components.html#components-web-cms-component-import">importing web components</a></p>
+</li>
+<li>
+<p><a href="domain-model.html#pages-web-cms-page-import">importing pages</a></p>
+</li>
+<li>
+<p><a href="domain-model.html#publication-web-cms-article-import">importing publications and articles</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="generic-importers"><a class="anchor" href="#generic-importers"></a>3.3. Generic importers</h3>
+<div class="paragraph">
+<p>WebCmsModule has some generic importers that can be used in multiple situations.
+These importers act on a specific prefixed keyword.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Generic importer keywords</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>wcm:action</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Can be used on pretty much any data block and defines the action that should be performed with that data.
+See <a href="#importing-importing-action">the chapter on import actions</a> for more details.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>wcm:components</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Can be used on any data block representing a <code>WebCmsObject</code>.
+Specifies that the child data represents components owned by the parent <code>WebCmsObject</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>wcm:assets</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Can be used on any data block representing a <code>WebCmsObject</code>.
+Specifies that the child data represents links between the parent <code>WebCmsObject</code> and a <code>WebCmsAsset</code>.
+These links are mapped using <code>WebCmsAssetLink</code> and <code>WebCmsAssetLinkRepository</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>wcm:types</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Can be used on any data block representing a <code>WebCmsObject</code>.
+Specifies that the child data represents links between the parent <code>WebCmsObject</code> and a <code>WebCmsTypeSpecifier</code>.
+These links are mapped using the <code>WebCmsTypeSpecifierLink</code> and <code>WebCmsTypeSpecifierLinkRepository</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>wcm:menu-items</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Can be used on any data block representing a <code>WebCmsAsset</code>.
+ Will create menu items for that asset provided that there is a <code>WebCmsAssetEndpoint</code> available as well.
+See <a href="domain-model.html#pages-web-cms-page-import">page importing</a> for examples.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>wcm:urls</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Can be used on any data block representing a <code>WebCmsAsset</code>.
+Will create urls for the asset provided that there is a <code>WebCmsAssetEndpoint</code> available.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="importing-importing-action"><a class="anchor" href="#importing-importing-action"></a>3.4. Import action</h3>
+<div class="paragraph">
+<p>The optional <code>wcm:action</code> represents the import action that should be performed with a data block (insert, update etc).
+If the parent data contains a wcm:action and the child doesn&#8217;t, the child action is the same as the parent one.</p>
+</div>
+<div class="paragraph">
+<p>If no <code>wcm:action</code> is specified, the value is <code>create-update</code> which means the data will be created if it does not yet exist, or updated if it does.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Possible import action values</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Only insert the data if it does not yet exist.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">update</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Update any existing data, but do nothing if it does not exist.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">create-update</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Insert the data if it does not yet exist, update it otherwise.
+This is the default value if no action is specified.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Delete the data if it exists.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">replace</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If the item exists, overwrite it entirely with the new data.
+This replaces the existing object but keeps the same identity (primary key).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="creating-a-custom-importer"><a class="anchor" href="#creating-a-custom-importer"></a>3.5. Creating a custom importer</h3>
+<div class="paragraph">
+<p>To create a custom object importer, simply implement the <code>WebCmsDataImporter</code> interface and provide your instances as beans.</p>
+</div>
+<div class="paragraph">
+<p>The <code>AbstractWebCmsDataImporter</code> is a generic base class that provides useful hooks for implementing import logic, as well as logging and exception handling in line with the default importers.</p>
+</div>
+<div class="paragraph">
+<p>If you want to import a custom <code>WebCmsAsset</code>, the <code>AbstractWebCmsAssetImporter</code> is a more specialized base class.</p>
+</div>
+<div class="sect3">
+<h4 id="importing-custom-properties"><a class="anchor" href="#importing-custom-properties"></a>3.5.1. Importing custom properties</h4>
+<div class="paragraph">
+<p>You can easily define custom properties to import as long as you namespace them (eg. <strong>mynamespace:</strong>).
+These properties will not be handled by the default value to object converters.</p>
+</div>
+<div class="paragraph">
+<p>NOTE The <strong>wcm:</strong> namespace is for WebCmsModule itself, example properties are <strong>wcm:components</strong> and <strong>wcm:menu-items</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Provide your own property importer by implementing <code>WebCmsPropertyDataImporter</code> and creating your implementation as a bean.
+The <code>AbstractWebCmsPropertyDataImporter</code> is a useful base class for common implementations.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="debugging-imports"><a class="anchor" href="#debugging-imports"></a>3.6. Debugging imports</h3>
+<div class="paragraph">
+<p>Receiving debug information on data imports can be done by setting the log levels for <code>WebCmsDataImporter</code> and <code>WebCmsPropertyDataImporter</code> implementations to <strong>TRACE</strong>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.0.4.RELEASE<br>
+Last updated 2018-03-30 16:02:35 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "WebCmsModule docs";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

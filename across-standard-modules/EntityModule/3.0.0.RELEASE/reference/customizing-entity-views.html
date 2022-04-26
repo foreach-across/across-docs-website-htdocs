@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>Customizing generated Entity views</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="customizing-generated-entity-views" class="book">
+<div id="header">
+<h1>Customizing generated Entity views</h1>
+<div class="details">
+<span id="revnumber">version 3.0.0.RELEASE</span>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following section gives an overview of common customizations for generated entity views.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="view-builder-initializer"><a class="anchor" href="#view-builder-initializer"></a>1. Customizing the EntityViewFactoryBuilderInitializer</h3>
+
+</div>
+<div class="sect2">
+<h3 id="changing-entity-names-property-names-or-other-labels"><a class="anchor" href="#changing-entity-names-property-names-or-other-labels"></a>2. Changing entity names, property names or other labels</h3>
+<div class="paragraph">
+<p>All entity names, property names and labels can be customized using message sources.
+For an explanation of the different message codes used, see <a href="#appendix-message-codes">the relevant appendix</a>.</p>
+</div>
+<div class="paragraph">
+<p>See also the section on <a href="#configuring-form-text">configuring form controls text</a> for common customizations.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="customize-page-layout"><a class="anchor" href="#customize-page-layout"></a>3. Setting page title or changing page layout</h3>
+<div class="paragraph">
+<p>Setting a page title can be done by adding the corresponding message code.
+All default views automatically add a page title (optionally with sub text) if the corresponding message code resolves a non-empty string.</p>
+</div>
+<div class="paragraph">
+<p>See the <a href="#appendix-message-codes">message codes appendix</a> for a list of relevant message codes.</p>
+</div>
+<div class="paragraph">
+<div class="title">Changing the page layout</div>
+<p>Entity views use a <code>PageContentStructure</code> for the base structure of the web page.
+The <code>PageContentStructure</code> is available as a request scoped bean, but can also be retrieved from the <code>EntityViewRequest</code>.</p>
+</div>
+<div class="paragraph">
+<p>See the {admin-web-module-url}#page-content-structure[AdminWebModule reference documentation] for a basic explanation of <code>PageContentStructure</code>.</p>
+</div>
+<div class="paragraph">
+<div class="title">Modifying the page layout for all (or a selection of) views</div>
+<p>If you want to modify page layout for multiple views at runtime, you can subscribe to the {entity-module-javadoc}/com/foreach/across/modules/entity/views/processors/support/EntityPageStructureRenderedEvent.html[<code>EntityPageStructureRenderedEvent</code>].
+This event is published during the <code>postRender()</code> phase and gives you context of the view that is being rendered, allowing you to make changes outside regular <code>EntityViewProcessor</code> implementations.</p>
+</div>
+<div class="paragraph">
+<p><code>SingleEntityPageStructureViewProcessor</code> and <code>ListPageStructureViewProcessor</code> are the <a href="#appendix-view-processors">view processors</a> responsible for building the basic page structure and publishing the event.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="specifying-a-custom-template"><a class="anchor" href="#specifying-a-custom-template"></a>4. Specifying a custom template</h3>
+<div class="paragraph">
+<p>Every default view uses a specific (Thymeleaf) template that renders the <code>ViewElement</code> list created by the view.
+If you want control over the rendering through a separate template you can specify a different template using the <code>template()</code> method on the <code>EntityViewFactoryBuilder</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="entityviewprocessor"><a class="anchor" href="#entityviewprocessor"></a>5. EntityViewProcessor</h3>
+<div class="paragraph">
+<p>Modifying a default view can be done by registering an <code>EntityViewProcessor</code> for that view.
+This API allows you to modify the <code>ViewElement</code> collection that should be generated.
+This is a useful hook to add for example custom form elements that you wish to add and process.
+If can also be used to reorganize the layout of the form from backend code using the <code>ContainerViewElementUtils</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="using-a-custom-entityviewfactory"><a class="anchor" href="#using-a-custom-entityviewfactory"></a>6. Using a custom EntityViewFactory</h3>
+<div class="paragraph">
+<p>Full control can be done by registering a custom <code>EntityViewFactory</code> implementation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="selecting-properties"><a class="anchor" href="#selecting-properties"></a>7. Selecting properties</h3>
+<div class="paragraph">
+<p><code>EntityPropertySelector</code>, incremental builders, keep current, select all, select all without default filter, exclude</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configuring-property-view-types"><a class="anchor" href="#configuring-property-view-types"></a>8. Configuring property view types</h3>
+<div class="paragraph">
+<p>You can configure a property using the <code>EntityPropertyDescriptorBuilder</code>.
+This builder also contains some methods to influence the <code>ViewElement</code> that should be built for that property for a given mode.</p>
+</div>
+<div class="paragraph">
+<p>By default a <code>ViewElement</code> will be built based on the property and some of its annotations.
+There are 3 ways you can influence the default behaviour:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>specify a custom <code>viewElementType()</code> for a given mode</p>
+<div class="ulist">
+<ul>
+<li>
+<p>a default builder of that type will be created for that mode</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>specify one or more <code>viewElementPostProcessor()</code> for a given mode</p>
+<div class="ulist">
+<ul>
+<li>
+<p>these <code>ViewElementPostProcessor</code> instances will be added to the default builder, in the order they were registered</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>specify a custom  <code>viewElementBuilder()</code> for a given mode</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the default building will be ignored and only your custom builder will be used</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="fieldset-properties"><a class="anchor" href="#fieldset-properties"></a>9. Fieldset properties</h3>
+<div class="paragraph">
+<p>A fieldset is a visual grouping of other properties, inside a block that has a title (legend) and optional description.
+Fieldsets are rendered as a <code>FieldsetFormElement</code>.
+You can postprocess a group of <code>ViewElement</code> instances and move them manually to a <code>FieldsetFormElement</code>, or you can set a fieldset as the <code>ViewElementMode</code> for a property.</p>
+</div>
+<div class="paragraph">
+<p>In the latter, because a fieldset is a collection of other properties, you will need to specify which properties make up the fieldset.
+Specifying the properties of fieldset is done by setting the <code>EntityAttributes.FIELDSET_PROPERTY_SELECTOR</code> to a valid <code>EntityPropertySelector</code>.</p>
+</div>
+<div class="paragraph">
+<p>The following is an example of manually adding a fieldset property to a form, and moving some properties to it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">entities.withType( WebPage.class )
+        .createOrUpdateFormView( fvb -&gt; fvb
+                <span class="comment">/**
+                 * First create a new property that is a fieldset
+                 * of the existing url and urlGenerated properties.
+                 * We add this property only to the scope of the
+                 * create or update form view.
+                 */</span>
+                .properties( props -&gt; props
+                        .property( <span class="string"><span class="delimiter">&quot;</span><span class="content">url-settings</span><span class="delimiter">&quot;</span></span> )
+                        .displayName( <span class="string"><span class="delimiter">&quot;</span><span class="content">URL settings</span><span class="delimiter">&quot;</span></span> )
+                        .viewElementType( ViewElementMode.FORM_WRITE, BootstrapUiElements.FIELDSET )
+                        .attribute(
+                                EntityAttributes.FIELDSET_PROPERTY_SELECTOR,
+                                EntityPropertySelector.of( <span class="string"><span class="delimiter">&quot;</span><span class="content">url</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">urlGenerated</span><span class="delimiter">&quot;</span></span> )
+                        )
+                )
+                <span class="comment">/**
+                 * Because url and urlGenerated are direct members
+                 * of WebPage, we need to ensure they are not rendered
+                 * directly anymore, so we remove them from the form view.
+                 * The new url-settings property will be selected by default
+                 * and in turn will render the url and urlGenerated properties.
+                 *
+                 * If we were to configure the url-settings property as hidden,
+                 * we would have to explicitly include it in the form view as well.
+                 * That would probably be a preferred approach if we have defined
+                 * url-settings in the global property registry for WebPage.
+                 */</span>
+                .showProperties( <span class="string"><span class="delimiter">&quot;</span><span class="content">*</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">~url</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">~urlGenerated</span><span class="delimiter">&quot;</span></span> )
+        )</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Properties mapped to an <code>@Embedded</code> type will automatically be mapped as a fieldset type.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="customizing-entity-validation"><a class="anchor" href="#customizing-entity-validation"></a>10. Customizing entity validation</h3>
+<div class="paragraph">
+<p>By default annotation validation is performed on all entities.
+Customizing validation can be done by simply specifying a <code>Validator</code> bean that supports the specific entity type.
+You can use the <code>EntityValidatorSupport</code> as a base class to extend the default annotation based entity validation.</p>
+</div>
+<div class="paragraph">
+<p>If more than one <code>Validator</code> could be applied, you will manually have to set the <code>Validator.class</code> attribute on the <code>EntityConfiguration</code> to the correct one.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="customizing-strong-value-strong-mode-elements"><a class="anchor" href="#customizing-strong-value-strong-mode-elements"></a>11. Customizing <strong>VALUE</strong> mode elements</h3>
+<div class="paragraph">
+<p>The <code>ViewElementMode.VALUE</code> and <code>ViewElementMode.LIST_VALUE</code> are the defaults to provide the output of a property for readonly views.
+Unless a specific <code>ViewElement</code> is configured, this will always be a <code>String</code> output of the property.
+By default the <strong>mvcConversionService</strong> will be used to convert the property value if no type specific builder is provided.</p>
+</div>
+<div class="paragraph">
+<p>Apart from providing a custom <code>ViewElement</code> you can also modify the rendered output by providing attributes on the <code>EntityPropertyDescriptor</code>.
+If you provide a <code>org.springframework.format.Printer.class</code> attribute, that implementation will be used for printing the text value.
+Alternatively you can provide a <code>java.text.Format.class</code> attribute to be used.
+Note that most default <code>Format</code> implementations are not thread-safe, in that case you should wrap them in a <code>SynchronizedFormat</code> instance.</p>
+</div>
+<div class="paragraph">
+<p>All standard view elements will use the <code>Printer</code> or <code>Format</code> attribute if one of them is present, instead of the default.
+A <code>Printer</code> attribute takes precedence over a <code>Format</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="customizing-textbox-elements"><a class="anchor" href="#customizing-textbox-elements"></a>12. Customizing textbox elements</h3>
+<div class="paragraph">
+<p><code>TextboxFormElement.Type</code> can be set as an attribute on the <code>EntityPropertyDescriptor</code>.
+If set and the property is generated as a <code>TextboxFormElement</code>, that type will be used.</p>
+</div>
+<div class="paragraph">
+<p>You can add default post processors to the <code>TextboxFormElementBuilderFactory</code> to customize the autodetection.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="customizing-numeric-elements"><a class="anchor" href="#customizing-numeric-elements"></a>13. Customizing numeric elements</h3>
+<div class="paragraph">
+<p>By default all <code>Number</code> type properties will result in a <code>NumericFormElement</code> being used which is rendered as a textbox.
+The behavior can be customized by providing a <code>NumericFormElementConfiguration</code>.
+A default configuration will only be created for properties annotated with a Spring <code>@NumberFormat</code> for type <code>CURRENCY</code> or <code>PERCENT</code>, if no <code>NumericFormElementConfiguration.class</code> or <code>NumericFormElementConfiguration.Format.class</code> attribute is present.</p>
+</div>
+<div class="paragraph">
+<p>If a <code>NumericFormElementConfiguration</code> is present a more advanced javascript control will be used in the front-end for value input.
+The same configuration will also be used for rendering the <strong>VALUE</strong> mode elements, formatting the output according to the properties configured.</p>
+</div>
+<div class="paragraph">
+<div class="title">Manually configuring percent</div>
+<p>Put a format attribute with value <code>PERCENT</code> on the <code>EntityPropertyDescriptor</code>.
+This will create a locale specific percentage format with 2 decimals (unless the property type is integer).
+Alternatively use the static <code>NumericFormElementConfiguration.percent()</code> factory method to quickly create a localizable format suitable for percentages.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you use Spring number format for <code>PERCENT</code> then 1 is expected to match 100%.
+If you manually create a <code>NumericFormElementConfiguration</code> it expects 100 to match with 100%.
+You can modify this behavior by setting the <code>multiplier</code> property on the configuration.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<div class="title">Manually configuring currency</div>
+<p>The easiest way to configure a currency is to set a <code>Currency.class</code> attribute for the property.
+In that case a locale specific format for that currency will be created.
+Alternatively the same options as for percentages can be used and there is a <code>NumericFormElementConfiguration.currency()</code> factory method available.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="customizing-datetime-picker-elements"><a class="anchor" href="#customizing-datetime-picker-elements"></a>14. Customizing datetime picker elements</h3>
+<div class="paragraph">
+<p>By default all <code>Date</code> properties will result in a <code>DateTimeFormElement</code> which is rendered as a date time picker.
+The form element can be customized through the <code>DateTimeFormElementConfiguration</code> class.
+The default configuration is determined based on the presence of <code>@Temporal</code> annotations on the property.
+The date picker supports 3 major modes: <strong>date</strong>, <strong>time</strong> and <strong>timestamp</strong> (date + time) with minutes being the maximum resolution.
+The presence of <code>@Past</code> and <code>@Future</code> validation annotations will additionally restrict the dates that are selectable.</p>
+</div>
+<div class="paragraph">
+<p>A specific date picker format can easily be specified by putting a <code>DateTimeFormElementConfiguration.Format</code> attribute.
+Advanced customization can be done by setting a complete <code>DateTimeFormElementConfiguration</code> as attribute.
+Dynamic configuration (for example setting the first selectable date relative to the current date) can only be done by specifying a <code>DateTimeFormElementBuilder</code> manually and adding a custom post processor that modifies the <code>DateTimeFormElementConfiguration</code>.
+A <code>DateTimeFormElementConfiguration</code> is always duplicated when creating an element so it is safe for post processors to modify the instance.</p>
+</div>
+<div class="paragraph">
+<div class="title">Using dates with <code>TemporalType.TIME</code> and JPA</div>
+<p>A property of type <code>java.util.Date</code> but annotated with <code>@Temporal(TemporalType.TIME)</code> will result in only time selection being available (hours and minutes).
+However the <code>@Temporal</code> annotation also influences how JPA will persist the data type.
+If your type was created as a timestamp in the database schema, this might result in conversion errors.
+With Hibernate you can resolve this by additionally specifying a <code>@Type</code> annotation forcing the type to be persisted as timestamp.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example of a required time property that is written as a date relative to start of epoch time in the database</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@NotNull</span>
+<span class="annotation">@Column</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">arrival_time</span><span class="delimiter">&quot;</span></span>)
+<span class="annotation">@Temporal</span>(TemporalType.TIME)
+<span class="annotation">@Type</span>( type = <span class="string"><span class="delimiter">&quot;</span><span class="content">timestamp</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">private</span> <span class="predefined-type">Date</span> arrivalTime;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="customizing-selectable-options"><a class="anchor" href="#customizing-selectable-options"></a>15. Customizing selectable options</h3>
+<div class="paragraph">
+<p>Any entity or enum property will by default be rendered via an <code>OptionsFormElementBuilder</code> resulting in either a select box or list of checkboxes being rendered.</p>
+</div>
+<div class="paragraph">
+<div class="title">Set the type of options control</div>
+<p>You can customize the type of options control to be generated by setting the <em>viewElementType</em> for a property.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">entities.withType( WebPage.class )
+    .createOrUpdateFormView( fvb -&gt; fvb
+        <span class="comment">/**
+         * Render the state as radio buttons instead of a select box.
+         */</span>
+        .properties( props -&gt; props
+            .property( <span class="string"><span class="delimiter">&quot;</span><span class="content">state</span><span class="delimiter">&quot;</span></span> )
+            .viewElementType( ViewElementMode.CONTROL, BootstrapUiElements.RADIO )
+        )
+    );</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If no <em>viewElementType</em> has been specified, a default type will be determined: a select box will be used in case of a single value, a checkbox list in case of multiple values.</p>
+</div>
+<div class="paragraph">
+<div class="title">Advanced select box configuration</div>
+<p>A select control being generated will be a <a href="https://silviomoreto.github.io/bootstrap-select/">bootstrap-select</a> with default configuration.
+You can customize the select box configuration by manually setting a <code>SelectFormElementConfiguration</code> attributes.</p>
+</div>
+<div class="paragraph">
+<p>See the {bootstrap-ui-module-url}[BootstrapUiModule documentation] for all configurable properties.</p>
+</div>
+<div class="paragraph">
+<p>If no <em>viewElementType</em> has been specified, but a <code>SelectFormElementConfiguration</code> attribute is present, the resulting control will be a select box.</p>
+</div>
+<div class="paragraph">
+<div class="title">Configuring options that can be selected</div>
+<p>You can manipulate the options that can be selected in several ways by setting either <code>EntityConfiguration</code> or <code>EntityPropertyDescriptor</code> attributes.</p>
+</div>
+<div class="paragraph">
+<p>If your property is another entity type, by default the selectable options will be all entities of that type.
+If you want to change this for all properties of that type, you can set either an <code>OptionGenerator.class</code>, <code>OptionIterableBuilder.class</code> or <code>EntityAttributes.OPTIONS_ENTITY_QUERY</code> attribute on the target <code>EntityConfiguration</code>.
+If you want to change it only for a single property, you can configure the same attributes on the <code>EntityPropertyDescriptor</code> of that property.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">entities.withType( WebCmsArticle.class )
+    .createOrUpdateFormView( fvb -&gt; fvb
+        <span class="comment">/**
+         * Only allow published sections to be selectable,
+         * by specifying an EQL statement to fetch them.
+         */</span>
+        .properties( props -&gt; props
+            .property( <span class="string"><span class="delimiter">&quot;</span><span class="content">section</span><span class="delimiter">&quot;</span></span> )
+            .attribute( EntityAttributes.OPTIONS_ENTITY_QUERY, <span class="string"><span class="delimiter">&quot;</span><span class="content">published = TRUE ORDER BY name ASC</span><span class="delimiter">&quot;</span></span> )
+        )
+    );</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When dealing with an enum type, you can also configure the <code>EntityAttributes.OPTIONS_ALLOWED_VALUES</code> with the `EnumSet`of selectable options.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="comment">/**
+ * Limit the selectable enum HTTP status.
+ */</span>
+entities.withType( WebCmsUrl.class )
+    .properties(
+        props -&gt; props
+            .property( <span class="string"><span class="delimiter">&quot;</span><span class="content">httpStatus</span><span class="delimiter">&quot;</span></span> )
+            .attribute(
+                EntityAttributes.OPTIONS_ALLOWED_VALUES,
+                <span class="predefined-type">EnumSet</span>.of( HttpStatus.OK, HttpStatus.NOT_FOUND )
+            )
+    );</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Depending on the attribute you will change more of the default behaviour and will have to provide custom implementations.
+Use the most appropriate attribute for your use case.
+See the <a href="#appendix-entity-configuration-attributes">appendix for more information on the different attributes</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 3.0.0.RELEASE<br>
+Last updated 2018-03-28 15:06:19 CEST
+</div>
+</div>
+</body>
+</html>

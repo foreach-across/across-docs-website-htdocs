@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>Across - Spring Boot compatibility</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="spring-boot" class="book toc2 toc-left">
+<div id="header">
+<h1>Across - Spring Boot compatibility</h1>
+<div class="details">
+<span id="revnumber">version 3.0.0.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Spring Boot compatibility</div>
+<ul class="sectlevel1">
+<li><a href="#auto-configuration-support">1. Auto-configuration support</a>
+<ul class="sectlevel3">
+<li><a href="#artifact">1.1. Artifact</a></li>
+<li><a href="#across-support-explained">1.2. Across support explained</a>
+<ul class="sectlevel3">
+<li><a href="#the-basic-challenge">The basic challenge</a></li>
+<li><a href="#support-level">Support level</a></li>
+<li><a href="#support-status">Support status</a></li>
+</ul>
+</li>
+<li><a href="#adding-support">1.3. Adding compatibility</a>
+<ul class="sectlevel3">
+<li><a href="#across-configuration">META-INF/across.configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#spring-boot-starters">2. Starters and libraries</a>
+<ul class="sectlevel2">
+<li><a href="#official-spring-boot-starters">2.1. Official Spring Boot starters</a>
+<ul class="sectlevel3">
+<li><a href="#activemq">ActiveMQ</a></li>
+<li><a href="#actuator">Actuator</a></li>
+<li><a href="#amqp">AMQP</a></li>
+<li><a href="#aop">AOP</a></li>
+<li><a href="#artemis">Artemis</a></li>
+<li><a href="#batch">Batch</a></li>
+<li><a href="#cache">Cache</a></li>
+<li><a href="#cloud-connectors">Cloud Connectors</a></li>
+<li><a href="#data-cassandra">Data Cassandra</a></li>
+<li><a href="#data-couchbase">Data Couchbase</a></li>
+<li><a href="#data-elasticsearch">Data Elasticsearch</a></li>
+<li><a href="#data-gemfire">Data Gemfire</a></li>
+<li><a href="#data-jpa">Data JPA</a></li>
+<li><a href="#data-ldap">Data LDAP</a></li>
+<li><a href="#data-mongodb">Data MongoDB</a></li>
+<li><a href="#data-neo4j">Data Neo4j</a></li>
+<li><a href="#data-redis">Data Redis</a></li>
+<li><a href="#spring-boot-starter-data-rest">Data REST</a></li>
+<li><a href="#data-solr">Data SOLR</a></li>
+<li><a href="#freemarker">Freemarker</a></li>
+<li><a href="#groovy-templates">Groovy Templates</a></li>
+<li><a href="#hateoas">HATEOAS</a></li>
+<li><a href="#integration">Integration</a></li>
+<li><a href="#jdbc">JDBC</a></li>
+<li><a href="#jersey">Jersey</a></li>
+<li><a href="#jetty">Jetty</a></li>
+<li><a href="#jooq">JOOQ</a></li>
+<li><a href="#jta-atomikos">JTA Atomikos</a></li>
+<li><a href="#jta-bitronix">JTA Bitronix</a></li>
+<li><a href="#jta-narayana">JTA Narayana</a></li>
+<li><a href="#log4j2">Log4J2</a></li>
+<li><a href="#logging">Logging</a></li>
+<li><a href="#mail">Mail</a></li>
+<li><a href="#mobile">Mobile</a></li>
+<li><a href="#mustache">Mustache</a></li>
+<li><a href="#remote-shell">Remote Shell</a></li>
+<li><a href="#security">Security</a></li>
+<li><a href="#social-facebook">Social Facebook</a></li>
+<li><a href="#social-linkedin">Social Linkedin</a></li>
+<li><a href="#social-twitter">Social Twitter</a></li>
+<li><a href="#test">Test</a></li>
+<li><a href="#thymeleaf">Thymeleaf</a></li>
+<li><a href="#tomcat">Tomcat</a></li>
+<li><a href="#undertow">Undertow</a></li>
+<li><a href="#validation">Validation</a></li>
+<li><a href="#web-services">Web Services</a></li>
+<li><a href="#web">Web</a></li>
+<li><a href="#websocket">Websocket</a></li>
+</ul>
+</li>
+<li><a href="#contributed-starters">2.2. Contributed starters</a>
+<ul class="sectlevel3">
+<li><a href="#spring-boot-admin">Spring Boot Admin</a></li>
+<li><a href="#spring-boot-admin-client">Spring Boot Admin Client</a></li>
+</ul>
+</li>
+<li><a href="#other-libraries">2.3. Other libraries</a>
+<ul class="sectlevel3">
+<li><a href="#swagger2">Swagger2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#not-supported">3. Not supported</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="auto-configuration-support"><a class="anchor" href="#auto-configuration-support"></a>1. Auto-configuration support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can use <code>@AcrossApplication</code> to execute as a Spring Boot application and use auto-configuration of your application infrastructure.
+However not all auto-configuration classes are supported in an Across application.</p>
+</div>
+<div class="paragraph">
+<p>This section explains why that is and how developers can provide compatibility adapters for existing configurations.</p>
+</div>
+<div class="sect3">
+<h4 id="artifact"><a class="anchor" href="#artifact"></a>1.1. Artifact</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
+    <span class="tag">&lt;groupId&gt;</span>com.foreach.across<span class="tag">&lt;/groupId&gt;</span>
+    <span class="tag">&lt;artifactId&gt;</span>across-autoconfigure<span class="tag">&lt;/artifactId&gt;</span>
+    <span class="tag">&lt;version&gt;</span>1.0.0.RELEASE<span class="tag">&lt;/version&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="across-support-explained"><a class="anchor" href="#across-support-explained"></a>1.2. Across support explained</h3>
+<div class="sect3">
+<h4 id="the-basic-challenge"><a class="anchor" href="#the-basic-challenge"></a>The basic challenge</h4>
+<div class="paragraph">
+<p>Most Spring related libraries are fine-tuned to easily work in a single Spring <code>ApplicationContext</code>.
+This is also very much the case with the default Spring Boot auto-configuration classes.</p>
+</div>
+<div class="paragraph">
+<p>An Across application has a more complex <code>ApplicationContext</code> hierarchy:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>every module has its own <code>ApplicationContext</code>: <strong>module level</strong></p>
+</li>
+<li>
+<p>the Across context has single <code>ApplicationContext</code> that is the parent of all modules: <strong>Across context level</strong></p>
+</li>
+<li>
+<p>in case of executing as Spring Boot (using <code>@AcrossApplication</code>) there is an additional <code>ApplicationContext</code> that is the parent of the Across context: <strong>application (infrastructure) level</strong></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+There is a difference between the <strong>application</strong> and the <strong>application module</strong>.
+The latter is a single module in the Across context.
+Please read the chapter on <a href="fundamentals.html">Across fundamentals</a> if you do not clearly understand this difference.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Because of the hierarchy, visibility, dependencies and creation order of beans are more important.
+This helps you define clearly dependant modules, but it adds additional complexity compared to a single <code>ApplicationContext</code> application.</p>
+</div>
+<div class="paragraph">
+<p>Default Spring Boot auto-configuration classes only work in the top-level <code>ApplicationContext</code>, the application level.
+Often we require them to activate behaviour in modules, as such they usually do not work out-of-the-box and need to be adapted.</p>
+</div>
+<div class="paragraph">
+<p>Across provides some ways to <a href="#adding-support">manually add transparent auto-configuration support</a> for Across applications.
+This can allow developers to use the same starters and libraries in an Across application, often with no (or very little) difference.</p>
+</div>
+<div class="paragraph">
+<p>Not every library or auto-configuration works as easily in an Across application.
+The Across auto-configure artifact contains compatibility configuration for common starters and libraries, to ease the transition for developers.</p>
+</div>
+<div class="paragraph">
+<p>For every library/Spring Boot starter mentioned in this document, there are 2 support indicators:</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="support-level"><a class="anchor" href="#support-level"></a>Support level</h4>
+<div class="paragraph">
+<p>Indicates the level of support in a multi-module Across application.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Not supported</dt>
+<dd>
+<p>No auto-configuration possible.</p>
+</dd>
+<dt class="hdlist1">Full support</dt>
+<dd>
+<p>Virtually no difference compared to a regular Spring Boot application.
+Support is automatic in all modules configured in an application.
+Common case: web controllers, actuator endpoints&#8230;&#8203;</p>
+</dd>
+<dt class="hdlist1">Application support</dt>
+<dd>
+<p>Auto-configuration works as expected for an Across application.
+Infrastructure is usually configured on the application level, automatic support is only activated in the application module.
+Shared modules require manual configuration.
+Common case: Spring Data repositories</p>
+</dd>
+<dt class="hdlist1">Partial support</dt>
+<dd>
+<p>Auto-configuration is partially supported.
+Additional manual configuration is still required.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="support-status"><a class="anchor" href="#support-status"></a>Support status</h4>
+<div class="paragraph">
+<p>Indicates the status of the support for that starter/library.
+This is more of an indication of the work in progress.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Expected</dt>
+<dd>
+<p>Currently not yet available.</p>
+</dd>
+<dt class="hdlist1">To be verified</dt>
+<dd>
+<p>Auto-configuration available but not yet - or only partially - verified.
+Some cases might not yet work as expected.</p>
+</dd>
+<dt class="hdlist1">Verified</dt>
+<dd>
+<p>Support level is available as indicated.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="adding-support"><a class="anchor" href="#adding-support"></a>1.3. Adding compatibility</h3>
+<div class="paragraph">
+<p>When starting a Spring Boot application with <code>@AcrossApplication</code> all auto-configuration classes detected will be considered.
+If Across is unsure about what to do with them, you should see the AutoConfiguration Report printed in the logs:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code> --- Across AutoConfiguration Report ---
+ The following 2 auto-configuration classes have unknown Across support and were not added:
+ - org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration
+ - org.springframework.boot.autoconfigure.aop.AopAutoConfiguration
+ Consider adding them to a META-INF/across.configuration.
+ --- End Across AutoConfiguration Report ---</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This gives you an indication of which classes require a compatibility adapter if you want to use them.
+Across will skip these auto-configuration classes but will continue bootstrapping.
+If you add a compatible configuration in the right way the warning will disappear, see <a href="#across-configuration">META-INF/across.configuration</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+There is a difference between a not-supported auto-configuration class, and one with unknown support.
+The latter should print out the warning in the AutoConfiguration report, the former should be present in an <code>across.configuration</code> so the warning disappears.
+</td>
+</tr>
+</table>
+</div>
+<h4 id="auto-configuration-problems" class="discrete">Auto-configuration problems</h4>
+<div class="paragraph">
+<p>The most common problems to solve have to do with where to put the actual auto-configuration class and which components to expose.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>if it only provides components for direct use by other modules (eg. components from the modules want to inject them)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>leave the configuration on application level or move it to a module starting before the modules wishing to use those components</p>
+</li>
+<li>
+<p>when moving to a module, expose the components that other modules want to inject</p>
+</li>
+<li>
+<p><strong>IMPORTANT:</strong> if your configuration uses Spring conditionals depending on components defined inside other modules, it can never remain on the application level as those conditions would never match</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>if it only uses components provided by other modules</p>
+<div class="ulist">
+<ul>
+<li>
+<p>expose those components in the other modules</p>
+</li>
+<li>
+<p>if it does not work when injecting on application level, consider moving to one of the last modules (eg. the <a href="#acrosscontextpostprocessormodule">AcrossContextPostProcessorModule</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>this depends on how the components it needs are looked for, if it does not look up the parent <code>ApplicationContext</code> it would still not detect exposed beans on the application level</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>if it does more than one of the above cases</p>
+<div class="ulist">
+<ul>
+<li>
+<p>you will need to create a custom configuration class</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Some auto-configuration classes need to setup infrastructure in more than one module.
+In that case you will also need a custom configuration class that injects the required code in the relevant modules (usually all of them in a case like this).</p>
+</div>
+<h4 id="acrosscontextpostprocessormodule" class="discrete">AcrossContextPostProcessorModule</h4>
+<div class="paragraph">
+<p>Every Across context contains a placeholder module called <strong>AcrossContextPostProcessorModule</strong>.
+It usually starts as the very last module, after the application module.
+It can be used to move configuration classes to that need to rely on components defined by all other modules.</p>
+</div>
+<div class="paragraph">
+<p>If no configuration has been added to the module, it will be disabled and not bootstrap.</p>
+</div>
+<div class="sect3">
+<h4 id="across-configuration"><a class="anchor" href="#across-configuration"></a>META-INF/across.configuration</h4>
+<div class="paragraph">
+<p>The <code>across.configuration</code> file allows you to move auto-configuration, exposed additional beans and provide alternative configuration classes.
+Every JAR file can contain a single <code>across.configuration</code> and all data from them will be merged together.</p>
+</div>
+<div class="paragraph">
+<p>As only Across interprets these files, existing libraries can add them to support both Across- and non-Across-based application.
+The <code>across.configuration</code> should always be located in the <code>META-INF</code> folder in the root of your package.</p>
+</div>
+<div class="paragraph">
+<p>A <code>across.configuration</code> is a properties file supporting 3 property keys that can have comma-separated values:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">com.foreach.across.Exposed</dt>
+<dd>
+<p>List of class names for components that should always be exposed by every module.
+Class name can be specific or abstract class, interface or annotation.
+In case of an annotation, any component with that annotation will be exposed.</p>
+</dd>
+<dt class="hdlist1">com.foreach.across.AutoConfigurationDisabled</dt>
+<dd>
+<p>List of configuration classes that should be rejected when requested through Spring Boot auto-configuration.
+You will only be able to add these configuration classes directly to your application.</p>
+</dd>
+<dt class="hdlist1">com.foreach.across.AutoConfigurationEnabled</dt>
+<dd>
+<p>List of configuration classes that are allowed when requested through Spring Boot auto-configuration.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>The <strong>com.foreach.across.AutoConfigurationEnabled</strong> values support multiple options:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If only the class name is given, the configuration will be added to the application level as is the default Spring Boot behaviour.</p>
+</li>
+<li>
+<p>A replacement class can be specified using <strong>:</strong> after the class name.
+In this case the replacement class will be added to the application level instead of the original class.
+This is useful for providing an <code><a href="#AcrossBoostrapConfigurer">AcrossBootstrapConfigurer</a></code>.</p>
+</li>
+<li>
+<p>A module name can be specified using <strong>&#8594;</strong> after the class name.
+In this case the configuration will not be added to the application level but to the module specified.
+You can use <strong>DynamicApplicationModule</strong> as a placeholder name to indicate the configuration should be added to the application module.</p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">com.foreach.across.IllegalConfiguration</dt>
+<dd>
+<p>List of class names that are not allowed to be present in a module or context.
+These will be validated during startup and if one of these is present, the application will not start up and throw an error.</p>
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <strong>com.foreach.across.IllegalConfiguration</strong> values support multiple options:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If only a class name is given, the configuration may not be used in the AcrossContext, which is the root context of the application.
+This means that the configuration is not allowed on the level of the <code>*Application</code> class.</p>
+</li>
+<li>
+<p>A module name can be specified using <strong>&#8594;</strong> after the class name.
+This means that the configuration is not allowed for the specified module(s).
+It is also possible to make a configuration illegal in all modules or in the across application context.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>If the module name is equal to <strong>AcrossContext</strong>, beans of the provided type name may not be present in the across application context.</p>
+</li>
+<li>
+<p>If the module name is equal to <strong>AcrossModule</strong>, beans of the provided type may not be present in <strong>ANY</strong> module</p>
+</li>
+<li>
+<p>If the module name is prefixed by an <strong>exclamation mark ( ! )</strong>, it is allowed in that specific module.</p>
+</li>
+<li>
+<p>Multiple module names can be specified using a <strong>pipe  ( | )</strong>.
+As an example,  <code>org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport&#8594;AcrossContext|AcrossModule|!MyModule,</code> means that the configuration may not be used in the across context or in any module, except for <code>MyModule</code>.
+By default as soon as a module has been specified, the specified type may not be used in any module except those specified.
+So the former example is per se equal to <code>org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport&#8594;!MyModule,</code></p>
+</li>
+<li>
+<p>The illegal configuration can be suffixed by a <strong>colon ( : )</strong> followed by a message key.
+This key can then be used to specify more information about why beans of that type are not allowed, as well as the action(s) that should be taken.
+This is done through the use of the following entries in the <code>across.configuration</code> file:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>com.foreach.across.IllegalConfiguration[MESSAGE_KEY].description=</code> Why this is an illegal configuration</p>
+</li>
+<li>
+<p><code>com.foreach.across.IllegalConfiguration[MESSAGE_KEY].action=</code> A possible resolution or steps to take</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Example META-INF/across.configuration</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="properties">#
+# Lists the classes (or annotations) of components that should always be exposed
+#
+com.foreach.across.Exposed=\
+  org.springframework.stereotype.Service
+#
+# List of AutoConfiguration classes that should never be allowed.
+# Once a class has been added here, it can only ever be added manually to the application.
+#
+com.foreach.across.AutoConfigurationDisabled=\
+  my.IncompatibleAutoConfiguration
+#
+#
+# List of AutoConfiguration classes that are supported on the application level, these will be allowed unless disabled.
+# Optionally an adapter class name or a module target can be specified.
+#
+com.foreach.across.AutoConfigurationEnabled=\
+  my.CompatibleAutoConfiguration,\
+  my.ReplacedIncompatibleAutoConfiguration:my.AcrossAnotherIncompatibleAutoConfigurationAdapter,\
+  my.ApplicationModuleInjectedAutoConfiguration-&gt;DynamicApplicationModule,\
+  my.PostProcessorModuleInjectedAutoConfiguration-&gt;AcrossContextPostProcessorModule
+
+#
+# List of AutoConfiguration classes or bean types that are not allowed to be present (in the specified modules).
+#
+com.foreach.across.IllegalConfiguration=\
+  my.SimpleConfiguration-&gt;AcrossContext:mydescriptionlabel
+  my.SomeBean-&gt;!AcrossContextPostProcessorModule
+
+#
+# List of illegal configuration descriptions.
+#
+com.foreach.across.IllegalConfiguration[mydescriptionlabel].description=This configuration is not allowed to be present on the AcrossContext.
+com.foreach.across.IllegalConfiguration[mydescriptionlabel].action=Remove this configuration on the AcrossApplication level.</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Some auto-configuration classes use the <code>AutoConfigurationPackage</code> for scanning components.
+In an Across application, only the package of the application module is automatically registered as an <code>AutoConfigurationPackage</code>.
+In a regular Spring Boot application, it would be the package that contains the <code>@SpringBootApplication</code> class.
+</td>
+</tr>
+</table>
+</div>
+<h4 id="AcrossBoostrapConfigurer" class="discrete">AcrossBootstrapConfigurer</h4>
+<div class="paragraph">
+<p>You can implement the <code>AcrossBootstrapConfigurer</code> interface to alter the module and Across context configuration that is to be started.
+Auto-configuration compatibility adapters often implement this interface to inject the configurations in the relevant modules.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example AcrossBootstrapConfigurer</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Configuration</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">AcrossWebSocketConfiguration</span> <span class="directive">implements</span> AcrossBootstrapConfigurer
+{
+        <span class="annotation">@Override</span>
+        <span class="directive">public</span> <span class="type">void</span> configureModule( ModuleBootstrapConfig moduleConfiguration ) {
+            <span class="comment">// always expose WebSocketConfigurer</span>
+                moduleConfiguration.expose( WebSocketConfigurer.class );
+        }
+
+        <span class="annotation">@Override</span>
+        <span class="directive">public</span> <span class="type">void</span> configureContext( AcrossBootstrapConfig contextConfiguration ) {
+            <span class="comment">// inject configuration in the last module so it can pick up all WebSocketConfigurer instances</span>
+                contextConfiguration.extendModule( CONTEXT_POSTPROCESSOR_MODULE, DelegatingWebSocketConfiguration.class );
+        }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spring-boot-starters"><a class="anchor" href="#spring-boot-starters"></a>2. Starters and libraries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Lists the support status of different Spring Boot starters and libraries.
+Most of these are configured and tested in the <a href="https://bitbucket.org/beforeach/across-autoconfigure">Across auto-configure project</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="official-spring-boot-starters"><a class="anchor" href="#official-spring-boot-starters"></a>2.1. Official Spring Boot starters</h3>
+<div class="paragraph">
+<p><a href="https://docs.spring.io/spring-boot/docs/1.5.10.RELEASE/reference/htmlsingle/#using-boot-starter" class="bare">https://docs.spring.io/spring-boot/docs/1.5.10.RELEASE/reference/htmlsingle/#using-boot-starter</a></p>
+</div>
+<div class="sect3">
+<h4 id="activemq"><a class="anchor" href="#activemq"></a>ActiveMQ</h4>
+<div class="paragraph">
+<p><a href="https://spring.io/guides/gs/messaging-jms/" class="bare">https://spring.io/guides/gs/messaging-jms/</a></p>
+</div>
+<div class="paragraph">
+<p>Under investigation.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="actuator"><a class="anchor" href="#actuator"></a>Actuator</h4>
+<div class="paragraph">
+<p><a href="https://spring.io/guides/gs/actuator-service/" class="bare">https://spring.io/guides/gs/actuator-service/</a></p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Full support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">To be verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Endpoints, metrics, health indicators from all modules will automatically be exposed and detected.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="amqp"><a class="anchor" href="#amqp"></a>AMQP</h4>
+<div class="paragraph">
+<p><a href="https://projects.spring.io/spring-amqp/" class="bare">https://projects.spring.io/spring-amqp/</a></p>
+</div>
+<div class="paragraph">
+<p>Under investigation.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="aop"><a class="anchor" href="#aop"></a>AOP</h4>
+<div class="paragraph">
+<p>AspectJ support is only enabled automatically in the application module.
+Shared modules should manually add a configuration with <code>@EnableAspectJAutoProxy</code> in their <code>ApplicationContext</code> if they want to use the <code>@Aspect</code> annotation.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<div class="title">Autoconfiguration classes</div>
+<ul>
+<li>
+<p><code>AopAutoConfiguration</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="artemis"><a class="anchor" href="#artemis"></a>Artemis</h4>
+<div class="paragraph">
+<p>Currently not supported, to be investigated.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="batch"><a class="anchor" href="#batch"></a>Batch</h4>
+<div class="paragraph">
+<p>Under investigation.
+There is currently an Across standard module <a href="https://across.foreach.be/modules/SpringBatchModule" class="bare">https://across.foreach.be/modules/SpringBatchModule</a> that will most likely be discontinued in favour of auto-configuration.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="cache"><a class="anchor" href="#cache"></a>Cache</h4>
+<div class="paragraph">
+<p>Under investigation.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="cloud-connectors"><a class="anchor" href="#cloud-connectors"></a>Cloud Connectors</h4>
+<div class="paragraph">
+<p>Under investigation.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="data-cassandra"><a class="anchor" href="#data-cassandra"></a>Data Cassandra</h4>
+<div class="paragraph">
+<p>Auto-configuration of Spring Data Cassandra repositories is supported in the application module only.
+Project url: <a href="https://projects.spring.io/spring-data-cassandra/" class="bare">https://projects.spring.io/spring-data-cassandra/</a></p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<div class="title">Autoconfiguration classes</div>
+<ul>
+<li>
+<p><code>CassandraAutoConfiguration</code>: application configuration</p>
+</li>
+<li>
+<p><code>CassandraDataAutoConfiguration</code>: application module</p>
+</li>
+<li>
+<p><code>CassandraRepositoriesAutoConfiguration</code>: application module</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="data-couchbase"><a class="anchor" href="#data-couchbase"></a>Data Couchbase</h4>
+<div class="paragraph">
+<p><a href="https://projects.spring.io/spring-data-couchbase/" class="bare">https://projects.spring.io/spring-data-couchbase/</a></p>
+</div>
+<div class="paragraph">
+<p>Autoconfiguration classes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>CouchbaseAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>CouchbaseDataAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>CouchbaseRepositoriesAutoConfiguration</code></p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">known issues</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Known issues:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>CouchbaseMock used for testing doesn&#8217;t fully support spring data repositories</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="data-elasticsearch"><a class="anchor" href="#data-elasticsearch"></a>Data Elasticsearch</h4>
+<div class="paragraph">
+<p><a href="https://projects.spring.io/spring-data-elasticsearch/" class="bare">https://projects.spring.io/spring-data-elasticsearch/</a></p>
+</div>
+<div class="paragraph">
+<p>Autoconfiguration classes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ElasticsearchAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>ElasticsearchDataAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>ElasticsearchRepositoriesAutoConfiguration</code></p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="data-gemfire"><a class="anchor" href="#data-gemfire"></a>Data Gemfire</h4>
+<div class="paragraph">
+<p>Currently not supported, to be investigated.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="data-jpa"><a class="anchor" href="#data-jpa"></a>Data JPA</h4>
+<div class="paragraph">
+<p>The regular Spring Boot Data JPA starter enables JPA entities and Spring Data JPA repositories in the application module only.
+If you need support for JPA for multiple modules, you should look at the <a href="https://across.foreach.be/modules/AcrossHibernateJpaModule">AcrossHibernateJpaModule</a> instead.
+The latter is a transparent alternative for the application module support, taking over all tasks of the regular starter.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<div class="title">Autoconfiguration classes</div>
+<ul>
+<li>
+<p><code>org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>org.springframework.boot.autoconfigure.dao.PersistenceExceptionTranslationAutoConfiguration</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="data-ldap"><a class="anchor" href="#data-ldap"></a>Data LDAP</h4>
+<div class="paragraph">
+<p><a href="https://projects.spring.io/spring-data-ldap/" class="bare">https://projects.spring.io/spring-data-ldap/</a></p>
+</div>
+<div class="paragraph">
+<p>Autoconfiguration classes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>LdapAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>EmbeddedLdapAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>LdapDataAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>LdapRepositoriesAutoConfiguration</code></p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="data-mongodb"><a class="anchor" href="#data-mongodb"></a>Data MongoDB</h4>
+<div class="paragraph">
+<p><a href="https://projects.spring.io/spring-data-mongodb/" class="bare">https://projects.spring.io/spring-data-mongodb/</a></p>
+</div>
+<div class="paragraph">
+<p>Autoconfiguration classes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>MongoAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>EmbeddedMongoAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>MongoDataAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>MongoRepositoriesAutoConfiguration</code></p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="data-neo4j"><a class="anchor" href="#data-neo4j"></a>Data Neo4j</h4>
+<div class="paragraph">
+<p><a href="https://projects.spring.io/spring-data-neo4j/" class="bare">https://projects.spring.io/spring-data-neo4j/</a></p>
+</div>
+<div class="paragraph">
+<p>Autoconfiguration classes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Neo4jDataAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>Neo4jRepositoriesAutoConfiguration</code></p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="data-redis"><a class="anchor" href="#data-redis"></a>Data Redis</h4>
+<div class="paragraph">
+<p><a href="https://projects.spring.io/spring-data-redis/" class="bare">https://projects.spring.io/spring-data-redis/</a></p>
+</div>
+<div class="paragraph">
+<p>Autoconfiguration classes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>RedisAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>RedisRepositoriesAutoConfiguration</code></p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="spring-boot-starter-data-rest"><a class="anchor" href="#spring-boot-starter-data-rest"></a>Data REST</h4>
+<div class="paragraph">
+<p><a href="https://projects.spring.io/spring-data-rest/" class="bare">https://projects.spring.io/spring-data-rest/</a></p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Full support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<div class="title">Autoconfiguration classes:</div>
+<ul>
+<li>
+<p><code>RepositoryRestMvcAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>HypermediaAutoConfiguration</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="data-solr"><a class="anchor" href="#data-solr"></a>Data SOLR</h4>
+<div class="paragraph">
+<p><a href="https://projects.spring.io/spring-data-solr/" class="bare">https://projects.spring.io/spring-data-solr/</a></p>
+</div>
+<div class="paragraph">
+<p>Autoconfiguration classes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>SolrAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>SolrRepositoriesAutoConfiguration</code></p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="freemarker"><a class="anchor" href="#freemarker"></a>Freemarker</h4>
+<div class="paragraph">
+<p>Currently not supported, to be investigated.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="groovy-templates"><a class="anchor" href="#groovy-templates"></a>Groovy Templates</h4>
+<div class="paragraph">
+<p>Currently not supported, to be investigated.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="hateoas"><a class="anchor" href="#hateoas"></a>HATEOAS</h4>
+<div class="paragraph">
+<p>Hypermedia should be correctly supported.
+Spring Boot Data Rest includes hateoas, see <a href="#spring-boot-starter-data-rest">Spring Boot Starter Data Rest</a>.</p>
+</div>
+<div class="ulist">
+<div class="title">Autoconfiguration classes:</div>
+<ul>
+<li>
+<p><code>HypermediaAutoConfiguration</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="integration"><a class="anchor" href="#integration"></a>Integration</h4>
+<div class="paragraph">
+<p>Currently not supported, to be investigated.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="jdbc"><a class="anchor" href="#jdbc"></a>JDBC</h4>
+<div class="paragraph">
+<p>Under investigation.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="jersey"><a class="anchor" href="#jersey"></a>Jersey</h4>
+<div class="paragraph">
+<p>Currently not supported, to be investigated.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="jetty"><a class="anchor" href="#jetty"></a>Jetty</h4>
+<div class="paragraph">
+<p>Autoconfiguration classes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>JettyEmbeddedServletContainerFactory</code></p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Full support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="jooq"><a class="anchor" href="#jooq"></a>JOOQ</h4>
+<div class="paragraph">
+<p>Currently not supported, to be investigated.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="jta-atomikos"><a class="anchor" href="#jta-atomikos"></a>JTA Atomikos</h4>
+<div class="paragraph">
+<p>Currently not supported, to be investigated.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="jta-bitronix"><a class="anchor" href="#jta-bitronix"></a>JTA Bitronix</h4>
+<div class="paragraph">
+<p>Currently not supported, to be investigated.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="jta-narayana"><a class="anchor" href="#jta-narayana"></a>JTA Narayana</h4>
+<div class="paragraph">
+<p>Currently not supported, to be investigated.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="log4j2"><a class="anchor" href="#log4j2"></a>Log4J2</h4>
+<div class="paragraph">
+<p>Currently not supported, to be investigated.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="logging"><a class="anchor" href="#logging"></a>Logging</h4>
+<div class="paragraph">
+<p>Autoconfiguration classes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>LoggingApplicationListener</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>LoggingApplicationListener</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Full support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="mail"><a class="anchor" href="#mail"></a>Mail</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Full support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<div class="title">Autoconfiguration classes</div>
+<ul>
+<li>
+<p><code>MailSenderAutoConfiguration</code></p>
+</li>
+<li>
+<p><code>MailSenderValidatorAutoConfiguration</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="mobile"><a class="anchor" href="#mobile"></a>Mobile</h4>
+<div class="paragraph">
+<p>Currently not supported, to be investigated.
+There is a <a href="https://across.foreach.be/modules/SpringMobileModule" class="bare">https://across.foreach.be/modules/SpringMobileModule</a> that integrates with AcrossWebModule to enable Spring mobile support.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="mustache"><a class="anchor" href="#mustache"></a>Mustache</h4>
+<div class="paragraph">
+<p>Currently not supported, to be investigated.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="remote-shell"><a class="anchor" href="#remote-shell"></a>Remote Shell</h4>
+<div class="paragraph">
+<p>Not supported.
+Adding support is not planned as Remote Shell is removed in Spring Boot 2.0.0.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="security"><a class="anchor" href="#security"></a>Security</h4>
+<div class="paragraph">
+<p>Not supported, add the <a href="https://across.foreach.be/modules/SpringSecurityModule">SpringSecurityModule</a> to your application instead.
+It supports most Spring Boot security features (with slight variations), and allows other modules to add security configuration.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="social-facebook"><a class="anchor" href="#social-facebook"></a>Social Facebook</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="social-linkedin"><a class="anchor" href="#social-linkedin"></a>Social Linkedin</h4>
+<div class="paragraph">
+<p>Under investigation.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="social-twitter"><a class="anchor" href="#social-twitter"></a>Social Twitter</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="test"><a class="anchor" href="#test"></a>Test</h4>
+<div class="paragraph">
+<p>Fully supported.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="thymeleaf"><a class="anchor" href="#thymeleaf"></a>Thymeleaf</h4>
+<div class="paragraph">
+<p>Not supported.
+AcrossWebModule configures its own Thymeleaf configuration for template support in modules.
+Thymeleaf is always enabled in any application with the AcrossWebModule.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="tomcat"><a class="anchor" href="#tomcat"></a>Tomcat</h4>
+<div class="paragraph">
+<p>Autoconfiguration classes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>TomcatEmbeddedServletContainerFactory</code></p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Full support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="undertow"><a class="anchor" href="#undertow"></a>Undertow</h4>
+<div class="paragraph">
+<p>Autoconfiguration classes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>UndertowEmbeddedServletContainerFactory</code></p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Full support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="validation"><a class="anchor" href="#validation"></a>Validation</h4>
+<div class="paragraph">
+<p>Bean Validation 1.1 method validation is automatically activated in all modules.
+A single <code>Validator</code> bean will be available by default.
+In case of a web setup, it will also be registered as the <strong>mvcValidator</strong> bean.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Full support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<div class="title">Autoconfiguration classes</div>
+<ul>
+<li>
+<p><code>ValidationAutoConfiguration</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="web-services"><a class="anchor" href="#web-services"></a>Web Services</h4>
+<div class="paragraph">
+<p>Currently not supported, to be investigated.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="web"><a class="anchor" href="#web"></a>Web</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Full support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">To be verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="websocket"><a class="anchor" href="#websocket"></a>Websocket</h4>
+<div class="paragraph">
+<p>Websocket support is automatically enabled if AcrossWebModule is present, the starter is on the classpath, and there is either a <code>WebSocketConfigurer</code> or <code>WebSocketMessageBrokerConfigurer</code> in any of the modules.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="contributed-starters"><a class="anchor" href="#contributed-starters"></a>2.2. Contributed starters</h3>
+<div class="sect3">
+<h4 id="spring-boot-admin"><a class="anchor" href="#spring-boot-admin"></a>Spring Boot Admin</h4>
+<div class="paragraph">
+<p><a href="https://github.com/codecentric/spring-boot-admin" class="bare">https://github.com/codecentric/spring-boot-admin</a></p>
+</div>
+<div class="paragraph">
+<p>Add <code>@EnableAdminServer</code> on your application class to create a Spring Boot admin in your application.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Full support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">To be verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="spring-boot-admin-client"><a class="anchor" href="#spring-boot-admin-client"></a>Spring Boot Admin Client</h4>
+<div class="paragraph">
+<p><a href="https://github.com/codecentric/spring-boot-admin" class="bare">https://github.com/codecentric/spring-boot-admin</a></p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Full support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<div class="title">Autoconfiguration classes</div>
+<ul>
+<li>
+<p><code>SpringBootAdminClientAutoConfiguration</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="other-libraries"><a class="anchor" href="#other-libraries"></a>2.3. Other libraries</h3>
+<div class="sect3">
+<h4 id="swagger2"><a class="anchor" href="#swagger2"></a>Swagger2</h4>
+<div class="paragraph">
+<p>Use <code>@EnableSwagger2</code> on the Across application class to activate Swagger2 support on all controllers in any module.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 66.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Support level</th>
+<th class="tableblock halign-left valign-top">Status</th>
+<th class="tableblock halign-left valign-top">Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Full support</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verified</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">none</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<div class="title">Autoconfiguration classes</div>
+<ul>
+<li>
+<p><code>Swagger2AutoConfiguration</code> - added by Across autoconfigure project</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="not-supported"><a class="anchor" href="#not-supported"></a>3. Not supported</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following is a list of common auto-configuration classes that are not automatically enabled, but explicitly excluded instead.
+They are not added to the application configuration and none of the standard modules include them.</p>
+</div>
+<div class="paragraph">
+<p>In some cases, these can still be added directly using an <code>@Import</code> statement inside an application or module.
+When doing so however, you should be aware of possible conflicts with other Across features.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration</code></dt>
+<dd>
+<p>Across always packages Liquibase but uses installers instead of a default changeset xml.
+Looks like the auto-configuration breaks in this case.</p>
+</dd>
+<dt class="hdlist1"><code>org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration</code></dt>
+<dd>
+<p>AcrossWebModule provides its own Thymeleaf configuration that differs slightly from the Spring Boot default.
+Templates are expected to be in <code>classpath:/views/*</code> with <code>html</code> extension.</p>
+</dd>
+<dt class="hdlist1"><code>org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration</code></dt>
+<dd>
+<p>Across has its own message source mechanism for modules.
+The default Spring Boot message sources - configurable using <code>spring.messages</code> properties - are not supported by default.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 3.0.0.RELEASE<br>
+Last updated 2018-03-29 16:27:59 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "Across reference docs";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

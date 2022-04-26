@@ -1,0 +1,17 @@
+com.foreach.across.modules.codes
+com.foreach.across.modules.codes.builders
+com.foreach.across.modules.codes.config
+com.foreach.across.modules.codes.domain
+com.foreach.across.modules.codes.domain.code
+com.foreach.across.modules.codes.domain.code.ui
+com.foreach.across.modules.codes.domain.code.ui.elements
+com.foreach.across.modules.codes.domain.code.ui.events
+com.foreach.across.modules.codes.domain.code.ui.extensions
+com.foreach.across.modules.codes.domain.code.ui.viewprocessor
+com.foreach.across.modules.codes.elements
+com.foreach.across.modules.codes.extensions
+com.foreach.across.modules.codes.installers
+com.foreach.across.modules.codes.services
+com.foreach.across.modules.codes.utils
+com.foreach.across.samples.code.test
+com.foreach.across.samples.code.test.extensions

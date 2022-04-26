@@ -1,0 +1,12 @@
+com.foreach.across.modules.entity
+com.foreach.across.modules.entity.business
+com.foreach.across.modules.entity.config
+com.foreach.across.modules.entity.config.modules
+com.foreach.across.modules.entity.controllers
+com.foreach.across.modules.entity.form
+com.foreach.across.modules.entity.generators
+com.foreach.across.modules.entity.generators.id
+com.foreach.across.modules.entity.generators.label
+com.foreach.across.modules.entity.handlers
+com.foreach.across.modules.entity.services
+com.foreach.across.modules.entity.util

@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>Migration guide: platform 2.0.x to 2.1.x</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="whats-new" class="book toc2 toc-left">
+<div id="header">
+<h1>Migration guide: platform 2.0.x to 2.1.x</h1>
+<div class="details">
+<span id="revnumber">version 2.1.0.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#migrating-to-2-1-0">Migrating to 2.1.0</a>
+<ul class="sectlevel2">
+<li><a href="#across-core">Across Core</a>
+<ul class="sectlevel3">
+<li><a href="#auto-configuration-support">Auto-configuration support</a></li>
+<li><a href="#configuration-validation">Configuration validation</a></li>
+<li><a href="#multiple-datasources">Multiple datasources</a></li>
+<li><a href="#new-event-handling">New event handling</a></li>
+<li><a href="#moduleconfiguration">@ModuleConfiguration</a></li>
+<li><a href="#new-conditionals">New conditionals</a></li>
+<li><a href="#acrossmodule-component-scan">AcrossModule component scan</a></li>
+<li><a href="#deprecations">Deprecations</a></li>
+</ul>
+</li>
+<li><a href="#across-web">Across Web</a>
+<ul class="sectlevel3">
+<li><a href="#interceptor-configuration">Interceptor configuration</a></li>
+<li><a href="#menu-building">Menu building</a></li>
+<li><a href="#multipart-uploads">Multipart uploads</a></li>
+</ul>
+</li>
+<li><a href="#across-standard-modules">Across Standard Modules</a>
+<ul class="sectlevel3">
+<li><a href="#acrosshibernatejpamodule">AcrossHibernateJpaModule</a></li>
+<li><a href="#springsecuritymodule">SpringSecurityModule</a></li>
+<li><a href="#bootstrapuimodule">BootstrapUiModule</a></li>
+<li><a href="#adminwebmodule">AdminWebModule</a></li>
+<li><a href="#entitymodule">EntityModule</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="quoteblock abstract">
+<blockquote>
+This guide describes the most common steps necessary when upgrading from Platform BOM 2.0.x to 2.1.x.
+</blockquote>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="migrating-to-2-1-0"><a class="anchor" href="#migrating-to-2-1-0"></a>Migrating to 2.1.0</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Platform 2.1.0 is bound to Across 3.0.0, which is the first release with the <code>across-autoconfigure</code> artifact and builds more on top of Spring Boot.
+Upgrading to Platform 2.1.0 usually requires you to make some configuration and code changes to your applications.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This guide is not a full overview of all new features and changes in Across or any of its modules.
+It mainly focuses on upgrade related changes: usually breaking changes or new features that impact application/module configuration.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="across-core"><a class="anchor" href="#across-core"></a>Across Core</h3>
+<div class="sect3">
+<h4 id="auto-configuration-support"><a class="anchor" href="#auto-configuration-support"></a>Auto-configuration support</h4>
+<div class="sect4">
+<h5 id="add-autoconfigure-artifact"><a class="anchor" href="#add-autoconfigure-artifact"></a>Add autoconfigure artifact</h5>
+<div class="paragraph">
+<p>When upgrading your applications (built with <code>@AcrossApplication</code>), the first step is to add the new <code>across-autoconfigure</code> artifact to your project.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependencies&gt;</span>
+    <span class="tag">&lt;dependency&gt;</span>
+        <span class="tag">&lt;groupId&gt;</span>com.foreach.across<span class="tag">&lt;/groupId&gt;</span>
+        <span class="tag">&lt;artifactId&gt;</span>across-autoconfigure<span class="tag">&lt;/artifactId&gt;</span>
+    <span class="tag">&lt;/dependency&gt;</span>
+<span class="tag">&lt;/dependencies&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The new autoconfigure artifact contains compatibility configuration for many Spring Boot starters.
+Adding it to your project allows you to rely more on the starters and to remove some previously required configuration imports.</p>
+</div>
+<div class="paragraph">
+<p>Please see the <a href="https://across-docs.foreach.be/across/3.0.0.RELEASE/reference/spring-boot.html#spring-boot">Spring Boot compatibility documentation</a> for a detailed list of starters that are now supported.</p>
+</div>
+<div class="paragraph">
+<p>Some useful additions now available without additional configuration:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Websocket support (built-in with AcrossWebModule)</p>
+</li>
+<li>
+<p>Spring Data web support</p>
+</li>
+<li>
+<p>Actuator support</p>
+</li>
+<li>
+<p>Spring Boot Admin (&amp; client) support</p>
+</li>
+<li>
+<p>Spring Session support</p>
+</li>
+<li>
+<p>Swagger2 support</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+When adding the across autoconfigurate artifact to your application, Spring Data Web support is enabled, which causes all repositories to be exposed as well.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="cleanup-acrossapplication"><a class="anchor" href="#cleanup-acrossapplication"></a>Cleanup @AcrossApplication</h5>
+<div class="paragraph">
+<p>Review the release notes and Spring Boot compatibility documentation and remove imports and annotations from your <code>@AcrossApplication</code> class.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example @AcrossApplication configuration cleanup</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="comment">// Across Platform 2.0.x</span>
+<span class="annotation">@AcrossApplication</span>(
+    modules = { ... },
+    modulePackages = { <span class="string"><span class="delimiter">&quot;</span><span class="content">my.custom.modules</span><span class="delimiter">&quot;</span></span> },
+    modulePackageClasses = { AcrossPlatform.class } <i class="conum" data-value="1"></i><b>(1)</b>
+)
+<span class="annotation">@EnableSpringDataWebSupport</span> <i class="conum" data-value="2"></i><b>(2)</b>
+<span class="annotation">@Import</span>( DataSourceAutoConfiguration.class )
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyApplication</span>
+{
+}
+
+<span class="comment">// Across Platform 2.1.x - with across-autoconfigure</span>
+<span class="annotation">@AcrossApplication</span>( modules = { ... } )
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyApplication</span>
+{
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>It is no longer necessary to include the default Across standard modules packages when you want to add your own packages for module scanning.
+The default standard modules package will always be included.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Several annotations and configuration imports can simply be dropped as <code>across-autoconfigure</code> takes care of the configuration now.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you have any of the following annotations in any of your modules or on your application class, they can just be removed when you have the right starters on the classpath:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>@EnableSpringDataWebSupport</code></p>
+</li>
+<li>
+<p><code>@EnableWebSocket</code></p>
+</li>
+<li>
+<p><code>@EnableWebSocketMessageBroker</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="meta-inf-across-configuration"><a class="anchor" href="#meta-inf-across-configuration"></a>META-INF/across.configuration</h5>
+<div class="paragraph">
+<p>Across 3.0.0 externalizes some of its configuration in a <code>META-INF/across.configuration</code> properties file.
+This is especially used for auto-configuration and configuration validation settings.</p>
+</div>
+<div class="paragraph">
+<p>Please see the <a href="https://across-docs.foreach.be/across/3.0.0.RELEASE/reference/spring-boot.html#across-configuration">Across reference documentation section</a> for a full description of the configuration file and what you can do with it.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="configuration-validation"><a class="anchor" href="#configuration-validation"></a>Configuration validation</h4>
+<div class="paragraph">
+<p>Across now attempts to validate your configuration when starting.
+It will check for the presence of configuration classes in places where they should not be.
+This could be using a configuration class on either the application level or in a module, where a different module already handles that particular bit of configuration.</p>
+</div>
+<div class="paragraph">
+<p>Bootstrapping your application with a bad configuration will fail.</p>
+</div>
+<div class="paragraph">
+<div class="title">Better error messages</div>
+<p>One of the additions in Across 3.0.0 is the new failure analyzers.
+When you are using <code>@AcrossApplication</code> and executing as a Spring Boot application, you should receive a more readable error messages with specific information on the problem.</p>
+</div>
+<div class="paragraph">
+<div class="title">@ComponentScan on your application configuration</div>
+<p>An example is that bootstrapping will fail if a <code>@ComponentScan</code> is detected on your <code>@AcrossApplication</code> class, where that component scan would conflict with the application module package.
+It is possible that in certain applications this would not cause an actual problem, it is however still considered a bad practice and an invalid configuration.</p>
+</div>
+<div class="paragraph">
+<div class="title">Disabling configuration validation</div>
+<p>You can disable configuration validation - for example in production - by setting the property <code>across.configuration.validate</code> to <code>false</code>.
+We strongly advise you to leave it on during development mode as it can help you avoid common configuration mistakes.</p>
+</div>
+<div class="paragraph">
+<div class="title">Adding configuration validation</div>
+<p>It&#8217;s possible to configure your own illegal configurations in the <code>META-INF/across.configuration</code> file.
+This is especially useful for shared modules that activate application-level features.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="multiple-datasources"><a class="anchor" href="#multiple-datasources"></a>Multiple datasources</h4>
+<div class="paragraph">
+<p>If your application has multiple datasources, it is now required that one of them is marked as <code>@Primary</code>.
+It is best to have a specific datasoure named <code>acrossDataSource</code> as well to mark the datasource that should be used for the core Across schema and the standard modules.</p>
+</div>
+<div class="paragraph">
+<p>Though not strictly required, you usually want to mark the <code>acrossDataSource</code> as the <code>@Primary</code> datasource.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example multiple datasource configuration with Spring Boot</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Bean</span>
+<span class="annotation">@Primary</span>
+<span class="annotation">@ConfigurationProperties</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">app.datasource.across</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> DataSourceProperties acrossDataSourceProperties() {
+    <span class="keyword">return</span> <span class="keyword">new</span> DataSourceProperties();
+}
+
+<span class="annotation">@Bean</span>
+<span class="annotation">@Primary</span>
+<span class="annotation">@ConfigurationProperties</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">app.datasource.across</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="predefined-type">DataSource</span> acrossDataSource() {
+    <span class="keyword">return</span> acrossDataSourceProperties().initializeDataSourceBuilder().build();
+}
+
+<span class="annotation">@Bean</span>
+<span class="annotation">@ConfigurationProperties</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">app.datasource.bar</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> DataSourceProperties barDataSourceProperties() {
+    <span class="keyword">return</span> <span class="keyword">new</span> DataSourceProperties();
+}
+
+<span class="annotation">@Bean</span>
+<span class="annotation">@ConfigurationProperties</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">app.datasource.bar</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="predefined-type">DataSource</span> barDataSource() {
+    <span class="keyword">return</span> barDataSourceProperties().initializeDataSourceBuilder().build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="new-event-handling"><a class="anchor" href="#new-event-handling"></a>New event handling</h4>
+<div class="paragraph">
+<p>The internal event handling system has been entirely rewritten and now builds on top of the default Spring Framework event handling infrastructure.
+Instead of the Across-specific <code>@Event</code>, the Spring Framework <code>@EventListener</code> should now be used.</p>
+</div>
+<div class="paragraph">
+<p>Apart from how events are treated internally, there is no difference anymore in handling Across specific or regular Spring Framework events.</p>
+</div>
+<div class="paragraph">
+<p>Most old event related classes have simply been deprecated, and breaking changes have been kept as limited as possible.
+In simple applications no changes would be required for this release.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example @Event to @EventListener</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="comment">// Across Platform 2.0.x</span>
+<span class="annotation">@Event</span>
+<span class="directive">public</span> <span class="type">void</span> handle( <span class="annotation">@EventName</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">eventName</span><span class="delimiter">&quot;</span></span>) MyEvent myEvent ) {
+}
+
+<span class="comment">// Across Platform 2.1.x</span>
+<span class="annotation">@EventListener</span>(condition = <span class="string"><span class="delimiter">&quot;</span><span class="content">#myEvent.eventName == 'myEvent'</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="type">void</span> handle( MyEvent myEvent ) {
+    <span class="comment">// Called if the event is of type MyEvent</span>
+    <span class="comment">// and property 'eventName' has the value 'myEvent'</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See the <a href="#deprecations">deprecations</a> section for a list of the event-related deprecations and how to replace them.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Generic event types are handled differently with the new system, where in the past <code>SomeEvent&lt;Object&gt;</code> would have worked, the only working (and more correct) signature is now <code>SomeEvent&lt;? extends Object&gt;</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<div class="title">New available features</div>
+<p>Due to this refactoring some new features are now also available:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>using <code>@TransactionalEventListener</code></p>
+</li>
+<li>
+<p>explicitly order individual event handler methods using <code>@Order</code> or <code>@OrderInModule</code></p>
+</li>
+<li>
+<p>event listener methods can have a return value which will be published as a new event</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Please read the <a href="https://across-docs.foreach.be/across/3.0.0.RELEASE/reference/developing-applications.html#events">Across reference documentation section</a> for a full overview of all features.</p>
+</div>
+<div class="paragraph">
+<div class="title">Removal of MBassador dependency</div>
+<p>The MBassador dependency - responsible for the previous event bus implementation - has been removed entirely.
+Any listener methods that were directly using MBassador annotations will have to be rewritten as an <code>@EventListener</code>.</p>
+</div>
+<div class="sect4">
+<h5 id="across-bootstrap-events"><a class="anchor" href="#across-bootstrap-events"></a>Across bootstrap events</h5>
+<div class="paragraph">
+<p>One of the breaking changes with the new event handling infrastructure is that it is no longer possible to use regular <code>@Event</code> (or <code>@EventListener</code>) to intercept Across bootstrap related events from the parent application class.
+If you want to handle bootstrap related events from a parent <code>ApplicationContext</code>, you should do so in a component implementing the <code>AcrossLifecycleListener</code> interface.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Using <code>AcrossLifecycleListener</code> to modify the Across context configuration from a parent <code>ApplicationContext</code> (eg the <code>@AcrossApplication</code> class) is not required.
+Instead you can use the <code>AcrossBootstrapConfigurer</code> interface on one ore more of your components, which was introduced especially for this purpose.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="moduleconfiguration"><a class="anchor" href="#moduleconfiguration"></a>@ModuleConfiguration</h4>
+<div class="paragraph">
+<p>The internal processing of <code>@ModuleConfiguration</code> classes - module extensions provided by other modules - has been changed.
+This was necessary to fix issues with incorrect handling of conditionals on these <code>@ModuleConfiguration</code> classes.</p>
+</div>
+<div class="paragraph">
+<p>This introduces some possibly breaking changes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>@ModuleConfiguration</code> classes are now always <code>@Configuration</code> classes as well, this means they would also be processed by regular component scans, where in the past they might not have been</p>
+</li>
+<li>
+<p><code>@ModuleConfiguration</code> classes are only scanned for in the <code>extensions</code> package, any <code>@ModuleConfiguration</code> class in a <code>config</code> package will now be loaded in the original module, instead of correctly treated as a module configuration extension</p>
+</li>
+<li>
+<p>import order has changed: module extensions will now always be imported before any other annotated classes (and before any injected Spring Boot auto-configuration classes)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="new-conditionals"><a class="anchor" href="#new-conditionals"></a>New conditionals</h4>
+<div class="paragraph">
+<p>Across 3.0.0 introduces some new conditionals:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>@ConditionalOnAcrossModule</code></dt>
+<dd>
+<p>Use this annotation when you want to check for the presence or absence of a specific Across module.
+This replaces the use of <code>@AcrossDepends</code> on regular components.
+<code>@AcrossDepends</code> should now only be used on module descriptors, and you will see a warning printed when it is used on components.</p>
+</dd>
+<dt class="hdlist1"><code>@ConditionalOnAutoConfiguration</code></dt>
+<dd>
+<p>Use this conditional if you want to check if an auto-configuration class has been loaded anywhere in the Across application.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="acrossmodule-component-scan"><a class="anchor" href="#acrossmodule-component-scan"></a>AcrossModule component scan</h4>
+<div class="paragraph">
+<p>The default <code>AcrossModule</code> still only scans the <code>config</code> package by default.
+However, a very common case is the behaviour of the dynamic modules: all child packages are scanned for components, with the exception of <code>extensions</code> and <code>installers</code>.
+The former contains components for module extensions, the latter installers and related components.</p>
+</div>
+<div class="paragraph">
+<p>A new helper method has been added to quickly configure an Across module with this behaviour.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example AcrossModule scanning all child packages</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">MyModule <span class="directive">extends</span> AcrossModule {
+    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">String</span> NAME = <span class="string"><span class="delimiter">&quot;</span><span class="content">MyModule</span><span class="delimiter">&quot;</span></span>;
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="predefined-type">String</span> getName() {
+        <span class="keyword">return</span> NAME;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">protected</span> <span class="type">void</span> registerDefaultApplicationContextConfigurers( <span class="predefined-type">Set</span>&lt;ApplicationContextConfigurer&gt; contextConfigurers ) {
+        contextConfigurers.add( ComponentScanConfigurer.forAcrossModule( MyModule.class ) );
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="deprecations"><a class="anchor" href="#deprecations"></a>Deprecations</h4>
+<div class="paragraph">
+<p>The following is a list of classes that have been deprecated in Across 3.0.0:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>StringToDateConverter</code></dt>
+<dd>
+<p>A replacement implementation <code>StringToDateTimeConverter</code> is available that also supports the Java 8 time implementations.</p>
+</dd>
+<dt class="hdlist1"><code>AcrossEvent</code></dt>
+<dd>
+<p>It is not required anymore for an event type to implement this marker interface.</p>
+</dd>
+<dt class="hdlist1"><code>@Event</code></dt>
+<dd>
+<p>Use the Spring Framework <code>@EventListener</code> instead.</p>
+</dd>
+<dt class="hdlist1"><code>@EventName</code></dt>
+<dd>
+<p>Use a <code>conditional</code> attribute on your <code>@EventListener</code> instead.</p>
+</dd>
+<dt class="hdlist1"><code>ParameterizedAcrossEvent</code></dt>
+<dd>
+<p>Implement the Spring Framework <code>ResolvableTypeProvider</code> interface instead.</p>
+</dd>
+<dt class="hdlist1"><code>AcrossEventPublisher</code></dt>
+<dd>
+<p>Use the Spring Framework <code>ApplicationEventPublisher</code> instead.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="across-web"><a class="anchor" href="#across-web"></a>Across Web</h3>
+<div class="paragraph">
+<p>This chapter lists some important - possibly breaking - changes in Across Web support (provided by AcrossWebModule).</p>
+</div>
+<div class="sect3">
+<h4 id="interceptor-configuration"><a class="anchor" href="#interceptor-configuration"></a>Interceptor configuration</h4>
+<div class="paragraph">
+<p><code>PrefixingHandlerMappingConfigurer</code> can no longer be applied to the default AcrossWebModule, use a regular <code>WebMvcConfigurer</code> to add interceptors instead.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>different prefixed handler mappings (eg. AdminWebModule) still require the use of <code>PrefixingHandlerMappingConfigurer</code> for adding interceptors</p>
+</li>
+<li>
+<p>if you want to add an interceptor to all controllers, you should implement both <code>WebMvcConfigurer</code> and <code>PrefixingHandlerMappingConfigurer</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="menu-building"><a class="anchor" href="#menu-building"></a>Menu building</h4>
+<div class="paragraph">
+<p>The menu infrastructure support has been optimized to fix some technical and functional issues with the moving of path based menu items.
+Some code has been deprecated and still works as before, alongside the addition of new improved features.</p>
+</div>
+<div class="paragraph">
+<p>Most important (breaking) changes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>MenuSelector</code> factory methods have been moved from the <code>Menu</code> to <code>MenuSelector</code> class</p>
+</li>
+<li>
+<p>some rarely used methods on <code>PathBasedMenuBuilder</code>, <code>PathBasedMenuItemBuilder</code> and <code>BuildMenuEvent</code> have been removed</p>
+</li>
+<li>
+<p><code>BuildMenuFinishedEvent</code> has been removed, modules requiring this functionality should now register a <code>Menu</code> post-processor on the <code>BuildMenuEvent</code> instead</p>
+</li>
+<li>
+<p>renamed methods on <code>BuildMenuEvent</code>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>setSelector()</code> &#8594; <code>setMenuSelector()</code>, <code>getSelector()</code> &#8594; <code>getMenuSelector()</code></p>
+</li>
+<li>
+<p><code>forMenu()</code> &#8594; <code>isForMenuOfType()</code></p>
+</li>
+<li>
+<p>the unreliable <code>move()</code> method for menu items has been deprecated, use the new <code>changeItemPath()</code> or <code>item().changePathTo()</code> instead</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <a href="https://across-docs.foreach.be/across/3.0.0.RELEASE/reference/across-web.html#menu-infrastructure">reference documentation regarding menu building</a> has been rewritten completely, we strongly advise you to read the documentation and update your code accordingly.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="multipart-uploads"><a class="anchor" href="#multipart-uploads"></a>Multipart uploads</h4>
+<div class="paragraph">
+<p>The <code>MultipartProperties</code> from Spring Boot are now being used for multipart configuration.
+This means different property names should be used for custom configuration.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>replace <code>acrossWebModule.multipart.auto-configure</code> with <code>spring.http.multipart.enabled</code></p>
+</li>
+<li>
+<p>replace <code>acrossWebModule.multipart.settings.*</code> with the equivalent <code>spring.http.multipart.*</code> properties</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Some default settings - for example maximum file size - might have changed as well.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example changing the maximum multipart file size</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">spring:
+  http:
+    multipart:
+      max-file-size: <span class="integer">10</span>MB</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="across-standard-modules"><a class="anchor" href="#across-standard-modules"></a>Across Standard Modules</h3>
+<div class="paragraph">
+<p>The following section applies to the breaking changes in the standard modules.
+These instructions are only relevant if you use these modules in your applications.</p>
+</div>
+<div class="sect3">
+<h4 id="acrosshibernatejpamodule"><a class="anchor" href="#acrosshibernatejpamodule"></a>AcrossHibernateJpaModule</h4>
+<div class="paragraph">
+<p>The module has undergone significant changes to increase compatibility with the Spring Data JPA starter.
+When plugging a single AcrossHibernateJpaModule in an application it will now transparently take over the starter JPA support on the application module.</p>
+</div>
+<div class="paragraph">
+<p>Most important changes include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the default physical naming strategy being used by Hibernate has changed from a Hibernate default to a Spring Boot default</p>
+<div class="ulist">
+<ul>
+<li>
+<p>this can cause generated queries to be wrong (for example when having a reserved keyword as a table name)</p>
+</li>
+<li>
+<p>in case of problems, you can revert to the old strategy by setting <code>acrossHibernate.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>a <code>PlatformTransactionManager</code> is now always created</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the configuration property to disable the <code>PlatformTransactionManager</code> has been removed</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>in addition a <code>TransactionTemplate</code> bean is now also created and exposed</p>
+</li>
+<li>
+<p>it’s now also possible to specify packages to scan for entities by injecting an <code>@EntityScan</code> annotated class into the AcrossHibernateJpaModule</p>
+</li>
+<li>
+<p>the default AcrossHibernateJpaModule will expose its relevant beans as primary unless specified otherwise</p>
+<div class="ulist">
+<ul>
+<li>
+<p>any module can take over the primary role by setting <code>acrossHibernate.primary=false</code> and <code>myModule.primary=true</code></p>
+</li>
+<li>
+<p>the primary module will also create a <code>transactionManager</code> and <code>transationTemplate</code> alias for the corresponding beans it exposes</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>See the <a href="https://across-docs.foreach.be/across-standard-modules/AcrossHibernateModule/3.0.0-SNAPSHOT/reference/#_3_0_0_snapshot">AcrossHibernateJpaModule documentation</a> for a full list of release notes.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="springsecuritymodule"><a class="anchor" href="#springsecuritymodule"></a>SpringSecurityModule</h4>
+<div class="paragraph">
+<p>SpringSecurityModule now re-uses Spring Boot security configuration and inspects <code>SecurityProperties</code> for default settings.
+As a result, additional security might be activated in your application, where previously it was not (see below).</p>
+</div>
+<div class="paragraph">
+<p>There are now more security filters applied, possibly with a different ordering than before.
+It is advised to review and test the security configuration of your applications, to ensure it still works as expected.</p>
+</div>
+<div class="paragraph">
+<div class="title">Basic authentication</div>
+<p>It is now possible to activate basic authentication for an entire application by setting <code>security.basic.enabled</code> to <code>true</code>.
+Unlike a standard Spring Boot application, this is not enabled by default in an Across application.
+The main reason for the latter is to ensure backwards compatibility with previous releases.</p>
+</div>
+<div class="paragraph">
+<p>The different <code>SecurityProperties</code> allow you to configure a default user, password and role.</p>
+</div>
+<div class="paragraph">
+<div class="title">Global AuthenticationManager</div>
+<p>Any class wanting to change the <code>AuthenticationManagerBuilder</code> must now be annotated with <code>@EnableGlobalAuthentication</code>.
+Configuration registered as module extension in SpringSecurityModule and simply auto-wiring the <code>AuthenticationManagerBuilder</code> will no longer work.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example global authentication manager customization</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@ModuleConfiguration</span>(SpringSecurityModule.NAME)
+<span class="annotation">@EnableGlobalAuthentication</span>                     <span class="comment">// required</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">AuthenticationConfiguration</span>
+{
+        <span class="annotation">@Autowired</span>
+        <span class="directive">public</span> <span class="type">void</span> configureGlobal( AuthenticationManagerBuilder auth ) <span class="directive">throws</span> <span class="exception">Exception</span> {
+                auth.inMemoryAuthentication()
+                    .withUser( <span class="string"><span class="delimiter">&quot;</span><span class="content">admin</span><span class="delimiter">&quot;</span></span> ).password( <span class="string"><span class="delimiter">&quot;</span><span class="content">admin</span><span class="delimiter">&quot;</span></span> )
+                    .authorities( <span class="keyword">new</span> SimpleGrantedAuthority( <span class="string"><span class="delimiter">&quot;</span><span class="content">access administration</span><span class="delimiter">&quot;</span></span> ) );
+        }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">Integration with Actuator</div>
+<p>Actuator endpoints are now always secured by default, unless you explicitly set <code>management.security.enabled</code> to <code>false</code>.
+Previously the security configuration for Actuator was simply ignored, whereas now it should be applied as expected.</p>
+</div>
+<div class="paragraph">
+<div class="title">Integration with H2 Console</div>
+<p>The H2 Web Console (usually <code>/h2-console</code>) will now be secured by default, unless you explicitly set <code>security.basic.enabled</code> to <code>false</code>.</p>
+</div>
+<div class="paragraph">
+<p>See the <a href="https://across-docs.foreach.be/across-standard-modules/SpringSecurityModule/3.0.0-SNAPSHOT/reference/#_3_0_0_snapshot">SpringSecurityModule documentation</a> for a full list of release notes.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="bootstrapuimodule"><a class="anchor" href="#bootstrapuimodule"></a>BootstrapUiModule</h4>
+<div class="paragraph">
+<p>BootstrapUiModule has mainly been updated with new features.
+The following are the most important updates from a migration point of view:</p>
+</div>
+<div class="paragraph">
+<div class="title">BootstrapUiFactory</div>
+<p>Direct use of <code>BootstrapUiFactory</code> or <code>BootstrapUiComponentFactory</code> is now discouraged, these interfaces have been deprecated.
+Use the stateless <code>BootstrapUiBuilders</code> facade instead.</p>
+</div>
+<div class="paragraph">
+<div class="title">FormGroupElement</div>
+<p><code>FormGroupElement</code> has been refactored to support more descriptions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>tooltip</code> can be set which will be added to the label - after the label text and required indicator</p>
+</li>
+<li>
+<p>a <code>descriptionBlock</code> can be set which will be added to the group before the control</p>
+</li>
+<li>
+<p>a <code>helpBlock</code> can be set which will be added to the group after the control</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The property <code>renderHelpBlockBeforeControl</code> has been removed as the <code>descriptionBlock</code> is always rendered before the control, and the <code>helpBlock</code> always after the control.</p>
+</div>
+<div class="paragraph">
+<p>See the <a href="https://across-docs.foreach.be/across-standard-modules/BootstrapUiModule/2.0.0-SNAPSHOT/reference/#_2_0_0_snapshot">BootstrapUiModule documentation</a> for a full list of release notes.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="adminwebmodule"><a class="anchor" href="#adminwebmodule"></a>AdminWebModule</h4>
+<div class="paragraph">
+<p><code>EntityAdminMenu</code> and <code>EntityAdminMenuEvent</code> have been deprecated.
+These classes were never supposed to be in the AdminWebModule package space, as they belong to EntityModule functionality.
+To migrate, simply rename the import package from <code>com.foreach.across.modules.adminweb.menu</code> to <code>com.foreach.across.modules.entity.views.menu</code>.</p>
+</div>
+<div class="paragraph">
+<p>New implementations have been added to EntityModule.
+Migration is strongly advised, though no code changes are required in this release.</p>
+</div>
+<div class="paragraph">
+<p>See the <a href="https://across-docs.foreach.be/across-standard-modules/AdminWebModule/3.0.0-SNAPSHOT/reference/#_3_0_0_snapshot">AdminWebModule documentation</a> for a full list of release notes.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="entitymodule"><a class="anchor" href="#entitymodule"></a>EntityModule</h4>
+<div class="paragraph">
+<p>EntityModule has mainly been updated with new features.
+See the <a href="https://across-docs.foreach.be/across-standard-modules/EntityModule/3.0.0-SNAPSHOT/reference/#3-0-0-snapshot">EntityModule documentation</a> for a full list of release notes.</p>
+</div>
+<div class="paragraph">
+<p>The following are the most important updates from a migration point of view:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the module classpath dependencies have been reworked, allowing EntityModule to be used without either AdminWebModule or BootstrapUiModule (with limited feature availability)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>as a result those dependencies are no longer pulled in transitively, this might require you to add them manually to existing applications</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>EntityModule no longer creates its own <code>Validator</code> instance, the <code>registerForMvc</code> related settings have been removed.
+The validator used by EntityModule is always the default MVC validator.</p>
+</li>
+<li>
+<p>New implementations of <code>EntityAdminMenu</code> and <code>EntityAdminMenuEvent</code> to replace the equivalent classes from AdminWebModule.
+You may consider this mostly a package rename for these classes.</p>
+</li>
+<li>
+<p>The <code>descriptionBlock</code> of a <code>FormGroupElement</code> for a property is now always rendered before the control, in accordance with the changes in BootstrapUiModule.
+New message codes have been added to support both <code>tooltip</code> and <code>helpBlock</code> for a property.
+The same message codes are also available for a <code>FieldsetFormElement</code>.</p>
+</li>
+<li>
+<p>By default <code>descriptionBlock</code>, <code>helpBlock</code> and <code>tooltip</code> are only added to a <code>FormGroupElement</code> or <code>FieldsetFormElement</code> in <code>ViewElementMode.FORM_WRITE</code>.</p>
+</li>
+<li>
+<p>The behaviour for control name prefixing when using an <code>EntityViewCommand</code> has changed.
+Controls are prefixed with <code>entity.</code> only if there is an additional builder context attribute set to <code>true</code> (attribute name <code>EntityPropertyControlNamePostProcessor.PREFIX_CONTROL_NAMES</code>).
+This only done by default in the <code>PropertyRenderingViewProcessor</code>, used by the default entity views.
+This change can cause side effects in existing custom forms, developers are encouraged to review those.</p>
+</li>
+</ul>
+</div>
+<div class="sect4">
+<h5 id="linking-to-entity-views"><a class="anchor" href="#linking-to-entity-views"></a>Linking to entity views</h5>
+<div class="paragraph">
+<p>The new version introduces a new approach for linking to entity views, which might result in breaking changes in some application.
+The <code>EntityLinkBuilder</code> implementation has been deprecated.
+A new <code>EntityViewLinks</code> component has been added as an entry point for building links to entity views.</p>
+</div>
+<div class="paragraph">
+<p>An <code>EntityConfiguration</code> contains an <code>EntityViewLinkBuilder</code> attribute that returns a link builder for that particular entity type.
+The older <code>EntityLinkBuilder</code> attribute is also kept for backwards compatibility, but returns the same instance of the newer implementation.</p>
+</div>
+<div class="paragraph">
+<p>It is best to review your code and make changes accordingly, even though the new implementation has been kept as backwards compatible as possible.</p>
+</div>
+<div class="paragraph">
+<p>Within the context of rendering an entity view, you can make the following changes:</p>
+</div>
+<div class="listingblock">
+<div class="title">Comparing old and new link building</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="predefined-type">String</span> url;
+EntityViewContext entityViewContext;
+MyEntity entity;
+
+<span class="comment">// -- Retrieving the link builder for the entity type</span>
+EntityLinkBuilder oldBuilder = entityViewContext.getLinkBuilder();      <span class="comment">// OLD</span>
+EntityViewLinkBuilder newBuilder = entityViewContext.getLinkBuilder();  <span class="comment">// NEW</span>
+
+<span class="comment">// -- Linking to the list view</span>
+<span class="comment">// url: /entities/myEntity</span>
+url = oldBuilder.overview();                                            <span class="comment">// OLD</span>
+url = newBuilder.listView().toUriString();                              <span class="comment">// NEW</span>
+
+<span class="comment">// -- Linking to the create view</span>
+<span class="comment">// url: /entities/myEntity/create</span>
+url = oldBuilder.create();                                              <span class="comment">// OLD</span>
+url = newBuilder.createView().toUriString();                            <span class="comment">// NEW</span>
+
+<span class="comment">// -- Linking to the update view</span>
+<span class="comment">// url: /entities/myEntity/1/update</span>
+url = oldBuilder.update( entity );                                      <span class="comment">// OLD</span>
+url = newBuilder.forInstance( entity ).updateView().toUriString();      <span class="comment">// NEW</span>
+
+<span class="comment">// -- Linking to a custom view</span>
+<span class="comment">// url: /entities/myEntity/1?view=customViewName</span>
+url = UriComponentsBuilder.fromUriString( oldBuilder.view( entity ) )
+                          .queryParam( <span class="string"><span class="delimiter">&quot;</span><span class="content">view</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">customViewName</span><span class="delimiter">&quot;</span></span> )
+                          .toUriString();                               <span class="comment">// OLD</span>
+
+url = newBuilder.forInstance( entity )
+                .withViewName( <span class="string"><span class="delimiter">&quot;</span><span class="content">customViewName</span><span class="delimiter">&quot;</span></span> )
+                .toUriString();                                         <span class="comment">// NEW</span>
+
+<span class="comment">// -- Linking to an association list view</span>
+<span class="comment">// url: /entities/myEntity/1/associations/associatedItems/</span>
+url = association.getTargetEntityConfiguration()
+                 .getAttribute( EntityLinkBuilder.class )
+                 .asAssociationFor( oldBuilder, entity )
+                 .overview();                                           <span class="comment">// OLD</span>
+
+url = newBuilder.forInstance( entity )
+                .association( AssociatedItem.class )
+                .toUriString();                                         <span class="comment">// NEW</span>
+
+<span class="comment">// -- Linking to a single associated item update view</span>
+<span class="comment">// url: /entities/myEntity/1/associations/associatedItems/2/update</span>
+url = association.getTargetEntityConfiguration()
+                 .getAttribute( EntityLinkBuilder.class )
+                 .asAssociationFor( oldBuilder, entity )
+                 .update( associatedItem );                             <span class="comment">// OLD</span>
+
+url = newBuilder.forInstance( entity )
+                .association( associatedItem )
+                .updateView()
+                .toUriString();                                         <span class="comment">// NEW</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The new <code>EntityViewLinkBuilder</code> has a more fluent API that allows customizing the URL before converting it to a <code>String</code>.
+It also has some short-hand methods for commonly used entity view related parameters.
+Every method call results in a new instance being created, so you will not make inadvertent changes to an existing link builder.</p>
+</div>
+<div class="listingblock">
+<div class="title">Useful methods of the new EntityViewLinkBuilder</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="comment">// append a custom path segment</span>
+.slash( <span class="predefined-type">String</span> path )
+<span class="comment">// append query parameter</span>
+.withQueryParam( <span class="predefined-type">String</span> param, <span class="predefined-type">Object</span>... values )
+<span class="comment">// set a from URL ('from' query parameter)</span>
+.withFromUrl( <span class="predefined-type">String</span> url )
+<span class="comment">// set a partial fragment ('_partial' query parameter)</span>
+.withPartial( <span class="predefined-type">String</span> fragment )
+<span class="comment">// set a custom view name ('view' query parameter)</span>
+.withViewName( <span class="predefined-type">String</span> viewName )
+
+<span class="comment">// return the unprocessed URI (eg. '@adminWeb:/entities/myEntity')</span>
+.toString()
+<span class="comment">// returning the processed URI (eg. '/admin/entities/myEntity')</span>
+.toUriString()
+<span class="comment">// create a new UriComponentsBuilder with the settings</span>
+.toUriComponentsBuilder()
+<span class="comment">// return as URI</span>
+.toUri()
+<span class="comment">// return as UriComponents</span>
+.toUriComponents()
+
+<span class="comment">// return the original EntityViewLinks</span>
+.root()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A new <code>EntityViewLinks</code> component is also available to generate links to entity views from anywhere in your code.</p>
+</div>
+<div class="listingblock">
+<div class="title">Using EntityViewLinks central component</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Autowired</span>
+EntityViewLinks links;
+
+<span class="comment">// link to a list view</span>
+links.linkTo( MyEntity.class ).toUriString();
+
+<span class="comment">// link to single entity view</span>
+links.linkTo( MyEntity.class ).forInstance( myEntity ).toUriString();
+links.linkTo( MyEntity.class ).withId( <span class="integer">1</span> ).toUriString();
+<span class="comment">// or shorter...</span>
+links.linkTo( myEntity ).toUriString();
+links.linkTo( myEntity ).updateView().toUriString();
+
+<span class="comment">// link to associations</span>
+links.linkTo( myEntity ).association( AssociatedEntity.class ).toUriString();
+links.linkTo( myEntity ).association( associatedItem ).toUriString();</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 2.1.0.RELEASE<br>
+Last updated 2018-03-30 11:54:21 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "Across Platform BOM";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<meta name="author" content="Arne Vandamme">
+<title>AdminWebModule</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>AdminWebModule</h1>
+<div class="details">
+<span id="author" class="author">Arne Vandamme</span><br>
+<span id="revnumber">version 3.0.1.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#general-information">1. General information</a>
+<ul class="sectlevel2">
+<li><a href="#artifact">1.1. Artifact</a></li>
+<li><a href="#module-dependencies">1.2. Module dependencies</a></li>
+<li><a href="#module-settings">1.3. Module settings</a></li>
+</ul>
+</li>
+<li><a href="#what-s-new-in-this-version">2. What&#8217;s new in this version?</a>
+<ul class="sectlevel2">
+<li><a href="#3-0-1-release">3.0.1.RELEASE</a></li>
+<li><a href="#2-1-1-release">2.1.1.RELEASE</a></li>
+<li><a href="#2-1-0-release">2.1.0.RELEASE</a></li>
+<li><a href="#2-0-0-release">2.0.0.RELEASE</a></li>
+<li><a href="#1-1-1-release">1.1.1.RELEASE</a></li>
+<li><a href="#1-1-0-release">1.1.0.RELEASE</a></li>
+</ul>
+</li>
+<li><a href="#about-the-adminwebmodule">3. About the AdminWebModule</a>
+<ul class="sectlevel2">
+<li><a href="#remember-me-configuration">3.1. Remember me configuration</a></li>
+</ul>
+</li>
+<li><a href="#integration-with-other-modules">4. Integration with other modules</a>
+<ul class="sectlevel2">
+<li><a href="#integration:acrossweb">4.1. AcrossWebModule</a></li>
+<li><a href="#integration:springsecurity">4.2. SpringSecurityModule</a></li>
+<li><a href="#integration:application-info">4.3. ApplicationInfoModule</a></li>
+</ul>
+</li>
+<li><a href="#registering-additional-interceptors">5. Registering additional interceptors</a></li>
+<li><a href="#permissions">6. Permissions</a></li>
+<li><a href="#customizing-the-look-and-feel">7. Customizing the look and feel</a>
+<ul class="sectlevel2">
+<li><a href="#default-template">7.1. Default template</a></li>
+<li><a href="#login-page">7.2. Login page</a></li>
+</ul>
+</li>
+<li><a href="#building-an-administration-ui">8. Building an administration UI</a>
+<ul class="sectlevel2">
+<li><a href="#registering-admin-controllers">8.1. Registering admin controllers</a></li>
+<li><a href="#linking-to-other-admin-controllers">8.2. Linking to other admin controllers</a></li>
+<li><a href="#customizing-nav-sections">8.3. Customizing the nav sections</a></li>
+<li><a href="#page-content-structure">8.4. Default page structures</a></li>
+<li><a href="#developer-tools">8.5. Developer tools section</a></li>
+<li><a href="#adminweb-javascript">8.6. AdminWebModule javascript</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="openblock copyright">
+<div class="content">
+<div class="paragraph">
+<p>Copyright &#169; 2014-2017<br>
+<span class="small">Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies and further provided that each copy contains this Copyright Notice, whether distributed in print or electronically.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="general-information"><a class="anchor" href="#general-information"></a>1. General information</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="artifact"><a class="anchor" href="#artifact"></a>1.1. Artifact</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependencies&gt;</span>
+        <span class="tag">&lt;dependency&gt;</span>
+                <span class="tag">&lt;groupId&gt;</span>com.foreach.across.modules<span class="tag">&lt;/groupId&gt;</span>
+                <span class="tag">&lt;artifactId&gt;</span>admin-web-module<span class="tag">&lt;/artifactId&gt;</span>
+                <span class="tag">&lt;version&gt;</span>3.0.1.RELEASE<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;/dependency&gt;</span>
+<span class="tag">&lt;/dependencies&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="module-dependencies"><a class="anchor" href="#module-dependencies"></a>1.2. Module dependencies</h3>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Module dependencies</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Module</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#integration:acrossweb">AcrossWebModule</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Provides the web infrastructure for supporting <code>@AdminWebController</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://across.foreach.be/modules/BootstrapUiModule">BootstrapUiModule</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Required for building the basic administration UI.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#integration:springsecurity">SpringSecurityModule</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Provides the security infrastructure.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#integration:application-info">ApplicationInfoModule</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optional</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the <em>admin web title</em> and <em>remember-me</em> cookie name if not set explicitly.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="module-settings"><a class="anchor" href="#module-settings"></a>1.3. Module settings</h3>
+<div class="paragraph">
+<p>All properties start with the <strong>adminWebModule.</strong> prefix.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">root-path</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Root path for all admin web controllers.  All mappings will be relative to this path.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/admin</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dashboard</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path within the admin web context for the initial dashboard.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">title</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the application to be shown in the administration UI.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">access-permissions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set of permissions that grant access to the administration interface.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">access administration</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">locale.default-locale</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Locale</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default locale that should explicitly be set when accessing the administration interface if no specific locale selected.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Locale.US</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">locale.options</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>List&lt;Locale&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List of locales that can be selected on the login page.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Collections.emptyList()</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">login.template</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">View template for the login page.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">th/adminweb/login</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">login.rememberMe.enabled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Should remember me be enabled (will only be the case if a key is also configured).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">login.rememberMe.key</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key used for creating the remember me cookie.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">login.rememberMe.cookie</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the remember-me cookie.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">rm-admin-web</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">login.rememberMe.tokenValiditySeconds</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Integer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of seconds a remember me token should be valid.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>30 days</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="what-s-new-in-this-version"><a class="anchor" href="#what-s-new-in-this-version"></a>2. What&#8217;s new in this version?</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="3-0-1-release"><a class="anchor" href="#3-0-1-release"></a>3.0.1.RELEASE</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><code>EntityAdminMenu</code> and <code>EntityAdminMenuEvent</code> have been deprecated and will be removed in the future</p>
+<div class="ulist">
+<ul>
+<li>
+<p>these classes were almost solely used in the context of <a href="https://across.foreach.be/modules/EntityModule">EntityModule</a> and did not belong in AdminWebModule</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="2-1-1-release"><a class="anchor" href="#2-1-1-release"></a>2.1.1.RELEASE</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Removed deprecated icon set from package and switched to new Across logo</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="2-1-0-release"><a class="anchor" href="#2-1-0-release"></a>2.1.0.RELEASE</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Improved styling of the default layout</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use of icons for Home breadcrumb, Developer tools and User context section</p>
+</li>
+<li>
+<p><a href="http://fontawesome.io/">FontAwesome icon set</a> is added to the default resources</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>The <code>AdminWebLayoutTemplate</code> now allows full <a href="#customizing-nav-sections">customization of the navigational components</a></p>
+</li>
+<li>
+<p>Dismissible alerts are now converted to <a href="#toastr-notifications">temporary Toastr notifications</a> instead in order to take up less visual space</p>
+</li>
+<li>
+<p>CSRF protection now uses the <code>CookieCsrfTokenRepository</code> by default and no longer forces session creation</p>
+</li>
+<li>
+<p>the default AdminWebModule javascript has been <a href="#adminweb-javascript">extended to expose the root path of admin section as well as static resources</a></p>
+</li>
+<li>
+<p>Bugfixes:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>styling issues with top and left menu on mobile</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="2-0-0-release"><a class="anchor" href="#2-0-0-release"></a>2.0.0.RELEASE</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>AdminWebModule now depends on <a href="https://across.foreach.be/modules/BootstrapUiModule">BootstrapUiModule</a></p>
+</li>
+<li>
+<p>the login page now provides an attribute <strong>isLoginPage</strong> that is accessible in the global template</p>
+</li>
+<li>
+<p>added the <a href="#page-content-structure"><code>PageContentStructure</code> with corresponding template</a> to facilitate layouting admin pages</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="1-1-1-release"><a class="anchor" href="#1-1-1-release"></a>1.1.1.RELEASE</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>all settings are now configurable through properties with Spring configuration metadata support</p>
+</li>
+<li>
+<p>login template now uses the <code>isRememberMeEnabled</code> attribute to determine if the remember-me checkbox should be shown</p>
+<div class="ulist">
+<ul>
+<li>
+<p>this is a <strong>breaking change</strong> for custom templates</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>a <a href="#developer-tools">Developer tools</a> menu section gets created if development mode is active</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="1-1-0-release"><a class="anchor" href="#1-1-0-release"></a>1.1.0.RELEASE</h3>
+<div class="paragraph">
+<p>Initial public release available on <a href="http://search.maven.org/">Maven central</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="about-the-adminwebmodule"><a class="anchor" href="#about-the-adminwebmodule"></a>3. About the AdminWebModule</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>AdminWebModule provides infrastructure for building an secured administration section in your site.
+All <code>@AdminWebController</code> beans will be mapped behind the admin web root path and will have the security rules applied.</p>
+</div>
+<div class="paragraph">
+<p>Unless otherwise specified, the default admin web template will be applied for those controllers.
+The default template is built on Bootstrap and JQuery and builds a menu structure that controllers can hook into via the <code>AdminMenuEvent</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="remember-me-configuration"><a class="anchor" href="#remember-me-configuration"></a>3.1. Remember me configuration</h3>
+<div class="paragraph">
+<p>You can easily enable remember me support for the administration ui by setting the correct properties.  By default
+the <code>TokenBasedRememberMeServices</code> are used, meaning the user password is encoded into the cookie value.  When using a
+local memory database during development this can be unhandy when users get reinstalled upon application start.  If
+the user password is also encoded using a random encoder (the default when using the <code>UserModule</code>) the remember me
+cookies will not work after a restart.  The solution for this to configure either a <code>NoOpPasswordEncoder.getInstance()</code>
+or a fixed password encoder in local development mode.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="integration-with-other-modules"><a class="anchor" href="#integration-with-other-modules"></a>4. Integration with other modules</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="integration:acrossweb"><a class="anchor" href="#integration:acrossweb"></a>4.1. AcrossWebModule</h3>
+<div class="paragraph">
+<p>Admin web creates its own <code>PrefixingRequestMappingHandlerMapping</code> that picks up all <code>@AdminWebController</code> and will prefix all request mappings with the root path of the admin web module.</p>
+</div>
+<div class="paragraph">
+<p>Provide an <code>AdminWebConfigurerAdapter</code> if you want to register interceptors that should only be applied to the admin web controllers.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="integration:springsecurity"><a class="anchor" href="#integration:springsecurity"></a>4.2. SpringSecurityModule</h3>
+<div class="paragraph">
+<p>By default <code>AdminWebModule</code> adds a <code>SpringWebSecurityConfigurerAdapter</code> with default rules for all requests under the admin web root.
+If you wish to modify the default security rules, you must provide your own <code>SpringWebSecurityConfigurerAdapter</code> that is positioned before the default <code>AdminWebSecurityConfiguration</code> instance.</p>
+</div>
+<div class="paragraph">
+<p>If you create a new <code>SpringWebSecurityConfigurerAdapater</code> you will need to scope it correctly to the admin web root path and provide all rules including things like login/logout and remember me.
+If you are interested more in extending the default configuration, you can extend <code>AdminWebSecurityConfiguration</code> and override the <code>customizeAdminWebSecurity</code> adapter method.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example of disabling security headers on admin web</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="comment">/**
+ * Create a custom security configurer that extends from the
+ * default AdminWebSecurityConfiguration but disables all
+ * security headers.
+ *
+ * The @OrderInModule annotation will ensure that this
+ * configurer will be positioned before the default configuration
+ * once we add it to the AdminWebModule context.
+ */</span>
+<span class="annotation">@Configuration</span>
+<span class="annotation">@OrderInModule</span>(Ordered.HIGHEST_PRECEDENCE)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">DisableAdminWebSecurityHeaders</span> <span class="directive">extends</span> AdminWebSecurityConfiguration
+{
+        <span class="annotation">@Override</span>
+        <span class="directive">protected</span> <span class="type">void</span> customizeAdminWebSecurity( HttpSecurity http ) <span class="directive">throws</span> <span class="exception">Exception</span> {
+                http.headers().disable();
+        }
+}
+
+...
+
+<span class="comment">// Add the custom security configuration to the AdminWebModule</span>
+AdminWebModule adminWebModule = <span class="keyword">new</span> AdminWebModule();
+adminWebModule.addApplicationContextConfigurer( DisableAdminWebSecurityHeaders.class );</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="integration:application-info"><a class="anchor" href="#integration:application-info"></a>4.3. ApplicationInfoModule</h3>
+<div class="paragraph">
+<p>If the <code>ApplicationInfoModule</code> is present in the context, the configured application information will be used
+to set the default remember-me cookie name (based on the <code>ApplicationInfo.getApplicationId()</code>) and application title for
+ the administration interface (based on the <code>ApplicationInfo.getApplicationName()</code> property).use DebugWebConfigurerAdapter to add interceptors only to debug web</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="registering-additional-interceptors"><a class="anchor" href="#registering-additional-interceptors"></a>5. Registering additional interceptors</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Additional interceptors for admin controllers can easily be registered by providing an <code>AdminWebConfigurerAdapter</code> bean.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="permissions"><a class="anchor" href="#permissions"></a>6. Permissions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, access to the administration interface is restricted to users having the <strong>access administration</strong> permission.
+The allowed permissions can be specified by setting the <strong>adminWebModule.access-permissions</strong> property.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="customizing-the-look-and-feel"><a class="anchor" href="#customizing-the-look-and-feel"></a>7. Customizing the look and feel</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="default-template"><a class="anchor" href="#default-template"></a>7.1. Default template</h3>
+<div class="paragraph">
+<p>All admin web controllers will use a default template named <strong>adminWeb</strong>.
+You can customize which template to use by modifying the <code>WebTemplateRegistry</code> bean named <strong>adminWebTemplateRegistry</strong>.
+You can either change the default template or simply replace the instance registered as <strong>adminWeb</strong>.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The login page uses the same default template as all other admin web controllers.
+This means the template should take both authorized and non-authorized authentications into account.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The default template is an implementation of <code>AdminWebLayoutTemplate</code>.
+If you only want a custom view template file (eg. Thymeleaf) you can reuse the <code>AdminWebLayoutTemplate</code> class and create a new bean with custom name and template file.
+The default web resources and page structure (menus) will still be created.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="login-page"><a class="anchor" href="#login-page"></a>7.2. Login page</h3>
+<div class="paragraph">
+<p>The default login page can be customized by setting the property <strong>adminWebModule.login.template</strong> to the Thymeleaf template you wish to render.
+The login controller provides the following model attributes that can be used to customize the template:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Attribute</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Description</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>isLoginPage</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Always <code>true</code>.
+This attribute can be used in the wrapping template to determine if the login page is being requested.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>isRememberMeEnabled</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Can be used to determine if a remember me checkbox should be rendered.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>localeOptions</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>List&lt;Locale&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lists the different locale options that should be offered on the login page.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="building-an-administration-ui"><a class="anchor" href="#building-an-administration-ui"></a>8. Building an administration UI</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="registering-admin-controllers"><a class="anchor" href="#registering-admin-controllers"></a>8.1. Registering admin controllers</h3>
+<div class="paragraph">
+<p>AdminWebModule will scan for all beans annoted with <code>@AdminWebController</code>.
+This is a replacement for the default <code>@Controller</code> annotation and marks the beans as controllers that should run under the AdminWebModule root path.</p>
+</div>
+<div class="paragraph">
+<p>All request mappings that the controller declares will be prefixed with the admin root path, and will be secured behind it.
+The default admin web template will be applied to the controller unless it explicitly declares a <code>@Template</code> annotation.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>@AdminWebController</code> also declared a Spring condition.
+Beans annotated with <code>@AdminWebController</code> will only get created if AdminWebModule is present.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The following code snippet illustrates creating a simple admin controller:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example creating a custom admin web controller</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@AdminWebController</span>
+<span class="annotation">@RequestMapping</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/demo</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">DemoAdminWebController</span>
+{
+        <span class="annotation">@RequestMapping</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/page</span><span class="delimiter">&quot;</span></span>)
+        <span class="directive">public</span> <span class="predefined-type">String</span> renderPage( Model model ) {
+            model.addAttribute( <span class="string"><span class="delimiter">&quot;</span><span class="content">message</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Hello!</span><span class="delimiter">&quot;</span></span> );
+            <span class="keyword">return</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">th/myModule/admin/page</span><span class="delimiter">&quot;</span></span>;
+        }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With the default settings, the controller in the example would be available as _/admin/demo/page.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="linking-to-other-admin-controllers"><a class="anchor" href="#linking-to-other-admin-controllers"></a>8.2. Linking to other admin controllers</h3>
+<div class="paragraph">
+<p>Because admin controllers have no knowledge of the base prefix, care should be taken to use the <code>WebAppPathResolver</code> with the correct prefix for generating the right links.</p>
+</div>
+<div class="paragraph">
+<p>There are 3 ways to do this:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>using the <strong>adminWeb</strong> prefix in the <code>WebAppPathResolver</code> bean: <code>webapp.path("@adminWeb:/demo/page")</code></p>
+</li>
+<li>
+<p>using the <strong>adminWeb</strong> prefix directly in any Thymeleaf url: <code>th:href="@{@adminWeb:/demo/page}"</code></p>
+</li>
+<li>
+<p>using the <code>AdminWeb</code> bean to generate paths or redirect: <code>adminWeb.redirect("/demo/page")</code></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+AdminWebModule registers the <strong>adminWeb</strong> link prefix that represents the admin web root path.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="customizing-nav-sections"><a class="anchor" href="#customizing-nav-sections"></a>8.3. Customizing the nav sections</h3>
+<div class="paragraph">
+<p>The default <code>AdminWebLayoutTemplate</code> builds a single <code>AdminMenu</code> that is supposed to hold all items that make up the UI nav structures.
+The same <code>AdminMenu</code> is used to render the different nav components on the layout:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>top navigation</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the top navigation actually consists of a left-hand (<em>navbar</em>) and right-hand (<em>navbar-right</em>) side</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>left-hand navigation</p>
+</li>
+<li>
+<p>breadcrumb</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>All nav structures are built using a <code>NavComponentBuilder</code> from the <a href="https://across.foreach.be/modules/BootstrapUiModule">BootstrapUiModule</a> and support all options like HTML attributes, icons and custom <code>ViewElements</code>.</p>
+</div>
+<div class="sect3">
+<h4 id="default-adminmenu-structure"><a class="anchor" href="#default-adminmenu-structure"></a>8.3.1. Default AdminMenu structure</h4>
+<div class="paragraph">
+<p>By default the <code>AdminMenu</code> contains 3 items:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the root item (<strong>/</strong>)</p>
+</li>
+<li>
+<p>the user context item group (<strong>/user-context</strong>)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>this group is rendered only on the right-hand side of the top navigation</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>the logout link as member of the user-context (<strong>/user-context/logout</strong>)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These default items can be customized using the <code>AdminMenuEvent</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example replacing the default user-context icon by a user profile picture</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">private</span> ViewElementBuilder myProfilePictureViewElementBuilder;
+
+<span class="annotation">@EventListener</span>
+<span class="directive">public</span> <span class="type">void</span> addUserProfilePicture( AdminMenuEvent adminMenuEvent ) {
+        adminMenuEvent.builder()
+                      .group( DefaultAdminMenuRegistrar.PATH )
+                      .attribute( NavComponentBuilder.ATTR_ICON, myProfilePictureViewElementBuilder );
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="adding-a-page-to-the-main-nav-section"><a class="anchor" href="#adding-a-page-to-the-main-nav-section"></a>8.3.2. Adding a page to the main nav section</h4>
+<div class="paragraph">
+<p>If you want to add a page to the main navigation section of admin web, you can do so by simply registering it in the <code>AdminMenu</code>.
+The easiest way to do that is by intercepting the <code>AdminMenuEvent</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example creating a custom admin web controller</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@EventListener</span>
+<span class="directive">public</span> <span class="type">void</span> registerMenuItem( AdminMenuEvent adminMenuEvent ) {
+        adminMenuEvent.builder()
+                      .group( <span class="string"><span class="delimiter">&quot;</span><span class="content">/group</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Demo pages</span><span class="delimiter">&quot;</span></span> ).and()
+                      .item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/group/page</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">My demo page</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/demo/page</span><span class="delimiter">&quot;</span></span> );
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Relative urls added to the <code>AdminMenuEvent</code> will be considered admin web relative, and will get prefixed with the admin web root path.
+If you want to avoid this, either use absolute urls, add a specific prefix or begin them with an exclamation mark (!).
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="specifying-a-nav-section"><a class="anchor" href="#specifying-a-nav-section"></a>8.3.3. Specifying a nav section</h4>
+<div class="paragraph">
+<p>By default any item will be added both to the top navigation and the left-hand navigation.
+You can limit the sections an item should be added to by adding a value for <strong>adminMenu:position</strong> attribute on a <code>Menu</code>.</p>
+</div>
+<div class="paragraph">
+<p>The value can be either a <code>String</code> or a <code>String[]</code>.</p>
+</div>
+<div class="paragraph">
+<p>Possible positions are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>navbar</em>: render the item in the top (left) navbar</p>
+</li>
+<li>
+<p><em>navbar-right</em>: render the item in the top right navbar</p>
+</li>
+<li>
+<p><em>sidebar</em>: render the item in the left sidebar</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Example adding a menu item to the top right and sidebar navigation</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@EventListener</span>
+<span class="directive">public</span> <span class="type">void</span> registerMenuItem( AdminMenuEvent adminMenuEvent ) {
+    adminMenuEvent.builder()
+                .group( <span class="string"><span class="delimiter">&quot;</span><span class="content">/tools</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Tools</span><span class="delimiter">&quot;</span></span> )
+                .attribute(
+                    AdminMenu.ATTR_NAV_POSITION,
+                    <span class="keyword">new</span> <span class="predefined-type">String</span><span class="type">[]</span> { AdminWebLayoutTemplate.NAVBAR_RIGHT, AdminWebLayoutTemplate.SIDEBAR }
+                );
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="excluding-an-item-from-the-breadcrumb"><a class="anchor" href="#excluding-an-item-from-the-breadcrumb"></a>8.3.4. Excluding an item from the breadcrumb</h4>
+<div class="paragraph">
+<p>By default all <code>Menu</code> items will be included in the breadcrumb.
+Explicitly excluding an item can be done by setting the <strong>adminMenu:breadcrumb</strong> attribute to <code>false</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example excluding a menu item from the breadcrumb</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@EventListener</span>
+<span class="directive">public</span> <span class="type">void</span> registerMenuItem( AdminMenuEvent adminMenuEvent ) {
+    adminMenuEvent.builder()
+                .group( <span class="string"><span class="delimiter">&quot;</span><span class="content">/tools</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Tools</span><span class="delimiter">&quot;</span></span> )
+                .attribute( AdminMenu.ATTR_BREADCRUMB, <span class="predefined-constant">false</span> );
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="page-content-structure"><a class="anchor" href="#page-content-structure"></a>8.4. Default page structures</h3>
+<div class="paragraph">
+<p>When creating an admin web page you can use the <code>PageContentStructure</code> to help you build a reliable layout.
+The <code>PageContentStructure</code> is a <code>ViewElement</code> that represents the different sections on a page:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>header</em> with the <em>page title</em> and optionally <em>page title sub text</em></p>
+</li>
+<li>
+<p><em>feedback</em> section below the header but before the other page content</p>
+</li>
+<li>
+<p><em>nav</em> section meant for the in-page navigation (for example tabs)</p>
+</li>
+<li>
+<p><em>body</em> section holding the main content</p>
+</li>
+<li>
+<p><em>footer</em> section at the bottom</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><code>PageContentStructure</code> can be autowired as a request-scoped bean.
+If you then use the default template <code>PageContentStructure.TEMPLATE</code> this will render the entire page.
+This requires you to add all content as <code>ViewElement</code> components, but of course you can still specify one or more of the <code>ViewElement</code> values to use a custom template for rendering.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example using the default page structure</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Autowired</span>
+<span class="directive">private</span> PageContentStructure page;
+
+<span class="annotation">@RequestMapping</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/page</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="predefined-type">String</span> pageContent( ViewElementBuilderContext builderContext ) {
+
+    <span class="comment">// Render a tab layout</span>
+    page.setRenderAsTabs( <span class="predefined-constant">true</span> );
+
+    <span class="comment">// Manually create a menu structure</span>
+    <span class="predefined-type">Menu</span> menu = <span class="keyword">new</span> PathBasedMenuBuilder()
+        .item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/one</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">One</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">#</span><span class="delimiter">&quot;</span></span> ).order( <span class="integer">1</span> ).and()
+        .group( <span class="string"><span class="delimiter">&quot;</span><span class="content">/advanced</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Advanced settings</span><span class="delimiter">&quot;</span></span> )
+        .order( <span class="integer">2</span> )
+        .attribute( <span class="string"><span class="delimiter">&quot;</span><span class="content">html:class</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">pull-right</span><span class="delimiter">&quot;</span></span> )
+        .attribute( NavComponentBuilder.ATTR_ICON_ONLY, <span class="predefined-constant">true</span> )
+        .and()
+        .item( <span class="string"><span class="delimiter">&quot;</span><span class="content">/advanced/trash</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Move to trash</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">#</span><span class="delimiter">&quot;</span></span> )
+        .attribute( NavComponentBuilder.ATTR_ICON, <span class="keyword">new</span> GlyphIcon( GlyphIcon.TRASH ) )
+        .and()
+        .build();
+    menu.sort();
+
+    page.setPageTitle( <span class="string"><span class="delimiter">&quot;</span><span class="content">Some page title...</span><span class="delimiter">&quot;</span></span> );
+    page.addToPageTitleSubText( <span class="keyword">new</span> GlyphIcon( GlyphIcon.ALERT ) );
+
+    <span class="comment">// Convert our menu to a tab nav</span>
+    page.addToNav( bootstrapUiComponentFactory.nav( menu ).tabs().build( builderContext ) );
+    page.addToFeedback(
+        bootstrapUiFactory.alert().danger().dismissible().text( <span class="string"><span class="delimiter">&quot;</span><span class="content">Hello!</span><span class="delimiter">&quot;</span></span> )
+                            .build( builderContext )
+    );
+
+    page.addChild( TextViewElement.text( <span class="string"><span class="delimiter">&quot;</span><span class="content">Some body content...</span><span class="delimiter">&quot;</span></span> ) );
+
+    <span class="keyword">return</span> PageContentStructure.TEMPLATE;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you do not want to use the request scoped <code>PageContentStructure</code>, you can always manually create an instance.
+For the default template to work, it requires the structure to be available on the model as the default <strong>pageContentStructure</strong> attribute.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example using a custom page structure</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RequestMapping</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/page</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="predefined-type">String</span> pageContent( <span class="annotation">@ModelAttribute</span> PageContentStructure page ) {
+    ...
+
+    return PageContentStructure.TEMPLATE;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Instead of using the default template <code>PageContentStructure.TEMPLATE</code>, you can always use your own page template and simply render some of the <code>ViewElement</code> properties of the <code>PageContentStructure</code> where and when you want them.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="developer-tools"><a class="anchor" href="#developer-tools"></a>8.5. Developer tools section</h3>
+<div class="paragraph">
+<p>If development mode is active on the Across context, a menu group titled <strong>Developer tools</strong> will get created.
+This allows other modules to register development only resources in the administration UI.</p>
+</div>
+<div class="paragraph">
+<p>The path of the menu group is <strong>/ax/developer</strong>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example development controller that only gets created if development mode is active</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@AdminWebController</span>
+<span class="annotation">@ConditionalOnDevelopmentMode</span>
+<span class="annotation">@RequiredArgsConstructor</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">DevToolsController</span>
+{
+        <span class="directive">private</span> <span class="directive">final</span> PageContentStructure pageContentStructure;
+
+        <span class="annotation">@EventListener</span>
+        <span class="type">void</span> registerDeveloperToolsItem( AdminMenuEvent menuEvent ) {
+                menuEvent.builder().item( DeveloperToolsMenuRegistrar.PATH + <span class="string"><span class="delimiter">&quot;</span><span class="content">/test</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Test controller</span><span class="delimiter">&quot;</span></span> );
+        }
+
+        <span class="annotation">@GetMapping</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/ax/developer/test</span><span class="delimiter">&quot;</span></span>)
+        <span class="directive">public</span> <span class="predefined-type">String</span> test() {
+                pageContentStructure.setPageTitle( <span class="string"><span class="delimiter">&quot;</span><span class="content">Test developer tools page...</span><span class="delimiter">&quot;</span></span> );
+                <span class="keyword">return</span> PageContentStructure.TEMPLATE;
+        }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="adminweb-javascript"><a class="anchor" href="#adminweb-javascript"></a>8.6. AdminWebModule javascript</h3>
+<div class="paragraph">
+<p>AdminWebModule registers some Javascript and exposes an <code>AdminWebModule</code> and <code>AcrossWebModule</code> global variable.
+These can be used to configure some of the default client-side behaviour settings.</p>
+</div>
+<div class="paragraph">
+<p>The necessary web resources are registered automatically by the <code>AdminWebLayoutTemplate</code>.
+If you have a custom template implementation, you probably want to register the <code>AdminWebWebResources</code> manually.</p>
+</div>
+<div class="sect3">
+<h4 id="client-side-paths"><a class="anchor" href="#client-side-paths"></a>8.6.1. Client-side paths</h4>
+<div class="paragraph">
+<p>A couple of web application paths are exposed as global javascript variables:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Variable</th>
+<th class="tableblock halign-left valign-top">Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AcrossWebModule.resourcePath</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Holds the base path for exposed web resources.
+Equivalent of <code>@resource:/</code> in a server-side link.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AcrossWebModule.staticPath</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Holds the base path for the default static resources.
+Equivalent of <code>@static:/</code> in a server-side link.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AdminWebModule.rootPath</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Holds the base path onto which AdminWeb UI has been mapped.
+Equivalent of <code>@adminWeb:/</code> in a server-side link.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The last slash (/) token will always be stripped from the exposed paths.
+Example creating a custom path: <code>AdminWebModule.rootPath + '/my-controller'</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="toastr-notifications"><a class="anchor" href="#toastr-notifications"></a>8.6.2. Toastr notifications</h4>
+<div class="paragraph">
+<p>By default AdminWebModule will convert all Bootstrap dismissible alerts into <a href="http://codeseven.github.io/toastr/">Toastr notifications</a>.
+If you do not want to use Toastr at all, simply removing the javascript should be sufficient.
+If you only want to disable dismissible alert conversion, you can do so by updating the <code>AdminWebModule</code> javascript property:</p>
+</div>
+<div class="listingblock">
+<div class="title">Disabling Toastr notifications</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="tag">&lt;script</span> <span class="attribute-name">type</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">text/javascript</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+<span class="inline"><span class="comment">// Disable Toastr notifications - ensure this block is executed after initial admin-web-module.js</span>
+AdminWebModule.useToastrNotifications = <span class="predefined-constant">false</span>;</span>
+<span class="tag">&lt;/script&gt;</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 3.0.1.RELEASE<br>
+Last updated 2018-04-03 10:01:08 CEST
+</div>
+</div>
+</body>
+</html>

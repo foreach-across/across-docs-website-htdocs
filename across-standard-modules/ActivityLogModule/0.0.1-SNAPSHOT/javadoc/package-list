@@ -1,0 +1,9 @@
+com.foreach.across.modules.activitylog
+com.foreach.across.modules.activitylog.config
+com.foreach.across.modules.activitylog.domain
+com.foreach.across.modules.activitylog.domain.entry
+com.foreach.across.modules.activitylog.domain.entry.ui
+com.foreach.across.modules.activitylog.domain.entry.ui.property
+com.foreach.across.modules.activitylog.entity
+com.foreach.across.modules.activitylog.installers
+com.foreach.across.modules.activitylog.support

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>WebCmsModule - How-tos</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="how-tos" class="book toc2 toc-left">
+<div id="header">
+<h1>WebCmsModule - How-tos</h1>
+<div class="details">
+<span id="revnumber">version 0.0.4.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">How-tos</div>
+<ul class="sectlevel0">
+<li><a href="#creating-a-custom-webcmsasset">Creating a custom WebCmsAsset</a>
+<ul class="sectlevel1">
+<li><a href="#creating-a-webcmsassettype">1. Creating a WebCmsAssetType</a></li>
+<li><a href="#importing-a-custom-webcmsasset">2. Importing a custom WebCmsAsset</a></li>
+</ul>
+</li>
+<li><a href="#using-a-site-template-in-a-multi-site-setup">Using a site template in a multi site setup</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<h1 id="creating-a-custom-webcmsasset" class="sect0"><a class="anchor" href="#creating-a-custom-webcmsasset"></a>Creating a custom WebCmsAsset</h1>
+<div class="openblock partintro">
+<div class="content">
+<div class="paragraph">
+<p>To create a custom <code>WebCmsAsset</code>, we create a class which extends <code>WebCmsAsset</code>. `WebCmsAsset`has two superclasses which require a method to be implemented:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>WebCmsObjectInheritanceSuperClass</code> which defines <code>getObjectType()</code></p>
+</li>
+<li>
+<p><code>WebCmsObjectSuperClass</code> which defines <code>getObjectCollectionId()</code> with which every object id of the class will be prefixed with.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Aside of these two methods, WebCmsAsset defines an abstract method <code>getAssetType()</code>, which also needs to be implemented.</p>
+</div>
+<div class="paragraph">
+<p><code>WebCmsAsset</code> uses joined inheritance, so don&#8217;t forget to add a <code>@DiscriminatorValue</code> to the class, which typically is the same as the return value of <code>getObjectType()</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>getObjectCollectionId()</code> returns the prefix of the asset that defines to which collection it belongs. For example, the collection id for a <code>WebCmsPage</code> is <code>wcm:asset:page</code>. A typical collection id starts with <em>wcm:asset:</em> followed by the object type.</p>
+</div>
+<div class="paragraph">
+<p>Often, we create a <code>WebCmsAssetType</code> for our asset, which our asset will hold and which will be the return value of <code>getAssetType()</code>. However, it is not required to have an explicit asset type (unless you want to be able to import your custom asset through yaml imports and create several components by default from a template), in which case the method may return <code>null</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="creating-a-webcmsassettype"><a class="anchor" href="#creating-a-webcmsassettype"></a>1. Creating a WebCmsAssetType</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A <code>WebCmsAssetType</code> extends <code>WebCmsTypeSpecifier</code> - which in itself implements the two superclasses we&#8217;ve talked about earlier. This means that once again we have to implement a <code>getObjectType()</code> and <code>getObjectCollectionId()</code> method. By convention and to keep a clear overview, we advise you to use the same object type for both the custom asset and the custom asset type. The collection id is usually slightly different, as it represents a type, so it should not be in the same collection as our assets. If we once again take a look at <code>WebCmsPage</code> and its <code>WebCmsPageType</code>, we see that the collection id for <code>WebCmsPageType</code> is <code>wcm:type:page</code>. Typically the collection id for a WebCmsPage starts with <em>wcm:type:</em> followed by the collection id.</p>
+</div>
+<div class="paragraph">
+<p>Note: the prefix <em>wcm:</em> is mostly used by objects provided by WebCmsModule, so please check that there&#8217;s no WebCmsAsset defined with the same collection type. It would definitely be a good idea to have your own prefix within your project.</p>
+</div>
+<div class="paragraph">
+<p>An example <code>AuthorAssetType</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@NotThreadSafe</span>
+<span class="annotation">@Entity</span>
+<span class="annotation">@DiscriminatorValue</span>(OBJECT_TYPE)
+<span class="annotation">@Table</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">example_author_asset_type</span><span class="delimiter">&quot;</span></span>)
+<span class="annotation">@NoArgsConstructor</span>
+<span class="annotation">@Getter</span>
+<span class="annotation">@Setter</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">AuthorAssetType</span> <span class="directive">extends</span> WebCmsAssetType&lt;AuthorAssetType&gt;
+{
+
+    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">String</span> OBJECT_TYPE = <span class="string"><span class="delimiter">&quot;</span><span class="content">author</span><span class="delimiter">&quot;</span></span>;
+    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">String</span> COLLECTION_ID = <span class="string"><span class="delimiter">&quot;</span><span class="content">example:type:author</span><span class="delimiter">&quot;</span></span>;
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="predefined-type">String</span> getObjectType() {
+        <span class="keyword">return</span> OBJECT_TYPE;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">protected</span> <span class="predefined-type">String</span> getObjectCollectionId() {
+        <span class="keyword">return</span> COLLECTION_ID;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For WebCmsModule to be able to use the WebCmsAssetType, we also need to register it to the WebCmsTypeRegistry. This usually happens as follows within an @Configuration class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Autowired</span>
+<span class="directive">public</span> <span class="type">void</span> registerDefaultTypes( WebCmsTypeRegistry typeRegistry ) {
+    typeRegistry.register( AuthorAssetType.OBJECT_TYPE, AuthorAssetType.class, AuthorAssetType::<span class="keyword">new</span> );
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>An example <code>AuthorAsset</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@NotThreadSafe</span>
+<span class="annotation">@Entity</span>
+<span class="annotation">@DiscriminatorValue</span>(OBJECT_TYPE)
+<span class="annotation">@Table</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">example_author_asset</span><span class="delimiter">&quot;</span></span>)
+<span class="annotation">@Getter</span>
+<span class="annotation">@Setter</span>
+<span class="annotation">@NoArgsConstructor</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">AuthorAsset</span> <span class="directive">extends</span> WebCmsAsset&lt;AuthorAsset&gt;
+{
+
+    <span class="comment">/**
+     * Object type name (discriminator value).
+     */</span>
+    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">String</span> OBJECT_TYPE = <span class="string"><span class="delimiter">&quot;</span><span class="content">author</span><span class="delimiter">&quot;</span></span>;
+
+    <span class="comment">/**
+     * Prefix that all asset ids for an author should have.
+     */</span>
+    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">String</span> COLLECTION_ID = <span class="string"><span class="delimiter">&quot;</span><span class="content">example:asset:author</span><span class="delimiter">&quot;</span></span>;
+
+    <span class="comment">/**
+     * Name of the author.
+     */</span>
+    <span class="annotation">@NotBlank</span>
+    <span class="annotation">@Length</span>(max = <span class="integer">255</span>)
+    <span class="annotation">@Column</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">private</span> <span class="predefined-type">String</span> name;
+
+    <span class="comment">/**
+     * The job title of the author.
+     */</span>
+    <span class="annotation">@NotBlank</span>
+    <span class="annotation">@Length</span>(max = <span class="integer">255</span>)
+    <span class="annotation">@Column</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">job_title</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">private</span> <span class="predefined-type">String</span> jobTitle;
+
+    <span class="annotation">@ManyToOne</span>
+    <span class="annotation">@JoinColumn</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">author_asset_type_id</span><span class="delimiter">&quot;</span></span>)
+    <span class="annotation">@NotNull</span>
+    <span class="directive">private</span> AuthorAssetType authorType;
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> WebCmsAssetType getAssetType() {
+        <span class="keyword">return</span> authorType;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="predefined-type">String</span> getObjectType() {
+        <span class="keyword">return</span> OBJECT_TYPE;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">protected</span> <span class="predefined-type">String</span> getObjectCollectionId() {
+        <span class="keyword">return</span> COLLECTION_ID;
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Aside of creating our custom <code>WebCmsAsset</code> and its <code>WebCmsAssetType</code>, do not forget to create their repositories, which should extends <code>WebCmsObjectEntityRepository</code>.</p>
+</div>
+<div class="paragraph">
+<p>Now we&#8217;ve created a custom <code>WebCmsAsset</code> and <code>WebCmsAssetType</code> which can be managed from the backend, should EntityModule and AdminWebModule be present.
+However, managing the related components will not be possible from the administration interface. We simply need to enable the option:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Autowired</span>
+<span class="directive">public</span> <span class="type">void</span> enableComponentViews( WebCmsObjectComponentViewsConfiguration componentViewsConfiguration ){
+    componentViewsConfiguration.enable(AuthorAsset.class);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="importing-a-custom-webcmsasset"><a class="anchor" href="#importing-a-custom-webcmsasset"></a>2. Importing a custom WebCmsAsset</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To be able to import the custom asset we have just created we will require to create a custom importer, and should we want to create templates for our custom WebCmsAsset, we will also require an interceptor to copy the template to our asset.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s start by creating an importer for our <code>AuthorAsset</code>.
+We&#8217;ll create a class that extends <code>AbstractWebCmsAssetImporter</code>, which is a base class for importing a single asset type.
+<code>AbstractWebCmsDataImporter</code> extends <code>AbstractWebCmsDataImporter</code>, which is the base class that supports the imports of <code>WebCmsObject</code> s.
+Several methods required by AbstractWebCmsDataImporter have a default implementation provided by AbstractWebCmsAssetImporter, which can be used to further customize the imports of your assets.
+There is a single method left that has no default implementation, being <code>createDto( WebCmsDataEntry data, &lt;WebCmsAsset&gt; existing, WebCmsDataAction action, Map&lt;String, Object&gt; values )</code>.  All <code>createDto( &#8230;&#8203; )</code> is required to do is create a DTO object which can afterwards be used to set the imported properties, and be persisted to the database.</p>
+</div>
+<div class="paragraph">
+<p>By default, the unique key to find a WebCmsObject is its objectId, found in the top level of the data entry we are importing.
+Should you wish to use a different identifier for your asset in your imports, you can implement <code>getExistingEntity( String entryKey, WebCmsDataEntry entryData, WebCmsDomain domain )</code> to specify which keys can be allowed and what the entry key represents. (e.g. the canonical path can be used as an entrykey in the case of a <code>WebCmsPage</code>).</p>
+</div>
+<div class="paragraph">
+<p>Aside of that, we also need to provide a constructor, matching the one of <code>AbstractWebCmsAssetImporter</code> to where we define the data key that we want to use under one of the root keys.
+Several data keys already exist, so once again, double check whether your key is unique.</p>
+</div>
+<div class="paragraph">
+<p>Our base <code>AuthorAssetImporter</code> would require nothing more than the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Component</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">AuthorAssetImporter</span> <span class="directive">extends</span> AbstractWebCmsAssetImporter&lt;AuthorAsset&gt;
+{
+    <span class="directive">private</span> AuthorAssetRepository authorRepository;
+
+    <span class="directive">public</span> AuthorAssetImporter() {
+        <span class="local-variable">super</span>( <span class="string"><span class="delimiter">&quot;</span><span class="content">author</span><span class="delimiter">&quot;</span></span>, AuthorAsset.class );
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">protected</span> Author createDto( WebCmsDataEntry data,
+                                Author existing,
+                                WebCmsDataAction action,
+                                <span class="predefined-type">Map</span>&lt;<span class="predefined-type">String</span>, <span class="predefined-type">Object</span>&gt; dataValues ) {
+        <span class="keyword">return</span> existing != <span class="predefined-constant">null</span> ? existing.toDto() : <span class="keyword">new</span> Author();
+    }
+
+    <span class="annotation">@Autowired</span>
+    <span class="type">void</span> setAuthorAssetRepository( AuthorAssetRepository authorAssetRepository ) {
+        <span class="local-variable">this</span>.authorAssetRepository = authorAssetRepository;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next up is our interceptor.
+When importing WebCmsObjects, we have several custom properties that can be imported, like <em>wcm:components</em>, <em>wcm:types</em>, &#8230;&#8203;
+We can also define a type (hence why we made <code>AuthorAssetType</code>) which defines a template for our asset.
+If we then import an asset with that type, the template will be copied over to our asset and the components will be created.
+For this we need an interceptor, which extends <code>EntityInterceptorAdaptor</code>, and where we tell the <code>WebCmsDefaultComponentsService</code> to copy the template after our asset has been created.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Component</span>
+<span class="annotation">@RequiredArgsConstructor</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">AuthorInterceptor</span> <span class="directive">extends</span> EntityInterceptorAdapter&lt;Author&gt;
+{
+        <span class="directive">private</span> <span class="directive">final</span> WebCmsDefaultComponentsService webCmsDefaultComponentsService;
+
+        <span class="annotation">@Override</span>
+        <span class="directive">public</span> <span class="type">boolean</span> handles( <span class="predefined-type">Class</span>&lt;?&gt; entityClass ) {
+                <span class="keyword">return</span> Author.class.isAssignableFrom( entityClass );
+        }
+
+        <span class="annotation">@Override</span>
+        <span class="directive">public</span> <span class="type">void</span> afterCreate( Author entity ) {
+                webCmsDefaultComponentsService.createDefaultComponents( entity, <span class="keyword">new</span> <span class="predefined-type">HashMap</span>&lt;&gt;() );
+        }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<h1 id="using-a-site-template-in-a-multi-site-setup" class="sect0"><a class="anchor" href="#using-a-site-template-in-a-multi-site-setup"></a>Using a site template in a multi site setup</h1>
+<div class="openblock partintro">
+<div class="content">
+Describes how to configure your application so default assets and types get imported from a yaml file when creating a new domain.
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.0.4.RELEASE<br>
+Last updated 2018-03-30 16:02:35 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "WebCmsModule docs";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

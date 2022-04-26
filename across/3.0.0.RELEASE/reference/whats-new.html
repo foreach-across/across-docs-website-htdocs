@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>Across framework release notes</title>
+<link rel="stylesheet" href="stylesheets/across.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body id="whats-new" class="book toc2 toc-left">
+<div id="header">
+<h1>Across framework release notes</h1>
+<div class="details">
+<span id="revnumber">version 3.0.0.RELEASE</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Release notes</div>
+<ul class="sectlevel1">
+<li><a href="#what-s-new-in-this-version">What&#8217;s new in this version</a>
+<ul class="sectlevel2">
+<li><a href="#3-0-0">3.0.0.RELEASE</a></li>
+<li><a href="#2-1-1-RELEASE">2.1.1.RELEASE</a></li>
+<li><a href="#2-1-0-RELEASE">2.1.0.RELEASE</a></li>
+<li><a href="#2-0-0-RELEASE">2.0.0.RELEASE</a></li>
+<li><a href="#1-1-3-RELEASE">1.1.3.RELEASE</a></li>
+<li><a href="#1-1-2-RELEASE">1.1.2.RELEASE</a></li>
+<li><a href="#1-1-1-RELEASE">1.1.1.RELEASE</a></li>
+</ul>
+</li>
+<li><a href="#framework-artifacts">Framework artifacts</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="what-s-new-in-this-version"><a class="anchor" href="#what-s-new-in-this-version"></a>What&#8217;s new in this version</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="3-0-0"><a class="anchor" href="#3-0-0"></a>3.0.0.RELEASE</h3>
+<div class="paragraph">
+<p>Across 3.0.0 is a big internal upgrade focused on improving Spring Boot compatibility.
+Although the number should be limited, this release does introduce some breaking changes.</p>
+</div>
+<div class="paragraph">
+<p>Across Framework 3.0.0 adds the <code>across-autoconfigure</code> artifact as a base dependency for creating Across applications.
+It is also the first release with auto-configuration support, see the separate documentation on <a href="spring-boot.html#spring-boot">Spring Boot compatibility</a> for more details.</p>
+</div>
+<div class="paragraph">
+<p><strong>Core dependency upgrades</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Spring Platform Brussels-SR7</p>
+</li>
+<li>
+<p>Spring Framework 4.3.14</p>
+</li>
+<li>
+<p>Spring Boot 1.5.10</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Across Core</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>addition of the <code>@ConditionalOnAcrossModule</code> annotation that can be put on a <code>@Configuration</code> class, <code>@Bean</code> method and any <code>@Component</code> to depend on the presence of modules.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>@AcrossDepends</code> should now only be used on module descriptors, and no longer for conditional component creation</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>internal rewrite of the exposing mechanism: exposed bean definitions are now copied to the module context directly instead of shared via the parent <code>ApplicationContext</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>this improves compatibility with a lot of default Spring related configurations, but might introduce a breaking change for certain modules</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>the event handling system has been overhauled and now uses the default Spring events implementation</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the custom event bus using MBassador has been removed, as well as the MBassador dependency itself</p>
+</li>
+<li>
+<p>implementing <code>AcrossEvent</code> for your own events is no longer required</p>
+</li>
+<li>
+<p><code>@Event</code> has been deprecated in favour of the standard <code>@EventListener</code></p>
+</li>
+<li>
+<p><code>AcrossEventPublisher</code> has been deprecated in favour of the standard <code>ApplicationEventPublisher</code></p>
+</li>
+<li>
+<p><code>ParameterizedAcrossEvent</code> has been deprecated in favour of implementing <code>ResolvableTypeProvider</code></p>
+</li>
+<li>
+<p><code>@EventName</code> has been deprecated, use the <code>condition</code> attribute on <code>@EventListener</code> instead</p>
+</li>
+<li>
+<p>Please note that generic event types are handled differently with the new system, where in the past
+<code>SomeEvent&lt;Object&gt;</code> would have worked, the only working (and more correct) signature is now <code>SomeEvent&lt;? extends Object&gt;</code></p>
+</li>
+<li>
+<p>parameter-less event listener methods are now possible</p>
+</li>
+<li>
+<p>event listener methods can now also provide return values which will be published as new events</p>
+</li>
+<li>
+<p>ordering event listeners through annotations on a method level is now supported</p>
+</li>
+<li>
+<p>events <code>AcrossModuleBeforeBootstrapEvent</code>, <code>AcrossModuleBootstrappedEvent</code> and <code>AcrossContextBootstrappedEvent</code> now extend <code>AcrossLifecycleEvent</code> which implements the Spring <code>ApplicationEvent</code> directly</p>
+<div class="ulist">
+<ul>
+<li>
+<p>a utility interface <code>AcrossLifecycleListener</code> has been provided to intercept these common lifecycle events</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>some breaking changes that have been introduced as a result of the refactoring:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>any uncaught exception in an event listener will now bubble up to the caller and stop the subsequent listeners from being called, instead of just logging the exception and continuing to the next listener</p>
+</li>
+<li>
+<p>manual (de-)registration of event listeners on <code>AcrossEventPublisher</code> is no longer possible</p>
+</li>
+<li>
+<p>bootstrap events can no longer be captured through annotated methods in the parent <code>ApplicationContext</code>, implement <code>AcrossLifecycleListener</code> instead</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>add support for Spring Boot auto-configuration and the <code>META-INF/across.configuration</code> file inside libraries</p>
+</li>
+<li>
+<p>addition of <code>AcrossBootstrapConfigurer</code> that can be used to customize a bootstrapping Across context from a parent <code>ApplicationContext</code> (for example for auto-configuration classes)</p>
+</li>
+<li>
+<p>bean definition names generated for <code>@Configuration</code> or manually registered annotated classes (without <code>@Component</code>) are now always based on the fully qualified class name</p>
+<div class="ulist">
+<ul>
+<li>
+<p>in rare cases this could introduce a breaking change where configuration instances are wired by name as beans, in this case providing an explicit name for the configuration should fix the problem</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>it&#8217;s now possible to explicitly exclude annotated classes to be loaded as module extension during bootstrap configuration</p>
+</li>
+<li>
+<p>the default module scanning packages will now always be kept if you add additional packages on either <code>@EnableAcrossContext</code> or <code>@AcrossApplication</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>if you explicitly want to exclude the default packages you should add <strong>.</strong> (dot) as a package name to the list</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Bean Validation 1.1 method validation is now automatically enabled in every Across module if a JSR-303 implementation (eg. Hibernate validator) is on the classpath</p>
+</li>
+<li>
+<p>the <code>TransactionManagementConfigurer</code> helper class has been removed from the core artifact</p>
+<div class="ulist">
+<ul>
+<li>
+<p>modules should provide their own implementation when necessary</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>ComponentScanConfigurer.forAcrossModule(Class)</code> and <code>ComponentScanConfigurer.forAcrossModulePackage(String)</code> helper functions have been added to create default configurations for modules wishing to scan their entire root package</p>
+<div class="ulist">
+<ul>
+<li>
+<p>these will correctly exclude the <code>installers</code> and <code>extensions</code> child package</p>
+</li>
+<li>
+<p><strong>note</strong>: default <code>AcrossModule</code> implementations still only scan the <code>config</code> child package, this behaviour has not changed</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>failure analyzers have been added to provide better exception information when using <code>@AcrossApplication</code></p>
+</li>
+<li>
+<p>added support for <a href="spring-boot.html#across-configuration"><code>META-INF/across.configuration</code></a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>allows for externalizing compatibility rules with regular Spring Boot auto-configuration</p>
+</li>
+<li>
+<p>allows for defining illegal use of configuration classes, this can help in avoiding bad use of regular Spring Boot configurations in an Across context</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>added illegal configuration detection on a <code>@AcrossApplication</code>, upon starting the presence of configuration classes will be detected and possibly result in an exception describing the illegal use</p>
+<div class="ulist">
+<ul>
+<li>
+<p>on by default, it can be disabled explicitly by setting <code>across.configuration.validate</code> to <code>false</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>@ModuleConfiguration</code> classes are now only supported in the <code>extensions</code> package, and no longer looked for in <code>config</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>@ModuleConfiguration</code> is now always a configuration class as well (has <code>@Configuration</code> as meta-annotation)</p>
+</li>
+<li>
+<p>the implementation of <code>@ModuleConfiguration</code> has changed, they are now imported as regular configurations, with full support for conditionals</p>
+<div class="ulist">
+<ul>
+<li>
+<p>in rare cases this might lead to problems as these configuration classes are imported at a different point in time, usually before the addition of regular annotated classes added to the module</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>@InstallerMethod</code> methods now support arguments, much like a <code>@Autowired</code> or <code>@PostRefresh</code> method</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the arguments will be fetched from the <code>ApplicationContext</code> when the method is executed</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>AcrosWebModule</strong></p>
+</div>
+<div class="paragraph">
+<p>A lot of internal configuration has been modified to use out-of-the-box Spring Boot configuration classes instead of customized versions.</p>
+</div>
+<div class="paragraph">
+<p>The following changes and additions are included in the update:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>a <code>RestTemplateBuilder</code> is created and exposed</p>
+</li>
+<li>
+<p>Jackson <code>ObjectMapper</code> and <code>Jackson2ObjectMapperBuilder</code> are created and exposed</p>
+</li>
+<li>
+<p>if Gson on the classpath: a <code>Gson</code> object is created and exposed</p>
+</li>
+<li>
+<p>support for <a href="across-web.html#error-handling">default error pages</a> is now automatically activated</p>
+</li>
+<li>
+<p>the <a href="https://github.com/thymeleaf/thymeleaf-extras-java8time">Thymeleaf Java 8 Time dialect</a> is now also included and enabled</p>
+</li>
+<li>
+<p>the default mvc <code>Validator</code> bean now implements <code>SmartValidator</code> directly, allowing <code>@Validated</code> with group validation to be used</p>
+</li>
+<li>
+<p>the <code>TextViewElementBuilder</code> now supports a <a href="across-web.html#localized-text">localized text pattern</a> as text value</p>
+</li>
+<li>
+<p>several changes to the menu building infrastructure, some breaking. See the <a href="across-web.html#menu-infrastructure">updated documentation</a> for use case examples.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>added <code>Menu.builder()</code> for easy ad-hoc creation of a menu using path registration</p>
+</li>
+<li>
+<p><code>MenuSelector</code> factory methods have been moved from the <code>Menu</code> to <code>MenuSelector</code> class</p>
+</li>
+<li>
+<p>some rarely used methods on <code>PathBasedMenuBuilder</code>, <code>PathBasedMenuItemBuilder</code> and <code>BuildMenuEvent</code> have been removed</p>
+</li>
+<li>
+<p><code>BuildMenuFinishedEvent</code> has been removed, modules requiring this functionality should now register a <code>Menu</code> post-processor on the <code>BuildMenuEvent</code> instead</p>
+</li>
+<li>
+<p>renamed methods on <code>BuildMenuEvent</code>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>setSelector()</code> &#8594; <code>setMenuSelector()</code>, <code>getSelector()</code> &#8594; <code>getMenuSelector()</code></p>
+</li>
+<li>
+<p><code>forMenu()</code> &#8594; <code>isForMenuOfType()</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>options to customize a menu have been improved and some new ones have been added:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>on a menu builder these are <code>changeItemPath()</code>, <code>removeItems()</code>, <code>optionalItem()</code> and <code>withProcessor()</code></p>
+</li>
+<li>
+<p>on a menu item builder these are <code>changePathTo()</code>, <code>remove()</code> and <code>comparator()</code></p>
+</li>
+<li>
+<p>the unreliable <code>move()</code> method for menu items has been deprecated, use the new <code>changeItemPath()</code> or <code>item().changePathTo()</code> instead</p>
+</li>
+<li>
+<p>using <code>PathBasedMenuBuilder.andThen()</code> it is now possible to register and apply additional configuration after all initial configuration has been done.
+This is especially useful if you want to make changes to a menu builder when you want to be sure all intial items have been added.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>ViewElement</code> related changes</p>
+<div class="ulist">
+<ul>
+<li>
+<p>all <code>ViewElementBuilderSupport</code> extensions now have a <code>configure(Consumer&lt;ViewElementBuilder&gt;)</code> method to use a more fluent API callback approach for additional configuration</p>
+</li>
+<li>
+<p>container-like builders support <code>null</code> values for <code>ViewElement</code> or <code>ViewElementBuilder</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>these will safely be ignored and never added to the children of a container</p>
+</li>
+<li>
+<p>this makes it easier to keep a fluent API style</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>PrefixingHandlerMappingConfigurer</code> can no longer be applied to the default AcrossWebModule, use a regular <code>WebMvcConfigurer</code> to add interceptors</p>
+<div class="ulist">
+<ul>
+<li>
+<p>different prefixed handler mappings (eg. AdminWebModule) still require the use of <code>PrefixingHandlerMappingConfigurer</code> for adding interceptors</p>
+</li>
+<li>
+<p>if you want to add an interceptor to all controllers, you should implement both <code>WebMvcConfigurer</code> and <code>PrefixingHandlerMappingConfigurer</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>websocket support has been added, it is activated automatically:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>if the required dependencies are on the classpath</p>
+</li>
+<li>
+<p>a <code>WebSocketConfigurer</code> or <code>WebSocketMessageBrokerConfigurer</code> bean is provided by any module</p>
+</li>
+<li>
+<p>using <code>@EnableWebSocket</code> or <code>@EnableWebSocketMessageBroker</code> anywhere will result in a bootstrap failure, it&#8217;s usually enough to just remove these annotations and leave the rest of your code as is</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>the multipart configuration now uses the <code>spring.http.multipart.*</code> properties from Spring Boot (<code>MultipartProperties</code> class)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the <code>acrossWebModule.multipart.*</code> settings have been removed: replace <code>acrossWebModule.multipart.auto-configure=false</code> by <code>spring.http.multipart.enabled=false</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">New module extension support</div>
+<p>Extension configuration classes that can now be added to AcrossWebModule:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>RestTemplateCustomizer</code></p>
+</li>
+<li>
+<p><code>HttpMessageConverter</code></p>
+</li>
+<li>
+<p><code>Jackson2ObjectMapperBuilderCustomizer</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="title">Changes in servlet and filter registration</div>
+<p>Filters and servlets are registered in a slightly different fashion than in previous versions.
+Any <code>Servlet</code> or <code>Filter</code> bean will now be automatically be exposed and registered.
+If there is an actual registration bean for the filter or servlet, it will take precedence.</p>
+</div>
+<div class="paragraph">
+<p>The new approach might introduce breaking changes with applications that do not use an embedded application context.
+The <code>AcrossWebDynamicServletConfigurer</code> is fully deprecated and any beans of that type created in the parent context will not be executed any longer in a non-embedded configuration.</p>
+</div>
+<div class="paragraph">
+<p>Also the ordering of filters might have changed slightly, modules providing filters should review the order assignment.</p>
+</div>
+<div class="paragraph">
+<p>Dynamically registered filters should preferably include an explicit order value and should be done inside the Across context (inside a module) and not on the application configuration level.</p>
+</div>
+<div class="paragraph">
+<p><strong>Across Test</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>new features for exposing additional components during the scope of a test</p>
+<div class="ulist">
+<ul>
+<li>
+<p>both <code>@AcrossTestConfiguration</code> and the <code>AcrossTestBuilders</code> now have an attribute/method to easily expose additional classes for the scope of the test</p>
+</li>
+<li>
+<p><a href="testing.html#expose-for-test"><code>@ExposeForTest</code></a> can be used in combination with <code>@SpringBootTest</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>the latter is particularly useful for integration testing of a dynamic application module</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="2-1-1-RELEASE"><a class="anchor" href="#2-1-1-RELEASE"></a>2.1.1.RELEASE</h3>
+<div class="paragraph">
+<p><strong>Across Core</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>minor performance improvements</p>
+</li>
+<li>
+<p><code>@PostRefresh</code> now supports method arguments, behaving as an equivalent of <code>@Autowired</code> but after the Across context has bootstrapped</p>
+<div class="ulist">
+<ul>
+<li>
+<p>it is also possible to indicate that dependencies are not required, if dependencies are not met, the method will not be executed</p>
+</li>
+<li>
+<p><code>@PostRefresh</code> methods can be called more than once if a parent <code>ApplicationContext</code> refreshes</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Across Test</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>bug fixes:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>test datasource is generated with a unique name - this improves the re-use of the main <code>ApplicationContext</code> without the need for <code>@DirtiesContext</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="2-1-0-RELEASE"><a class="anchor" href="#2-1-0-RELEASE"></a>2.1.0.RELEASE</h3>
+<div class="paragraph">
+<p><strong>Across Core</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>bootstrap locking changes</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the bootstrap lock is now taken and released per installer instead of once for the entire bootstrap phase</p>
+</li>
+<li>
+<p>lock owner id is prefixed with both the <code>AcrossContext#displayName</code> and the hostname of the server</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><a href="/developing-applications/index.adoc#event-handler-ordering">event handlers are now executed in module bootstrap order</a>: event handlers from a previous module will have been executed when yours is called</p>
+<div class="ulist">
+<ul>
+<li>
+<p>this removes an old limitation of event handling in Across</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>AcrossWebModule</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>@AcrossApplication</code> has a <code>displayName</code> attribute to configure the context display name</p>
+<div class="ulist">
+<ul>
+<li>
+<p>if empty, the property value of <strong>across.displayName</strong> will be considered instead</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>added <code>LocalizedTextResolver</code> for <a href="across-web-module/index.adoc#localizing-text">generic localization of text snippets</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ViewElementBuilderContext</code> also implements text and message code resolving (see <a href="https://across.foreach.be/modules/BootstrapUiModule">BootstrapUiModule</a> documentation)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>the default Thymeleaf resolvers now support templates with <strong>*.html</strong> suffix</p>
+<div class="ulist">
+<ul>
+<li>
+<p><em>.html</em> extension is now preferred as text editors will automatically recognize the template as html</p>
+</li>
+<li>
+<p><em>.thtml</em> extension is still fully supported but support may be removed in a future major release</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="2-0-0-RELEASE"><a class="anchor" href="#2-0-0-RELEASE"></a>2.0.0.RELEASE</h3>
+<div class="paragraph">
+<p>Upgrade to <strong>Spring Platform Athens</strong>, new major dependency versions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Spring framework 4.3.x</p>
+</li>
+<li>
+<p>Spring Boot 1.4.x</p>
+</li>
+<li>
+<p>Thymeleaf 3.x</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Across Core</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>@AcrossEventHandler</code> has been deprecated, all beans are now automatically scanned for <code>@Event</code> methods</p>
+</li>
+<li>
+<p>the <code>AcrossEventPublisher</code> interface has some MBassador specific methods removed</p>
+<div class="ulist">
+<ul>
+<li>
+<p>note that the backing implementation of the event bus might change in the future, applications should avoid using MBassdor specific features</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>development mode will register a default resources directory for dynamic modules</p>
+<div class="ulist">
+<ul>
+<li>
+<p>this will be an existing <strong>src/main/resources</strong> folder relative to the working directory of the running application</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>@ConditionalOnDevelopmentMode</code> added to detect if development mode is active</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Across Test</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The spring-boot-test dependency is now part of across-test</p>
+</li>
+<li>
+<p>Updated documentation to use the new <code>@SpringBootTest</code> annotation</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>AcrossWebModule</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ServletContextInitializer</code> beans in modules are now supported directly for customizing the <code>ServletContext</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>@ConditionalOnConfigurableServletContext</code> and <code>@ConditionalOnNotConfigurableServletContext</code> added to determine if <code>ServletContext</code> can still be customized</p>
+</li>
+<li>
+<p>favour the use of <code>FilterRegistrationBean</code> or <code>ServletRegistrationBean</code> instead of <code>AcrossWebDynamicServletConfigurer</code>, the latter is now deprecated and will be removed in a future release</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Spring Boot devtools are now supported - application context restart will be triggered by default if devtools is on the classpath</p>
+</li>
+<li>
+<p>AcrossWebModule now ensures that all <code>HandlerMapping</code> beans from other modules are exposed</p>
+</li>
+<li>
+<p>a path prefix <strong>@static</strong> and <strong>@resource</strong> is registered to <a href="across-web-module/index.adoc#web-app-path-resolver-and-path-prefixing">link to static resources</a></p>
+</li>
+<li>
+<p><a href="across-web-module/index.adoc#thymeleaf-dialect">Thymeleaf dialect</a> extensions</p>
+<div class="ulist">
+<ul>
+<li>
+<p>using <a href="across-web-module/index.adoc#web-app-path-resolver-and-path-prefixing">prefixes</a> directly in url expressions is now supported</p>
+</li>
+<li>
+<p>addition of <strong>across:static</strong> and <strong>across:resource</strong> attributes for generating links to static resources</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>add infrastructure for defining <a href="across-web-module/index.adoc#custom-request-mapping">custom request mapping conditions</a> using <code>@CustomRequestMapping</code> and <code>CustomRequestCondition</code></p>
+</li>
+<li>
+<p>partial rendering of a single <code>ViewElement</code> is now also supported (see <a href="https://across.foreach.be/modules/BootstrapUiModule">BootstrapUiModule</a> documentation).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="1-1-3-RELEASE"><a class="anchor" href="#1-1-3-RELEASE"></a>1.1.3.RELEASE</h3>
+<div class="paragraph">
+<p>Maintenance release containing several bugfixes.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="1-1-2-RELEASE"><a class="anchor" href="#1-1-2-RELEASE"></a>1.1.2.RELEASE</h3>
+<div class="paragraph">
+<p><strong>Across Core</strong></p>
+</div>
+<div class="paragraph">
+<p>Across now requires JDK8 and has improved support for Spring Boot.
+The latter is also a required dependency as of 1.1.2.
+A lot of improvements have been done to reduce the amount of boilerplate code necessary to create a new <code>AcrossContext</code>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="developing-applications/index.adoc#enable-across-context">@EnableAcrossContext</a> annotation now supports autoconfiguration of an <code>AcrossContext</code></p>
+</li>
+<li>
+<p><a href="developing-modules/index.adoc#module-configuration">@ModuleConfiguration</a> annotation provides a no-hassle way to declare annotated classes that need to be added to a specific module</p>
+</li>
+<li>
+<p>message sources are now <a href="developing-modules/index.adoc#auto-detecting-message-sources">auto detected</a> if they follow the conventions</p>
+</li>
+<li>
+<p>both <code>AcrossModule</code> and <code>ModuleBootstrapConfig</code> now have shortcut <code>expose()</code> methods that make it easier to expose additional beans</p>
+</li>
+<li>
+<p>several changes and improvements were made to installers:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>installers are now created in their own configurable <a href="developing-modules/index.adoc#installer-applicationcontext">installer <code>ApplicationContext</code></a></p>
+</li>
+<li>
+<p>installers are detected automatically through classpath scanning (defaults to <strong>installers</strong> package of a module)</p>
+</li>
+<li>
+<p>installers are ordered based on the presence of an <code>@Order</code> annotation</p>
+</li>
+<li>
+<p>installers now support <code>@Conditional</code> annotations for building more complex conditions</p>
+</li>
+<li>
+<p>installers should only be specified as class names in <code>getInstallers()</code>, the use of instances is deprecated</p>
+</li>
+<li>
+<p><code>InstallerSettings</code> has been refactored to use <code>InstallerMetaData</code> instead (breaking change)</p>
+</li>
+<li>
+<p>installers can implement <code>InstallerActionResolver</code> directly to suppress execution at runtime</p>
+</li>
+<li>
+<p><code>AcrossInstallerRepository</code> now has methods to rename installers</p>
+</li>
+<li>
+<p><code>AcrossLiquibaseInstaller</code> detects the most appropriate <code>SchemaConfiguration</code> to use and modifies default schema accordingly</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>development mode can be set through the property <strong>across.development.active</strong> and is active by default if a Spring profile called <strong>dev</strong> is active</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>AcrossWebModule</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="developing-applications/index.adoc#across-application">@AcrossApplication</a> can be used with <code>SpringApplication</code> to bootstrap an Across context with dynamic modules and support for embedded servlet containers</p>
+</li>
+<li>
+<p>async configuration can now correctly be set through <code>WebMvcConfigurer#configureAsyncSupport(AsyncSupportConfigurer)</code></p>
+</li>
+<li>
+<p><code>AcrossWebModuleSettings</code> has been refactored and <code>AcrossWebModule</code> can now be <a href="across-web-module/index.adoc#module-settings">configured through properties</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>properties support Spring configuration metadata with possible IDE support</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>by default only Thymeleaf views support is activated (breaking change)</p>
+</li>
+<li>
+<p>static resources now configure default <a href="across-web-module/index.adoc#client-side-caching">client-side caching</a> and <a href="across-web-module/index.adoc#resource-url-versioning">resource url versioning</a></p>
+</li>
+<li>
+<p><a href="across-web-module/index.adoc#registering-servlets-and-filters">dynamic registration of servlets and filters</a> now supports ordering</p>
+</li>
+<li>
+<p><a href="across-web-module/index.adoc#default-http-encoding">Default HTTP encoding</a> is now forced to UTF-8</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Across Test</strong></p>
+</div>
+<div class="paragraph">
+<p>Several improvements have been done for easier integration testing of modules in a web context.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="testing/index.adoc#test-context-builders">test context builders</a> have been added for easy configuration of an <code>AcrossContext</code> in test methods</p>
+</li>
+<li>
+<p><a href="testing/index.adoc#mock-across-servlet-contex">MockAcrossServletContext</a> can now be used for testing of dynamic <code>ServletContext</code> configuration</p>
+</li>
+<li>
+<p>addition of a <code>AcrossMockMvcBuilders</code> class for creating a <code>MockMvcBuilder</code> based on an <code>AcrossContext</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>both <a href="testing/index.adoc#annotations">annotations</a> and <a href="testing/index.adoc#test-context-builders">test builders</a> now provide a singleton <code>MockMvc</code> instance that is initialized with the bootstrapped context and all dynamically registered filters</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="1-1-1-RELEASE"><a class="anchor" href="#1-1-1-RELEASE"></a>1.1.1.RELEASE</h3>
+<div class="paragraph">
+<p>Initial public release available on <a href="http://search.maven.org/">Maven central</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="framework-artifacts"><a class="anchor" href="#framework-artifacts"></a>Framework artifacts</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Across framework itself consists of 4 library artifacts (<code>across-core</code>, <code>across-web</code>, <code>across-autoconfigure</code> and <code>across-test</code>) and one bill-of-material pom (<code>standard-module-bom</code>).</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">across-core</dt>
+<dd>
+<p>Supports the configuration of an Across context and provides all necessary infrastructure to define and execute modules.</p>
+</dd>
+<dt class="hdlist1">across-web</dt>
+<dd>
+<p>Provides an <code>AcrossModule</code> that supports configuration of a web application using Across with the Spring <code>DispatcherServlet</code> as the most common scenario.</p>
+</dd>
+<dt class="hdlist1">across-autoconfigure</dt>
+<dd>
+<p>Simplifies configuration of a Spring Boot based Across application.
+This is usually the base dependency for an application, as it transitively imports both core and web.</p>
+</dd>
+<dt class="hdlist1">across-test</dt>
+<dd>
+<p>Supports integration testing of your Across modules, both web and non-web related.  Builds on top of <code>spring-test</code>.</p>
+</dd>
+<dt class="hdlist1">standard-module-bom</dt>
+<dd>
+<p>BOM pom for creating an Across Standard Module or any module wishing to adhere to the standard module conventions.</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>There is also a separate <a href="https://across.foreach.be/modules">platform-bom</a> project that provides a bill-of-material for applications built on Across and the Across Standard Modules.</p>
+</div>
+<div class="paragraph">
+<div class="title">Common dependencies</div>
+<p>Across is directly tied to Spring framework and all artifacts come with a set of curated dependencies.
+Across itself uses the <a href="http://platform.spring.io/platform/">Spring IO platform</a> as a basis for all its dependencies.</p>
+</div>
+<div class="paragraph">
+<div class="title">Artifact repositories</div>
+<p>All release versions of Across artifacts are available on Maven Central.</p>
+</div>
+<div class="paragraph">
+<p>Snapshot and milestones can be fetched from the Foreach Nexus repository.
+This also includes the set of <a href="fundamentals.html#fundamentals-ax-standard-modules">across standard modules</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;repositories&gt;</span>
+    <span class="tag">&lt;repository&gt;</span>
+        <span class="tag">&lt;id&gt;</span>foreach-nexus<span class="tag">&lt;/id&gt;</span>
+        <span class="tag">&lt;name&gt;</span>Foreach nexus<span class="tag">&lt;/name&gt;</span>
+        <span class="tag">&lt;url&gt;</span>https://repository.foreach.be/nexus/repository/public/<span class="tag">&lt;/url&gt;</span>
+    <span class="tag">&lt;/repository&gt;</span>
+<span class="tag">&lt;/repositories&gt;</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 3.0.0.RELEASE<br>
+Last updated 2018-03-29 16:27:59 CEST
+</div>
+</div>
+<script>
+    var link = document.createElement( "a" );
+    link.setAttribute( "href", "index.html" );
+    link.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82.9 95.7\" width=\"20\" style=\"margin-right: 10px\"><path fill=\"#3CA873\" d=\"M0 23.9l15.9-9.2 41.5 23.9-16 9.2\"></path><path fill=\"#0093D8\" d=\"M25.5 9.2L41.4 0l41.5 23.9-16 9.2\"></path><path fill=\"#53DD99\" d=\"M41.4 95.7l16-9.3V38.6l-16 9.2\"></path><path fill=\"#22CEFA\" d=\"M66.9 80.9l16-9.2V23.9l-16 9.2\"></path><path fill=\"#257A50\" d=\"M12.5 64.5L28.9 55l-16.4-9.4\"></path><path fill=\"#4DBC86\" d=\"M12.5 64.5L28.9 74V55\"></path></svg>"
+            + "Across reference docs";
+    var p = document.createElement( "p" );
+    p.appendChild( link );
+    var toc = document.getElementById( 'toc' );
+    var next = document.getElementById( 'toctitle' );
+    toc.insertBefore( p, next );
+</script>
+</body>
+</html>

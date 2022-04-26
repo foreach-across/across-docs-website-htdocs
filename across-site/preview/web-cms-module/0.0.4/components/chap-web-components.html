@@ -1,0 +1,2321 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web components - Across</title>
+    <meta name="generator" content="Antora 1.0.0">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<meta name="og:title" content="Across Documentation"/>
+<meta name="og:image" content="https://across.foreach.be/across/resources/static/acrossWebsite/img/og-image-across.jpg"/>
+<link rel="icon" type="image/png" sizes="16x16" href="https://across.foreach.be/across/resources/static/acrossWebsite/img/favicon/favicon-16x16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="https://across.foreach.be/across/resources/static/acrossWebsite/img/favicon/favicon-32x32.png"/>
+<link rel="icon" type="image/png" sizes="96x96" href="https://across.foreach.be/across/resources/static/acrossWebsite/img/favicon/favicon-96x96.png"/>
+<link rel="apple-touch-icon" type="image/png" href="https://across.foreach.be/across/resources/static/acrossWebsite/img/favicon/apple-icon-120x120.png"/>
+<link rel="apple-touch-icon" type="image/png" sizes="152x152" href="https://across.foreach.be/across/resources/static/acrossWebsite/img/favicon/apple-icon-152x152.png"/>
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://across.foreach.be/across/resources/static/acrossWebsite/img/favicon/apple-icon-180x180.png"/>
+  </head>
+  <body class="article">
+<header class="header" role="banner">
+  <div class="m-mobile-menu__button js-overlay-menu-button" data-target="mobile-menu">
+    <span class="m-mobile-menu__line"></span>
+    <span class="m-mobile-menu__line"></span>
+    <span class="m-mobile-menu__line"></span>
+  </div>
+
+  <div class="m-mobile-menu">
+    <div class="m-mobile-menu__logo">
+      <a class="m-nav__logo" href="/">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 82.9 95.7">
+          <title>logo-across</title>
+          <path fill="#3CA873" d="M0 23.9l15.9-9.2 41.5 23.9-16 9.2"></path>
+          <path fill="#0093D8" d="M25.5 9.2L41.4 0l41.5 23.9-16 9.2"></path>
+          <path fill="#53DD99" d="M41.4 95.7l16-9.3V38.6l-16 9.2"></path>
+          <path fill="#22CEFA" d="M66.9 80.9l16-9.2V23.9l-16 9.2"></path>
+          <path fill="#257A50" d="M12.5 64.5L28.9 55l-16.4-9.4"></path>
+          <path fill="#4DBC86" d="M12.5 64.5L28.9 74V55"></path>
+        </svg>
+        <span>Across</span>
+      </a>
+    </div>
+  </div>
+  <div class="m-mobile-menu__container js-mobile-menu-overlay" id="mobile-menu">
+    <nav class="m-mobile-menu__list">
+      <a href="https://across.foreach.be/blog">Blog</a>
+      <a href="https://across.foreach.be/documentation" class="is-active">Docs</a>
+      <a href="https://across.foreach.be/modules">Modules</a>
+      <a href="https://across.foreach.be/faq">FAQ</a>
+      <a href="http://start-across.foreach.be">Get started</a>
+    </nav>
+  </div>
+  <nav class="m-nav is-sticky">
+    <a class="m-nav__logo" href="../../..">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 82.9 95.7">
+        <title>logo-across</title>
+        <path fill="#3CA873" d="M0 23.9l15.9-9.2 41.5 23.9-16 9.2"></path>
+        <path fill="#0093D8" d="M25.5 9.2L41.4 0l41.5 23.9-16 9.2"></path>
+        <path fill="#53DD99" d="M41.4 95.7l16-9.3V38.6l-16 9.2"></path>
+        <path fill="#22CEFA" d="M66.9 80.9l16-9.2V23.9l-16 9.2"></path>
+        <path fill="#257A50" d="M12.5 64.5L28.9 55l-16.4-9.4"></path>
+        <path fill="#4DBC86" d="M12.5 64.5L28.9 74V55"></path>
+      </svg>
+      <span>Across</span>
+    </a>
+
+    <div class="m-nav__link-group">
+      <a href="https://across.foreach.be/blog">Blog</a>
+      <a href="https://across.foreach.be/documentation" class="is-active">Docs</a>
+      <a href="https://across.foreach.be/modules">Modules</a>
+      <a href="https://across.foreach.be/faq">FAQ</a>
+      <a href="http://start-across.foreach.be">Get started</a>
+    </div>
+  </nav>
+</header>
+<div class="main-wrapper">
+<div class="navigation-container" data-component="web-cms-module" data-version="0.0.4">
+  <aside class="navigation" role="navigation">
+    <div class="panels">
+      <div id="search-box" class="search-box is-active">
+        <input id="search-input" type="text" placeholder="Search the documentation">
+      </div>
+      <div class="navigation-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">Module: Web CMS</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <span class="nav-text">Creating a form</span>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+      <div class="navigation-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Module: Web CMS</span>
+    <span class="version">0.0.4</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <span class="title">Across Platform</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../across/2.1.0/index.html">2.1.0</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">Application Guides</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../guides/dev/index.html">dev</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">Autoconfiguration Support</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../across-autoconfigure/1.0.0/index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">Migration guides</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../migration/dev/index.html">dev</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">Module: Admin Web</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../admin-web-module/3.0.1/index.html">3.0.1</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">Module: Bootstrap UI</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../bootstrap-ui-module/2.0.1/index.html">2.0.1</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">Module: Documents & Forms</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../dynamic-forms-module/0.0.1/index.html">0.0.1</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">Module: Entity Management</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../entity-module/3.0.1/index.html">3.0.1</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">Module: Hibernate JPA</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../hibernate-jpa-module/3.0.0/index.html">3.0.0</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">Module: LDAP Support</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../ldap-module/1.0.1/index.html">1.0.1</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">Module: Security</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../spring-security-module/3.0.1/index.html">3.0.1</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">Module: Security - ACLs</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../spring-security-acl-module/3.0.1/index.html">3.0.1</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">Module: Security - OAuth2</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../oauth2-module/dev/index.html">dev</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">Module: User Management</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../user-module/3.0.0/index.html">3.0.0</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <span class="title">Module: Web CMS</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">0.0.4</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+    <script>
+      docsearch({
+                  appId: 'YNK2RERBV5',
+                  apiKey: '201d66bbf44a6c62002472e491d74568',
+                  indexName: 'antora-across-site',
+                  inputSelector: '#search-input',
+                  algoliaOptions: { hitsPerPage: 10 }
+                })
+    </script>
+  </aside>
+</div>
+  <main class="main" role="main">
+<div class="toolbar" role="navigation">
+  <button class="navigation-toggle"></button>
+  <a href="../../../across/2.1.0/index.html" class="home-link"></a>
+<nav class="crumbs" role="navigation" aria-label="breadcrumbs">
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/ForeachOS/ax-docs-web-cms-module/edit/develop/docs/modules/ROOT/pages/components/chap-web-components.adoc">Edit this Page</a></div>
+</div>
+<article class="doc"><a name="section-top"></a>
+<h1>Web components</h1>
+<div class="sect1">
+<h2 id="components-overview"><a class="anchor" href="#components-overview"></a>Web component model</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Web CMS Components are the building block of the pages that are displayed for the end user. Support is provided for a user friendly way of manipulating the content of those components via the back end.</p>
+</div>
+<div class="sect2">
+<h3 id="_webcmscomponenttype"><a class="anchor" href="#_webcmscomponenttype"></a>WebCmsComponentType</h3>
+
+</div>
+<div class="sect2">
+<h3 id="_webcmscomponent"><a class="anchor" href="#_webcmscomponent"></a>WebCmsComponent</h3>
+<div class="paragraph">
+<p><code>WebCmsComponent</code></p>
+</div>
+<div class="paragraph">
+<p>persisted entity</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_webcmscomponentmodel"><a class="anchor" href="#_webcmscomponentmodel"></a>WebCmsComponentModel</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>WebCmsComponentModelService</code> and <code>WebCmsComponentModel</code>
+<code>WebCmsComponentType</code></p>
+</div>
+<div class="paragraph">
+<p>The persisted entity is implemented by <code>WebCmsComponent</code>, but usually you will want to work with the <code>WebCmsComponentModel</code>.
+The latter represents the entire strongly typed model ready for rendering, whereas the former only has the raw attributes.</p>
+</div>
+<div class="paragraph">
+<p>converted to a <code>WebCmsComponent</code> by a <code>WebCmsComponentModelWriter</code>
+converted from a <code>WebCmsComponent</code> by a <code>WebCmsComponentModelReader</code></p>
+</div>
+<div class="paragraph">
+<p>&lt;div class="sect2"&gt;
+&lt;h3 id="components-default-component-types"&gt;&lt;a class="anchor" href="#components-default-component-types"&gt;&lt;/a&gt;Default component types&lt;/h3&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;{module-name} contains a number of default component types, backed by a set of default &lt;code&gt;WebCmsComponentModel&lt;/code&gt; implementations.
+You can easily define your own component types by extending one of these base types, see the chapter &lt;a href="#components-defining-component-types"&gt;Defining component types&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The following component types are added with the default data:&lt;/p&gt;
+&lt;/div&gt;
+&lt;table class="tableblock frame-all grid-all spread"&gt;
+&lt;colgroup&gt;
+&lt;col style="width: 14.2857%;"&gt;
+&lt;col style="width: 57.1428%;"&gt;
+&lt;col style="width: 14.2857%;"&gt;
+&lt;col style="width: 14.2858%;"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th class="tableblock halign-left valign-top"&gt;Type key&lt;/th&gt;
+&lt;th class="tableblock halign-left valign-top"&gt;Description&lt;/th&gt;
+&lt;th class="tableblock halign-left valign-top"&gt;Base type &lt;sup&gt;1&lt;/sup&gt;&lt;/th&gt;
+&lt;th class="tableblock halign-left valign-top"&gt;WebCmsComponentModel&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;proxy&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;A proxy for another component that will be rendered instead.&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;proxy&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;ProxyWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;placeholder&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Represents a placeholder for content provided by code or templates.&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;placeholder&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;PlaceholderWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;container&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Container of multiple ordered components. The user can add or remove child components to the container.&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;container&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;ContainerWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;fixed-container&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Container of a fixed set of components. The user can not add or remove child components to the container.&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;fixed-container&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;ContainerWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;text-field&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;A single line of plain text.&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;plain-text&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;TextWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;plain-text&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Plain text component.&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;plain-text&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;TextWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;rich-text&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Rich text component - supporting HTML markup and default assets if enabled by other modules.&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;rich-text&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;TextWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;html&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;A snippet of HTML.&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;markup&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;TextWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;image&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Represents a &lt;code&gt;WebCmsImage&lt;/code&gt; asset.&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;image&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;ImageWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; The &lt;em&gt;Base type&lt;/em&gt; is the value of the &lt;strong&gt;type&lt;/strong&gt; attribute on the &lt;code&gt;WebCmsComponentType&lt;/code&gt;.  Every component type must have a unique type key, but several component types can have the same base type.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;See &lt;code&gt;WebCmsComponentUtils&lt;/code&gt; for some utility functions when working with components and component types.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_webcmscomponentmodel_implementations"&gt;&lt;a class="anchor" href="#_webcmscomponentmodel_implementations"&gt;&lt;/a&gt;WebCmsComponentModel implementations&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;All component models must extend &lt;code&gt;WebCmsComponentModel&lt;/code&gt;.
+A number of default implementations is provided by the {module-name}.
+It is usually the &lt;code&gt;WebCmsComponentType&lt;/code&gt; base type (&lt;em&gt;type&lt;/em&gt; attribute) that will determine the &lt;code&gt;WebCmsComponentModel&lt;/code&gt; that gets instantiated.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="sect4"&gt;
+&lt;h5 id="_textwebcmscomponentmodel"&gt;&lt;a class="anchor" href="#_textwebcmscomponentmodel"&gt;&lt;/a&gt;TextWebCmsComponentModel&lt;/h5&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Represents a text component that can be either plain text, rich text or markup.
+In all cases an optional profile is supported that can indicate the sub-types of content that are supported.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;A &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt; is a large body of text (the &lt;code&gt;content&lt;/code&gt; property) that should be escaped or not upon rendering.
+The other properties are mostly relevant for the administrative user interface.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;&lt;code&gt;TextWebCmsComponentModel&lt;/code&gt; content can contain &lt;a href="#components-content-markers"&gt;content markers&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Base types&lt;/div&gt;
+&lt;p&gt;The following base types will create a &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt;:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;plain-text&lt;/em&gt;: will escape its content when rendering&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;rich-text&lt;/em&gt;: unescaped content with a RTE in the administration UI&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;markup&lt;/em&gt;: unescaped content with a HTML editor in the administration UI&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Component type attributes&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;TextWebCmsComponentModel&lt;/code&gt; implementations check extra &lt;code&gt;WebCmsComponentType&lt;/code&gt; attributes to map their properties.&lt;/p&gt;
+&lt;/div&gt;
+&lt;table class="tableblock frame-all grid-all spread"&gt;
+&lt;colgroup&gt;
+&lt;col style="width: 20%;"&gt;
+&lt;col style="width: 80%;"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th class="tableblock halign-left valign-top"&gt;Attribute&lt;/th&gt;
+&lt;th class="tableblock halign-left valign-top"&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;em&gt;multiLine&lt;/em&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;If set to false, the component will behave as a single line of text.
+In all other cases it will behave as a multi-line text component.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;em&gt;rows&lt;/em&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Size indicator: number of rows the component should have by default.
+Only applicable in case of a multi-line component.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;em&gt;profile&lt;/em&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Optionally specify an additional text profile this component should use.
+The text profile can for example be used to determine settings of the rich text editor.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="sect4"&gt;
+&lt;h5 id="_containerwebcmscomponentmodel"&gt;&lt;a class="anchor" href="#_containerwebcmscomponentmodel"&gt;&lt;/a&gt;ContainerWebCmsComponentModel&lt;/h5&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;A &lt;code&gt;ContainerWebCmsComponentModel&lt;/code&gt; represents an ordered collection of other components (the container members).
+By default a container simply renders its individual members in order.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Markup containers&lt;/div&gt;
+&lt;p&gt;Containers can optionally also support markup (determined by the &lt;em&gt;supportsMarkup&lt;/em&gt; attribute on the actual &lt;code&gt;WebCmsComponentType&lt;/code&gt;).
+If markup is set, it represents the rendering template for the container and members should be rendered using &lt;a href="#components-content-markers"&gt;content markers&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Within container markup, component content markers can use the &lt;em&gt;container&lt;/em&gt; scope to reference a member of the container itself.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Base types&lt;/div&gt;
+&lt;p&gt;The following base types will create a &lt;code&gt;ContainerWebCmsComponentModel&lt;/code&gt;:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;container&lt;/em&gt;: allows dynamic addition/removal of members&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;fixed-container&lt;/em&gt;: holds a fixed set of members (useful as a base type for custom components)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Component type attributes&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;ContainerWebCmsComponentModel&lt;/code&gt; implementations check extra &lt;code&gt;WebCmsComponentType&lt;/code&gt; attributes to map their properties.&lt;/p&gt;
+&lt;/div&gt;
+&lt;table class="tableblock frame-all grid-all spread"&gt;
+&lt;colgroup&gt;
+&lt;col style="width: 20%;"&gt;
+&lt;col style="width: 80%;"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th class="tableblock halign-left valign-top"&gt;Attribute&lt;/th&gt;
+&lt;th class="tableblock halign-left valign-top"&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;em&gt;supportsMarkup&lt;/em&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;If set to &lt;strong&gt;true&lt;/strong&gt; then markup on the container will be used for rendering if there is markup set.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="sect4"&gt;
+&lt;h5 id="_placeholderwebcmscomponentmodel"&gt;&lt;a class="anchor" href="#_placeholderwebcmscomponentmodel"&gt;&lt;/a&gt;PlaceholderWebCmsComponentModel&lt;/h5&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;A &lt;code&gt;PlaceholderWebCmsComponentModel&lt;/code&gt; has only a single relevant property: the name of the placeholder whose content should be rendered.
+By default if no placeholder content is available, this component will render an empty string.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Base type: &lt;em&gt;placeholder&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect4"&gt;
+&lt;h5 id="_proxywebcmscomponentmodel"&gt;&lt;a class="anchor" href="#_proxywebcmscomponentmodel"&gt;&lt;/a&gt;ProxyWebCmsComponentModel&lt;/h5&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;A &lt;code&gt;ProxyWebCmsComponentModel&lt;/code&gt; holds a reference to another component (the proxy target) and renders that component instead.
+Use a &lt;code&gt;ProxyWebCmsComponentModel&lt;/code&gt; if you want to add an already existing component as a member of a container.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Base type: &lt;em&gt;proxy&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect4"&gt;
+&lt;h5 id="_imagewebcmscomponentmodel"&gt;&lt;a class="anchor" href="#_imagewebcmscomponentmodel"&gt;&lt;/a&gt;ImageWebCmsComponentModel&lt;/h5&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;An &lt;code&gt;ImageWebCmsComponentModel&lt;/code&gt; holds a reference to a &lt;code&gt;WebCmsImage&lt;/code&gt; asset.
+Default rendering of an &lt;code&gt;ImageWebCmsComponentModel&lt;/code&gt; is not very useful and developers should provide their own rendering by either updating the &lt;code&gt;WebCmsComponentType&lt;/code&gt; with a custom &lt;em&gt;template&lt;/em&gt; or by providing the rendering infrastructure (see &lt;a href="#components-thymeleaf-rendering"&gt;Thymeleaf rendering&lt;/a&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="admonitionblock note"&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class="icon"&gt;
+&lt;i class="fa icon-note" title="Note"&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class="content"&gt;
+For the &lt;code&gt;ImageWebCmsComponentModel&lt;/code&gt; to function, a valid &lt;code&gt;WebCmsImageConnector&lt;/code&gt;  bean should be present.  See the chapter &lt;a href="#images-image-model"&gt;Image model&lt;/a&gt; for more information.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_activating_component_support"><a class="anchor" href="#_activating_component_support"></a>Activating component support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Any <code>WebCmsObject</code> - this includes all assets and components themselves - can have web components linked to it.
+Enabling components for WebCmsObject implementations: wire WebCmsObjectComponentViewsConfiguration: registerComponentsAssociation</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_rendering_components"><a class="anchor" href="#_rendering_components"></a>Rendering components</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_creating_shared_web_components"><a class="anchor" href="#_creating_shared_web_components"></a>Creating shared web components</h3>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Shared web components</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+<col style="width: 12.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Mandatory</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Component Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Component Type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of the component, selectable from the list of predefined component types.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Title</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the component. Displayed in the admin section.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The unique identifier with which you can approach the component in your Thymeleaf template. Should be unique, and can be auto-generated based on Title</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">None</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_using_components_in_your_controllers"><a class="anchor" href="#_using_components_in_your_controllers"></a>Using components in your controllers</h3>
+<div class="paragraph">
+<p>A <code>WebCmsComponentModelHierarchy</code> is attached to the <code>ApplicationContext</code> of the current request and allows components to be looked up in the various scopes. By default the <code>global</code> and <code>domain</code> scope are registered. Using the <code>WebCmsComponentModelHierarchy</code>, it is possible to register additional scopes, attach/replace/remove components to a scope and define aliases for a scope.</p>
+</div>
+<div class="paragraph">
+<p>The <code>WebCmsComponentModelHierarchy</code> is used to retrieve components in the thymeleaf dialect and is used to search for components in various scopes.</p>
+</div>
+<div class="paragraph">
+<p>Note: The <code>WebCmsComponentModelHiercharchy</code> is a request scoped bean, so it can simply be autowired. It should however not be wired inside a controller handler method as it has a parameterless constructor.</p>
+</div>
+<div class="paragraph">
+<p>Example of registering a custom component to the <code>asset</code> scope:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Controller
+@RequiredArgsConstructor
+public class MyController {
+
+  private final WebCmsComponentModelHierarchy componentModelHierarchy;
+
+  @WebCmsArticleMapping(articleType="blog")
+  public void myHandler(){
+    WebCmsComponentModelSet componentModelSet = new WebCmsComponentModelSet();
+    TextWebCmsComponentModel text = new TextWebCmsComponentModel();
+    text.setContent("some text");
+    text.setName("my-custom-component");
+    componentModelSet.add(text);
+    componentModelHierarchy.registerComponentsForScope(componentModelSet, "asset");
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_placeholders"><a class="anchor" href="#_placeholders"></a>Placeholders</h3>
+<div class="paragraph">
+<p><code>WebCmsPlaceholderContentModel</code></p>
+</div>
+<div class="paragraph">
+<p>&lt;div class="sect3"&gt;
+&lt;h4 id="components-content-markers"&gt;&lt;a class="anchor" href="#components-content-markers"&gt;&lt;/a&gt;Content markers&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;{module-name} provides content marker infrastructure to work with special marker snippets inside textual content.
+Upon rendering, these markers would be processed and the resulting output would be rendered instead.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="title"&gt;Example text with content markers&lt;/div&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-text hljs" data-lang="text"&gt;Sample content markers
+Insert component content: @@wcm:component(title,global,false)@@
+Insert placeholder content: @@wcm:placeholder(myplaceholder)@@&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Two default markers are supported:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;placeholder content markers indicate placeholder content should be rendered at the marker&#8217;s location&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;component content markers indicate a component should be rendered at the marker&#8217;s location&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Content marker format&lt;/div&gt;
+&lt;p&gt;A &lt;code&gt;WebCmsContentMarker&lt;/code&gt; consists of 2 parts:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;a key indicating the type of content marker - the key is required and cannot contain whitespace&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;an optional string of parameters that is supported by that type&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;In text a content marker is always surrounde by &lt;code&gt;@@&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;div class="title"&gt;Example content markers:&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;@@my.marker@@&lt;/code&gt;&lt;/p&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;key: &lt;em&gt;my.marker&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;@@my.marker(my, params)@@&lt;/code&gt;&lt;/p&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;key: &lt;em&gt;my.marker&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;parameter string: &lt;em&gt;my, params&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The &lt;code&gt;WebCmsContentMarkerService&lt;/code&gt; is the service for working with content markers in general.
+Default rendering support is available for Thymeleaf templates, see the &lt;a href="#components-thymeleaf-content-markers"&gt;{module-name} Thymeleaf dialect&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Content markers are supported in all &lt;a href="#components-default-component-types"&gt;default component types&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="sect4"&gt;
+&lt;h5 id="components-placeholder-content-markers"&gt;&lt;a class="anchor" href="#components-placeholder-content-markers"&gt;&lt;/a&gt;Placeholder content markers&lt;/h5&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;A placeholder content marker indicates that placeholder content should be rendered at the marker&#8217;s location.
+The key is &lt;em&gt;wcm:placeholder&lt;/em&gt; and the parameter is the name of the placeholder whose content should be rendered.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Example: &lt;code&gt;@@wcm:placeholder(some.placeholder)@@&lt;/code&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect4"&gt;
+&lt;h5 id="components-component-content-markers"&gt;&lt;a class="anchor" href="#components-component-content-markers"&gt;&lt;/a&gt;Component content markers&lt;/h5&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;A component content marker indicates a component should be rendered at the location of the marker.
+The key is &lt;em&gt;wcm:component&lt;/em&gt; and 3 parameters are required:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;the component name&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;the scope in which to look for the component&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;should parent scopes be searched as well: &lt;strong&gt;true&lt;/strong&gt;/&lt;strong&gt;false&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Whitespace is not supported in the parameter string.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Examples:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;@@wcm:component(my.component.name,default,true)@@&lt;/code&gt;&lt;/p&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;will search for &lt;em&gt;my.component&lt;/em&gt; in the default scope and all parent scopes&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;@@wcm:component(my.component.name,global,false)@@&lt;/code&gt;&lt;/p&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;will search for &lt;em&gt;my.component&lt;/em&gt; in the global scope only (as global is the last scope the parent flag is of no meaning)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;@@wcm:component(my.component.name,container,false)@@&lt;/code&gt;&lt;/p&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;will search for &lt;em&gt;my.component&lt;/em&gt; in the container members - only relevant in the context of a &lt;code&gt;ContainerWebCmsComponentModel&lt;/code&gt; being rendered&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect4"&gt;
+&lt;h5 id="_creating_custom_content_markers"&gt;&lt;a class="anchor" href="#_creating_custom_content_markers"&gt;&lt;/a&gt;Creating custom content markers&lt;/h5&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;See &lt;a href="#components-thymeleaf-content-markers"&gt;{module-name} Thymeleaf dialect&lt;/a&gt; on how to add content marker support for component rendering.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</p>
+</div>
+<div class="paragraph">
+<p>&lt;div class="sect2"&gt;
+&lt;h3 id="components-thymeleaf-integration"&gt;&lt;a class="anchor" href="#components-thymeleaf-integration"&gt;&lt;/a&gt;Thymeleaf integration&lt;/h3&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;WebCmsModule provides its own Thymeleaf dialect for working with components.
+It enables you to:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;replace template fragments by component output&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;auto-create components from templates based on the template content&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;define placeholder content&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The Thymeleaf dialect is a very powerful tool to convert your static templates into user modifiable components.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_html_attributes"&gt;&lt;a class="anchor" href="#_html_attributes"&gt;&lt;/a&gt;HTML attributes&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Interacting with components is done by adding attributes to your template elements.&lt;/p&gt;
+&lt;/div&gt;
+&lt;table class="tableblock frame-all grid-all spread"&gt;
+&lt;colgroup&gt;
+&lt;col style="width: 50%;"&gt;
+&lt;col style="width: 50%;"&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;wcm:component&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;The body of the element will be replaced with the rendering of the component, if the component is found.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;wcm:scope&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Specify the name of the scope in which the component should be looked for - if omitted wil look in the default scope and all parent scopes.
+When specified, only that scope will be queried unless &lt;em&gt;search-parent-scopes&lt;/em&gt; is explicitly present.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;wcm:search-parent-scopes&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Set explicitly to &lt;code&gt;false&lt;/code&gt; if you only want the component to be looked up in the scope specified (or the default scope) but none of the parent scopes.
+Otherwise adding the attribute will ensure that parent scopes are always searched, even if an explicit &lt;em&gt;wcm:scope&lt;/em&gt; was specified.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;wcm:always-replace&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;If present the body of the element will always be replaced even if the component is not found.
+The actual (optional) value of this attribute is irrelevant.&lt;/p&gt;
+&lt;p class="tableblock"&gt;Default behaviour is to render the original template markup if a component is not found, use this attribute to force empty output instead.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;wcm:auto-create&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;If present, the component will be auto-created with the element body as input parameters.
+ Optionally the attribute value can be be the scope name in which the component should be created.
+If no value is present, the value of &lt;em&gt;wcm:scope&lt;/em&gt; will be used to determine the scope in which to create the component.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;wcm:type&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Type key of the &lt;code&gt;WebCmsComponentType&lt;/code&gt; of the component.
+This will only be used for auto-creation of a component.
+If no type is specified, generic markup (&lt;strong&gt;html&lt;/strong&gt;) will be assumed.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;wcm:parent-create-include&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Relevant only during auto-creation of a possible parent component.
+If the parent component is being auto-created nested components would by default be inserted as content markers or added as &lt;code&gt;ProxyWebCmsComponentModel&lt;/code&gt; members.
+By providing this attribute (the actual value is ignored) you indicate the output of the component should be inserted instead.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;wcm:parse-placeholders&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;If present on an element attributed with &lt;em&gt;wcm:component&lt;/em&gt;, the body of the element will always be parsed and all sections marked &lt;em&gt;wcm:placeholder&lt;/em&gt; will be made available in the &lt;code&gt;WebCmsPlaceholderContentModel&lt;/code&gt;.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;wcm:placeholder&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Attribute to indicate that a section should be rendered to a placeholder.
+ The name of the placeholder is the value of the attribute.
+ Note that the element itself will also be part of the placeholder content, not just the body of the element.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Auto-creation of components from markup&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;if you don&#8217;t specify a component type - the default component type will be created&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;if you don&#8217;t specify a scope on a component - a default scope will be used:&lt;/p&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;outside a parent component the default scope will be &lt;em&gt;asset&lt;/em&gt;, and parents will be searched if not specified within the &lt;em&gt;asset&lt;/em&gt; scope.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;inside a parent component that is not a container: the default scope will be &lt;em&gt;asset&lt;/em&gt; and parent scopes will be searched if not specified&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;inside a parent component that is a container: the default scope will be the &lt;em&gt;container&lt;/em&gt; and parents will &lt;strong&gt;not&lt;/strong&gt; be searched&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;if your component is a container:&lt;/p&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;any placeholders in the body will be added as placeholder child components and the body markup will refer to those components&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;any scoped component will be added as a proxy component referring to the original scoped component and the body markup will refer to the proxy components&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Special scopes:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;default&lt;/strong&gt;: always refers to the lowest level - first one to perform the lookup (usually asset) - you would not normally use this scope name as it is the default if a scope name is omitted&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;asset&lt;/strong&gt;: components attached to the current asset being rendered, usually an asset specific name (e.g. &lt;strong&gt;article&lt;/strong&gt;) will be available as well, but both will refer to the same components&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;global&lt;/strong&gt;: always refers to the global scope, components that have no owner and are shared across domain&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;domain&lt;/strong&gt;: components that have no owner but are only available on the specific domain&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;container&lt;/strong&gt;: this is a reserved scope name that ensures the component is added as a container member - you would not normally use this scope name as it is the default if omitted inside a container component&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;&lt;strong&gt;NOTE&lt;/strong&gt;
+In a single domain configuration, scope &lt;strong&gt;domain&lt;/strong&gt; will always be the same as scope &lt;strong&gt;global&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_examples"&gt;&lt;a class="anchor" href="#_examples"&gt;&lt;/a&gt;Examples&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;This section contains a number of real-life examples for working with components from Thymeleaf.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Only look in the scope of the page asset. If not present, don&#8217;t do anything.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre&gt;&lt;th:block wcm:component="page-header" wcm:scope="page" wcm:search-parent-scopes="false"&gt;
+    &lt;div class="l-page<em>title"&gt;Our title&lt;/div&gt;
+    &lt;p&gt;
+        Our text
+    &lt;/p&gt;
+&lt;/th&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Start by looking in the scope of the page asset, don&#8217;t look in the parent components even if you don&#8217;t find them in the page scope. If the component is not found,
+render the code that is written down in the thymeleaf template.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre&gt;&lt;th:block wcm:component="page-header" wcm:scope="page"&gt;
+    &lt;div class="l-page</em>title"&gt;Our title&lt;/div&gt;
+    &lt;p&gt;
+        Our text
+    &lt;/p&gt;
+&lt;/th&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Start by looking if the component exists in the page asset, but look in the parent scope(s) if you don&#8217;t find the component in the page scope. If the component
+is nowhere to be found, the content in the thymeleaf template itself is rendered.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre&gt;&lt;th:block wcm:component="page-header" wcm:scope="global"&gt;
+    &lt;div class="l-page__title"&gt;Our title&lt;/div&gt;
+    &lt;p&gt;
+        Our text
+    &lt;/p&gt;
+&lt;/th&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Look in the global scope for the component, skipping over any and all more granular scopes. If the component is nowhere to be
+found, the content in the thymeleaf template itself is rendered.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_rendering_a_component"&gt;&lt;a class="anchor" href="#_rendering_a_component"&gt;&lt;/a&gt;Rendering a component&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;You can specify a component to render by just setting the name of the component as the value of the &lt;em&gt;wcm:component&lt;/em&gt; attribute.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="title"&gt;Simple rendering of component&lt;/div&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-component"&gt;This markup will only be rendered if that component does not exist.&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;In the example above the entire component hierarchy for the request will be searched bottom-up for a component with that name.
+Only if that component does not exist will the original template be rendered.
+If the component is found, the content of the &lt;em&gt;div&lt;/em&gt; element will be replaced, but the &lt;em&gt;div&lt;/em&gt; element itself will remain.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="admonitionblock note"&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class="icon"&gt;
+&lt;i class="fa icon-note" title="Note"&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class="content"&gt;
+You can still use the standard Thymeleaf dialect (eg. &lt;em&gt;th:block&lt;/em&gt; or &lt;em&gt;th:remove&lt;/em&gt;) to manipulate the wrapping element.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="title"&gt;Replace the component body if the component is not found&lt;/div&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-component" wcm:always-replace&gt;This markup will never be rendered.&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;By adding the &lt;em&gt;wcm:always-replace&lt;/em&gt; attribute you can ensure the original template markup will be suppressed.
+Even if the component is not found, the body of the &lt;em&gt;div&lt;/em&gt; element will be empty.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Specifying a scope for the component&lt;/div&gt;
+&lt;p&gt;In our original example all scopes will be traversed bottom-up to find the component.
+If you only want to look for the component in a specific scope, simply set the &lt;em&gt;wcm:scope&lt;/em&gt; attribute.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-component" wcm:scope="global"&gt;Replaced by a globally shared component.&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;When set, the component will be looked for only in that scope (unless you also set &lt;em&gt;wcm:search-parent-scopes&lt;/em&gt;).
+In our example we look for a component 'my-component' in the set of shared components.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="admonitionblock note"&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class="icon"&gt;
+&lt;i class="fa icon-note" title="Note"&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class="content"&gt;
+A &lt;code&gt;WebCmsComponentModel&lt;/code&gt; is also a &lt;code&gt;ViewElement&lt;/code&gt; and can always be rendered using the &lt;strong&gt;across:view&lt;/strong&gt; element from the AcrossWebDialect as well.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="_auto_create_a_markup_component"&gt;&lt;a class="anchor" href="#_auto_create_a_markup_component"&gt;&lt;/a&gt;Auto-create a markup component&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The presence of &lt;em&gt;wcm:auto-create&lt;/em&gt; will automatically create a component for you if it does not yet exist.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-component" wcm:auto-create&gt;This markup will only be rendered if that component does not exist.&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;In our example we now create 'my-component' upon first rendering of the template.
+Because we did not specify an explicit component type, the default type will be used: a HTML &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt; will be created.
+The processed body of the &lt;em&gt;div&lt;/em&gt; element will be set as the content of our text component.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;As with the component type, because we did not specify an explicit scope, the component will be added to the default scope: usually the asset being rendered.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Specifying component type&lt;/div&gt;
+&lt;p&gt;Adding a component type is done with the &lt;em&gt;wcm:type&lt;/em&gt; attribute.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-component" wcm:auto-create wcm:type="rich-text"&gt;This markup will only be rendered if that component does not exist.&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;We still create a &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt;, except it will now be of rich-text type.
+The value of the &lt;em&gt;wcm:type&lt;/em&gt; attribute must be a known &lt;code&gt;WebCmsComponentType&lt;/code&gt; type key.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="admonitionblock note"&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class="icon"&gt;
+&lt;i class="fa icon-note" title="Note"&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class="content"&gt;
+The component type you want to create must have a registered &lt;code&gt;WebCmsComponentAutoCreateStrategy&lt;/code&gt; for auto-creation to be successful.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Specifying creation scope&lt;/div&gt;
+&lt;p&gt;The &lt;em&gt;wcm:auto-create&lt;/em&gt; attribute can optionally have a value.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-component" wcm:auto-create="global"&gt;This markup will only be rendered if that component does not exist.&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;In our example we look for &lt;em&gt;my-component&lt;/em&gt; in the default scope and all its parents (including global).
+If the component is not found, we now auto-create it in the &lt;em&gt;global&lt;/em&gt; scope instead of the default.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="admonitionblock warning"&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class="icon"&gt;
+&lt;i class="fa icon-warning" title="Warning"&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class="content"&gt;
+You can combine the use of &lt;em&gt;wcm:scope&lt;/em&gt; with a scope in &lt;em&gt;wcm:auto-create&lt;/em&gt;.
+Be careful though because if you auto-create the component in a scope that is in fact not searched for the component, you will re-create on every request.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_using_placeholders_in_a_markup_component"&gt;&lt;a class="anchor" href="#_using_placeholders_in_a_markup_component"&gt;&lt;/a&gt;Using placeholders in a markup component&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;You can define placeholder sections in your template and allow other components to include them.
+Using placeholders is handy for fixed dynamic content that is not a component in itself, but you would like to provide some flexibility on positioning the content.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-component" wcm:parse-placeholders&gt;
+    Template content&#8230;&#8203;
+    &lt;div wcm:placeholder="my-placeholder"&gt;Placeholder content&lt;/div&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;If you want your component to access placeholder content from the template, you must attribute your component element with &lt;em&gt;wcm:parse-placeholders&lt;/em&gt;.
+When present, the original template markup will always be processed to generate the placeholder content.
+There is no limit to the number of placeholders defined in a segment, but be aware that those placeholders are only available within that section (eg. during the rendering of &lt;em&gt;my-component&lt;/em&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Any element attributed with &lt;em&gt;wcm:placeholder&lt;/em&gt; defines placeholder content.
+The attribute value is the name of the placeholder.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The element on which the attribute is present is also part of the placeholder content.
+In the example above the placeholder content would be: &lt;code&gt;&lt;div&gt;Placeholder content&lt;/div&gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Rendering placeholder content in markup components&lt;/div&gt;
+&lt;p&gt;The presence of &lt;em&gt;wcm:parse-placeholders&lt;/em&gt; ensures that placeholder content will be processed and made available during rendering.
+Rendering the actual placeholder however is always up to the component.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Markup components can render placeholders by using &lt;a href="#components-placeholder-content-markers"&gt;placeholder content markers&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Assume &lt;em&gt;my-component&lt;/em&gt; is a &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt; with the following content:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-text hljs" data-lang="text"&gt;My placeholder: @@wcm:placeholder(my-placeholder)@@
+My other placeholder: @@wcm:placeholder(my-other-placeholder)@@&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Upon rendering the template fragment specified above, the following output would be the result:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div&gt;
+    My placeholder: &lt;div&gt;Placeholder content&lt;/div&gt;
+    My other placeholder:
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Because there is no placeholder content &lt;em&gt;my-other-placeholder&lt;/em&gt; defined, an empty string is rendered.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Example auto-creation of markup with a placeholder&lt;/div&gt;
+&lt;p&gt;When rendering an existing component all markup outside the placeholders is simply ignored.
+When auto-creating the component however, that markup is still used to generate the default content of the component.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Assume we auto-create our component:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-component" wcm:parse-placeholders wcm:auto-create&gt;
+    Template content&#8230;&#8203;
+    &lt;div wcm:placeholder="my-placeholder"&gt;Placeholder content&lt;/div&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;This would result in a &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt; with the following content:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-text hljs" data-lang="text"&gt;Template content&#8230;&#8203;
+@@wcm:placeholder(my-placeholder)@@&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_nesting_components"&gt;&lt;a class="anchor" href="#_nesting_components"&gt;&lt;/a&gt;Nesting components&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Like with placeholders, a markup component can include other components using &lt;a href="#components-component-content-markers"&gt;component content markers&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Assume you have a &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt; with the following content: &lt;code&gt;My component: @@wcm:component(header,global,false)@@&lt;/code&gt;.&lt;br&gt;
+And on the global level the &lt;em&gt;header&lt;/em&gt; component is a &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt; with content &lt;code&gt;my header&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;When rendering the first component, the output would be &lt;code&gt;My component: my header&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Component content marker parameters&lt;/div&gt;
+&lt;p&gt;A component content marker always requires 3 attributes that are equivalents of the Thymeleaf dialect attributes:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;component name (equivalent of &lt;em&gt;wcm:component&lt;/em&gt;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;initial scope to look for the component (equivalent of &lt;em&gt;wcm:scope&lt;/em&gt;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;true/false if parent scopes should or should not be searched (equivalent of &lt;em&gt;wcm:search-parent-scopes&lt;/em&gt;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;If a component is not found, an empty string is added to the output and the marker removed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Auto-create nested components&lt;/div&gt;
+&lt;p&gt;When nesting components in template markup, nested components will always be replaced by a component content marker.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The following markup:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-component" wcm:auto-create&gt;
+    My title: &lt;span wcm:component="title"&gt;title&lt;/span&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Would result in a &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt; with the content &lt;code&gt;My title: &lt;span&gt;@@wcm:component(title,default,true)@@&lt;/span&gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="admonitionblock note"&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class="icon"&gt;
+&lt;i class="fa icon-note" title="Note"&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class="content"&gt;
+Because &lt;em&gt;my-component&lt;/em&gt; is not a container, component &lt;em&gt;title&lt;/em&gt; will not get auto-created unless it is in turn attributed with &lt;em&gt;wcm:auto-create&lt;/em&gt;.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Including nested component output&lt;/div&gt;
+&lt;p&gt;In some cases you don&#8217;t want to include a content marker for another component, but include the actual component output instead.
+You can do so by adding the &lt;em&gt;wcm:parent-create-include&lt;/em&gt; attribute.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Let&#8217;s change our example markup to the following:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-component" wcm:auto-create&gt;
+    My title: &lt;span wcm:component="title" wcm:parent-create-include&gt;title&lt;/span&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Assume component &lt;em&gt;title&lt;/em&gt; is a &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt; with &lt;code&gt;Some title&lt;/code&gt; as content.
+Upon first rendering &lt;em&gt;my-component&lt;/em&gt; would get created with the &lt;em&gt;title&lt;/em&gt; component output included: &lt;code&gt;My title: &lt;span&gt;Some title&lt;/span&gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_auto_create_a_simple_container"&gt;&lt;a class="anchor" href="#_auto_create_a_simple_container"&gt;&lt;/a&gt;Auto-create a simple container&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Apart from simple markup components like &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt; you can also auto-create &lt;code&gt;ContainerWebCmsComponentModel&lt;/code&gt; components.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Let&#8217;s change our example markup to the following:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-container" wcm:type="container" wcm:auto-create&gt;
+    &lt;th:block wcm:component="title"&gt;Title&lt;/th:block&gt;
+    &lt;th:block wcm:component="body"&gt;Body&lt;/th:block&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Rendering the above example will create &lt;em&gt;my-container&lt;/em&gt; as a &lt;code&gt;ContainerWebCmsComponentModel&lt;/code&gt;.
+The container will have 2 members: &lt;em&gt;title&lt;/em&gt; and &lt;em&gt;body&lt;/em&gt;, both being &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt; implementations with their respective processed template markup as content.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="admonitionblock note"&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class="icon"&gt;
+&lt;i class="fa icon-note" title="Note"&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class="content"&gt;
+Because &lt;em&gt;title&lt;/em&gt; and &lt;em&gt;body&lt;/em&gt; are component children within a container type, they do not require the &lt;em&gt;wcm:auto-create&lt;/em&gt; attribute themselves.
+It is assumed they should be created automatically as members of the container - if the container itself gets auto-created.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_nesting_container_components"&gt;&lt;a class="anchor" href="#_nesting_container_components"&gt;&lt;/a&gt;Nesting container components&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;You&#8217;re not limited to using a single level of containers for auto-creation.
+Consider the following example:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-container" wcm:type="container" wcm:auto-create&gt;
+    &lt;th:block wcm:component="title"&gt;Title&lt;/th:block&gt;
+    &lt;th:block wcm:component="body" wcm:type="container"&gt;
+        &lt;th:block wcm:component="intro"&gt;Intro&lt;/th:block&gt;
+        &lt;th:block wcm:component="main-text"&gt;Main text&lt;/th:block&gt;
+    &lt;/th:block&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;In this case the following components would be created:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;my-container&lt;/em&gt; as &lt;code&gt;ContainerWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;member: &lt;em&gt;title&lt;/em&gt; as &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;member: &lt;em&gt;body&lt;/em&gt; as &lt;code&gt;ContainerWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;member: &lt;em&gt;intro&lt;/em&gt; as &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;member: &lt;em&gt;main-text&lt;/em&gt; as &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;No additional &lt;em&gt;wcm:auto-create&lt;/em&gt; attributs are required as all nested components have a container as direct parent.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_using_placeholders_in_containers"&gt;&lt;a class="anchor" href="#_using_placeholders_in_containers"&gt;&lt;/a&gt;Using placeholders in containers&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Much like a regular markup component, a container can also use placeholders that are defined in the template.
+Where a markup component uses a &lt;a href="#components-placeholder-content-markers"&gt;placeholder content markers&lt;/a&gt; to render the placeholder content, a &lt;code&gt;ContainerWebCmsComponentModel&lt;/code&gt; will get a member component of type &lt;code&gt;PlaceholderWebCmsComponentModel&lt;/code&gt; instead.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-container" wcm:type="container" wcm:auto-create&gt;
+    &lt;th:block wcm:component="title"&gt;Title&lt;/th:block&gt;
+    &lt;div wcm:placeholder="body"&gt;
+        &lt;div wcm:component="footer" /&gt;
+    &lt;/th:block&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;This would auto-create the following components:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;my-container&lt;/em&gt; as &lt;code&gt;ContainerWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;member: &lt;em&gt;title&lt;/em&gt; as &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;member: &lt;em&gt;body&lt;/em&gt; as &lt;code&gt;PlaceholderWebCmsComponentModel&lt;/code&gt; with &lt;em&gt;body&lt;/em&gt; as the placeholder name&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="admonitionblock note"&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class="icon"&gt;
+&lt;i class="fa icon-note" title="Note"&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class="content"&gt;
+In the above example the &lt;em&gt;footer&lt;/em&gt; component reference is outside of the container section as it is inside the placeholder block.
+This means that all ties with the container will be severed: the normal scope lookup will apply and the component will not get auto-created unless it also has the &lt;em&gt;wcm:auto-create&lt;/em&gt; attribute.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_linking_to_other_components"&gt;&lt;a class="anchor" href="#_linking_to_other_components"&gt;&lt;/a&gt;Linking to other components&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;A &lt;code&gt;ContainerWebCmsComponentModel&lt;/code&gt; can hold &lt;code&gt;ProxyWebCmsComponentModel&lt;/code&gt; members that refer to other components that are not container members.
+If your template refers to a scoped component inside a container, a proxy will get auto-created as well.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-container" wcm:type="container" wcm:auto-create&gt;
+    &lt;th:block wcm:component="title"&gt;Title&lt;/th:block&gt;
+    &lt;th:block wcm:component="footer" wcm:scope="global"&gt;Replace by the global footer&lt;/th:block&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;In this case member &lt;em&gt;footer&lt;/em&gt; would be a &lt;code&gt;ProxyWebCmsComponentModel&lt;/code&gt; that is linked to the global component with the name &lt;em&gt;footer&lt;/em&gt;.
+If the global &lt;em&gt;footer&lt;/em&gt; component is not found however, no member would have been created either, as a proxy only links to an existing component.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;You can of course still auto-create the global component as well - just as if it were outside a container:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-container" wcm:type="container" wcm:auto-create&gt;
+    &lt;th:block wcm:component="title"&gt;Title&lt;/th:block&gt;
+    &lt;th:block wcm:component="footer" wcm:scope="global" wcm:auto-create&gt;Replace by the global footer&lt;/th:block&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Now the global &lt;em&gt;footer&lt;/em&gt; component would first get created if it doesn&#8217;t exist yet and then a proxy member would be added to the container.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_containers_with_markup"&gt;&lt;a class="anchor" href="#_containers_with_markup"&gt;&lt;/a&gt;Containers with markup&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Unless a container has markup support active, all template markup outside of &lt;em&gt;wcm:component&lt;/em&gt; blocks will simply be ignored.
+If markup is supported however, the markup will contain component content markers much like in the case of markup components.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;However, in the case of container markup, only component content markers will be added that refer to container members.
+The container members in turn might be &lt;code&gt;ProxyWebCmsComponentModel&lt;/code&gt; instances or might be &lt;code&gt;PlaceholderWebCmsComponentModel&lt;/code&gt; instances.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;A full example for a markup supporting container:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;div wcm:component="my-container" wcm:type="markup-container" wcm:auto-create&gt;
+    Title: &lt;th:block wcm:component="title"&gt;Title&lt;/th:block&gt;
+    &lt;div wcm:placeholder="body"&gt;
+        &lt;div wcm:component="footer" wcm:scope="global" /&gt;
+    &lt;/th:block&gt;
+    Footer: &lt;th:block wcm:component="footer" wcm:scope="global"&gt;Replace by the global footer&lt;/th:block&gt;
+&lt;/div&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;This would auto-create:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;my-container&lt;/em&gt; as &lt;code&gt;ContainerWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;member: &lt;em&gt;title&lt;/em&gt; as &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;member: &lt;em&gt;body&lt;/em&gt; as &lt;code&gt;PlaceholderWebCmsComponentModel&lt;/code&gt; with &lt;em&gt;body&lt;/em&gt; as the placeholder name&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;member: &lt;em&gt;footer&lt;/em&gt; as &lt;code&gt;ProxyWebCmsComponentModel&lt;/code&gt; linked to the global &lt;em&gt;footer&lt;/em&gt; component (same as is rendered inside the placeholder)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The markup of &lt;em&gt;my-container&lt;/em&gt; would only link to container members:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-text hljs" data-lang="text"&gt;Title: @@wcm:component(title,container,false)@@
+@@wcm:component(body,container,false)@@
+Footer: @@wcm:component(footer,container,false)@@&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="components-thymeleaf-rendering"&gt;&lt;a class="anchor" href="#components-thymeleaf-rendering"&gt;&lt;/a&gt;1.1. Custom rendering of component&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Web components in Thymeleaf are rendered using a &lt;code&gt;WebCmsComponentModelRenderer&lt;/code&gt; implementation.
+You can easily create your own implementation for custom rendering:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;create your own implementation of &lt;code&gt;WebCmsComponentModelRenderer&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;implement the &lt;code&gt;supports()&lt;/code&gt; method to ensure it is used for the correct types&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;register your implementation as a bean so it can be picked up by the rendering infrastructure&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="admonitionblock note"&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class="icon"&gt;
+&lt;i class="fa icon-note" title="Note"&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class="content"&gt;
+If you want to override the default rendering, you must ensure your implementation is registered &lt;strong&gt;before&lt;/strong&gt; the default implementations.
+You can do so by ordering your beans (using an &lt;code&gt;@Order&lt;/code&gt; annotation or implementing the &lt;code&gt;Ordered&lt;/code&gt; interface).
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;If you want to use content markers in your content snippets, you can use the &lt;code&gt;WebCmsComponentContentModelWriter&lt;/code&gt; to render the content with Thymeleaf.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect1"&gt;
+&lt;h2 id="components-thymeleaf-content-markers"&gt;&lt;a class="anchor" href="#components-thymeleaf-content-markers"&gt;&lt;/a&gt;1. Custom content markers&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Content containing content markers can easily be written to Thymeleaf output using the &lt;code&gt;WebCmsComponentContentModelWriter&lt;/code&gt;.
+If you want to implement your own custom content markers you must provide an implementation of &lt;code&gt;WebCmsComponentContentMarkerRenderer&lt;/code&gt; as a bean.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</p>
+</div>
+<div class="paragraph">
+<p>&lt;div class="sect1"&gt;
+&lt;h2 id="components-defining-component-types"&gt;&lt;a class="anchor" href="#components-defining-component-types"&gt;&lt;/a&gt;Defining component types&lt;/h2&gt;
+&lt;div class="sectionbody"&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;You can easily define your own component types.
+Depending on your needs you can &lt;a href="#components-extending-base-types"&gt;extend one of the base types&lt;/a&gt; or create a &lt;a href="#components-custom-component-type"&gt;fully custom implementation&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="sect2"&gt;
+&lt;h3 id="components-extending-base-types"&gt;&lt;a class="anchor" href="#components-extending-base-types"&gt;&lt;/a&gt;Extending the base types&lt;/h3&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;You can add a custom &lt;code&gt;WebCmsComponentType&lt;/code&gt; by importing it via YAML or by adding it via the &lt;code&gt;WebCmsComponentTypeRepository&lt;/code&gt;.
+Component types to import should be defined in the section &lt;strong&gt;types - component&lt;/strong&gt; where the key of a component type definition is the`unique &lt;code&gt;WebCmsComponentType&lt;/code&gt; &lt;code&gt;typeKey&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="title"&gt;Example YAML component type definition&lt;/div&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-yaml hljs" data-lang="yaml"&gt;types:
+  component:
+    my-component:
+      name: Custom component
+      description: Custom HTML component with additional metadata.
+      attributes:
+        type: markup
+        metadata: "my.component.MyMetadata"&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;A &lt;code&gt;WebCmsComponentType&lt;/code&gt; has a collection of attributes.
+This is a map of &lt;code&gt;String&lt;/code&gt; key/value pairs.
+Adding attributes is a way to provide processing metadata without having to create custom &lt;code&gt;WebCmsComponentType&lt;/code&gt; implementations.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Default attributes&lt;/div&gt;
+&lt;p&gt;All base types support 3 default attributes that pack a lot of punch in creating custom component types:&lt;/p&gt;
+&lt;/div&gt;
+&lt;table class="tableblock frame-all grid-all spread"&gt;
+&lt;colgroup&gt;
+&lt;col style="width: 20%;"&gt;
+&lt;col style="width: 80%;"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th class="tableblock halign-left valign-top"&gt;Attribute name&lt;/th&gt;
+&lt;th class="tableblock halign-left valign-top"&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;em&gt;type&lt;/em&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Contains the base type for the component type.&lt;/p&gt;
+&lt;p class="tableblock"&gt; Examples: &lt;em&gt;container&lt;/em&gt;, &lt;em&gt;markup&lt;/em&gt; &#8230;&#8203;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;em&gt;template&lt;/em&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Optional: identifier of the (Thymeleaf) template that should be used for rendering the resulting &lt;code&gt;WebCmsComponentModel&lt;/code&gt; for a component of this type.&lt;/p&gt;
+&lt;p class="tableblock"&gt;Example: &lt;em&gt;th/mymodule/mytemplate :: fragment&lt;/em&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;em&gt;metadata&lt;/em&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Optional: name of the class that should be used for the component metadata.&lt;/p&gt;
+&lt;p class="tableblock"&gt;Example: &lt;em&gt;my.module.components.MyComponentMetadata&lt;/em&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Custom template&lt;/div&gt;
+&lt;p&gt;Any component type can have a &lt;em&gt;template&lt;/em&gt; attribute set that identifies the (Thymeleaf) template that should be used for rendering the component instances.
+If a template is specified it will always be used for rendering and any other &lt;code&gt;WebCmsComponentModelRenderer&lt;/code&gt; for that component type will be skipped.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;You can customize rendering the default &lt;code&gt;WebCmsComponentModel&lt;/code&gt; implementations just by specifying a custom template.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="admonitionblock note"&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class="icon"&gt;
+&lt;i class="fa icon-note" title="Note"&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class="content"&gt;
+Property &lt;code&gt;renderTemplate&lt;/code&gt; on &lt;code&gt;WebCmsComponentModel&lt;/code&gt; allows you to set a custom template per-component instead of per component type.
+If a &lt;code&gt;renderTemplate&lt;/code&gt; is set on the component itself, it will take precedence over the &lt;code&gt;WebCmsComponentType&lt;/code&gt; template attribute.
+Setting &lt;code&gt;renderTemplate&lt;/code&gt; is not enabled by default in the administration UI.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Metadata&lt;/div&gt;
+&lt;p&gt;Any &lt;code&gt;WebCmsComponentModel&lt;/code&gt; has a &lt;code&gt;metadata&lt;/code&gt; property that refers to an object that has all custom metadata for a component.
+The type of metadata object is configured by setting the class name as the &lt;em&gt;metadata&lt;/em&gt; attribute on the &lt;code&gt;WebCmsComponentType&lt;/code&gt;.
+The metadata instance will always be created as a prototype using the &lt;code&gt;BeanFactory&lt;/code&gt; and as such supports autowiring other beans from the &lt;code&gt;ApplicationContext&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;A metadata class must:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;be serializable to and from JSON using Jackson &lt;code&gt;ObjectMapper&lt;/code&gt;&lt;/p&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Jackson annotations on the metadata class are supported if necessary to define (de-)serializer rules&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;special care should be taken not to serializer any beans that might have been wired&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;implement a valid &lt;code&gt;equals()&lt;/code&gt; method in order to have change detection and better import/export performance&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;be easily cloneable:&lt;/p&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;have either a no-arguments public constructor and provide setters/getters for all relevant properties&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;OR implement &lt;code&gt;EntityWithDto&lt;/code&gt; or &lt;code&gt;Cloneable&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;If the administration UI is active, a form for metadata properties will automatically be generated using the EntityModule.
+This does require you to register the metadata type as an entity in the &lt;code&gt;EntityRegistry&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="admonitionblock note"&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class="icon"&gt;
+&lt;i class="fa icon-note" title="Note"&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class="content"&gt;
+Default (de-)serialization for &lt;code&gt;WebCmsObject&lt;/code&gt; implementations is provided by the {module-name} by dispatching to the &lt;code&gt;WebCmsDataConversionService&lt;/code&gt;.
+This means metadata properties can often refer to other web cms types without requiring custom configuration.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;See &lt;a href="#components-custom-component-type"&gt;creating a custom component type&lt;/a&gt; if you want to have a custom metadata class, change serialization or admin UI rendering.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;div class="title"&gt;Providing a component template&lt;/div&gt;
+&lt;p&gt;When defining a custom component type, you can link a &lt;strong&gt;componentTemplate&lt;/strong&gt; component to the &lt;code&gt;WebCmsComponentType&lt;/code&gt; definition.
+If present, that component will be used as a template for a new component of your custom component type.
+Class properties as well as any child components will be copied to a new component your type.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;When your component type and &lt;strong&gt;componentTemplate&lt;/strong&gt; are a container type, any &lt;code&gt;TextWebCmsComponentModel&lt;/code&gt; member of the template component can have special markers in its content.
+These markers will be replaced when copying the template to a newly created component:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;@@container.name@@&lt;/code&gt; will be replaced with the &lt;code&gt;name&lt;/code&gt; of the newly created container&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;@@container.title@@&lt;/code&gt; will be replaced with the &lt;code&gt;title&lt;/code&gt; of the newly created container&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="admonitionblock note"&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class="icon"&gt;
+&lt;i class="fa icon-note" title="Note"&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class="content"&gt;
+The &lt;strong&gt;componentTemplate&lt;/strong&gt; should have the same class implementation as the component type being defined.
+For example when creating a &lt;strong&gt;fixed-container&lt;/strong&gt;, the &lt;strong&gt;componentTemplate&lt;/strong&gt; must implement &lt;code&gt;ContainerWebCmsComponentModel&lt;/code&gt;.
+Providing custom metadata is not supported on the template component, the metadata will be reset when creating a new component.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_example_custom_container_component"&gt;&lt;a class="anchor" href="#_example_custom_container_component"&gt;&lt;/a&gt;Example: custom container component&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;This is an example of a custom component that is a fixed container with 2 member components.
+A custom metadata class allows configuring the position of the members (left or right), the custom template uses the metadata to determine what the output should be.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="title"&gt;Component definition&lt;/div&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-yaml hljs" data-lang="yaml"&gt;types:
+  component:
+    left-right:
+      name: Left or Right
+      description: Renders 2 components in a specific layout.
+      attributes:
+        type: fixed-container
+        template: "th/mymodule/components :: left-right"
+        metadata: "mymodule.LeftRightMetadata"
+      wcm:components:
+        componentTemplate:
+          componentType: container
+          wcm:components:
+            one:
+              componentType: rich-text
+              title: One
+              sortIndex: 1
+              body: "@@container.name@@"
+            two:
+              componentType: rich-text
+              title: Two
+              sortIndex: 2
+              body: "@@container.title@@"&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;When creating a new &lt;em&gt;left-right&lt;/em&gt; component the members of &lt;em&gt;componentTemplate&lt;/em&gt; will be cloned into the new container.
+The text components &lt;em&gt;one&lt;/em&gt; and &lt;em&gt;two&lt;/em&gt; will get their default content set with respectively the name and title of the new &lt;em&gt;left-right&lt;/em&gt; component.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The &lt;em&gt;sortIndex&lt;/em&gt; will determine the order of the components in the administration UI.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="title"&gt;Metadata class&lt;/div&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-java hljs" data-lang="java"&gt;@Data   // Use Lombok @Data to generate getters, setters and equals() method
+public class LeftRightMetadata
+{
+    enum Layout
+    {
+        LEFT_TO_RIGHT,
+        RIGHT_TO_LEFT
+    }</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>    /**
+     * Determines the order of rendering one and two.
+     */
+    @NotNull
+    private Layout layout = Layout.LEFT_TO_RIGHT;
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>@Configuration
+@ConditionalOnAdminUi
+class LeftRightConfiguration implements EntityConfigurer {
+    @Override
+    public void configure( EntitiesConfigurationBuilder entities ) {
+        entities.create().entityType( LeftRightMetadata.class, true );
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The metadata only has a single property &lt;code&gt;layout&lt;/code&gt;.
+When the administration UI is active (presence of EntityModule and AdminWebModule) the layout value can be selected in the user interface.
+The default administration UI uses the the EntityModule to build the metadata form, so we register the &lt;code&gt;LeftRightMetadata&lt;/code&gt; as an entity.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="admonitionblock note"&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class="icon"&gt;
+&lt;i class="fa icon-note" title="Note"&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class="content"&gt;
+If you do not want to use the EntityModule to generate the metadata form, you can provide a custom &lt;code&gt;WebCmsComponentModelMetadataAdminRenderer&lt;/code&gt;.
+See &lt;a href="<mark>components-custom-component-type"&gt;create a custom component type&lt;/a&gt; for more information.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="title"&gt;Thymeleaf template: th/mymodule/components&lt;/div&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-html hljs" data-lang="html"&gt;&lt;th:block th:fragment="left-right(component)"
+          th:with="metadata=${component.metadata}"&gt;
+    &lt;section th:if="${metadata.layout.name() eq 'LEFT_TO_RIGHT'}"&gt;
+        &lt;div class="left"&gt;&lt;across:view element="${component.getMember('one')}" /&gt;&lt;/div&gt;
+        &lt;div class="right"&gt;&lt;across:view element="${component.getMember('two')}" /&gt;&lt;/div&gt;
+    &lt;/section&gt;
+    &lt;section th:if="${metadata.layout.name() eq 'RIGHT_TO_LEFT'}"&gt;
+        &lt;div class="left"&gt;&lt;across:view element="${component.getMember('two')}" /&gt;&lt;/div&gt;
+        &lt;div class="right"&gt;&lt;across:view element="${component.getMember('one')}" /&gt;&lt;/div&gt;
+    &lt;/section&gt;
+&lt;/th:block&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The Thymeleaf template inspects the metadata &lt;code&gt;layout&lt;/code&gt; property and renders members &lt;em&gt;one&lt;/em&gt; and &lt;em&gt;two&lt;/em&gt; in a fixed location.
+As a &lt;code&gt;WebCmsComponentModel&lt;/code&gt; is a &lt;code&gt;ViewElement&lt;/code&gt; using an &lt;em&gt;across:view&lt;/em&gt; node takes care of rendering the member components.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect2"&gt;
+&lt;h3 id="_filtering_selectable_webcmscomponenttype_options"&gt;&lt;a class="anchor" href="#_filtering_selectable_webcmscomponenttype_options"&gt;&lt;/a&gt;Filtering selectable WebCmsComponentType options&lt;/h3&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;To filter the provided dropdown options for a WebCmsComponent, the user can perform two actions:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;options that should never be present by default&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;selected set of options that should be present.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;These actions are provided through the &lt;code&gt;DefaultAllowedComponentTypeFetcher&lt;/code&gt;. Should you like to provide your own logic to filter the selectable options, for one or more types, you will have to provide your own implementations of the &lt;code&gt;WebCmsAllowedComponentTypeFetcher&lt;/code&gt; interface.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_non_selectable_webcmscomponenttypes"&gt;&lt;a class="anchor" href="#_non_selectable_webcmscomponenttypes"&gt;&lt;/a&gt;Non-selectable WebCmsComponentTypes&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;To prevent a &lt;code&gt;WebCmsComponentType&lt;/code&gt; from showing up in the list unless explicitly specified, the user has to provide the component type with the &lt;code&gt;componentRestricted&lt;/code&gt; attribute, with its value set to true. This ensures that unless the WebCmsComponentType is specified as an option for the &lt;code&gt;WebCmsObject&lt;/code&gt; through a &lt;code&gt;WebCmsTypeSpecifierLink&lt;/code&gt;, it will never be shown as an option.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Examples of non-selectable WebCmsComponentTypes are the default placeholder, proxy and fixed-container component types.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="title"&gt;Example&lt;/div&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-yaml hljs" data-lang="yaml"&gt;types:
+  component:
+    fixed-container:
+      objectId: "wcm:type:component:fixed-container"
+      name: Fixed container
+      description: Container of a fixed set of components.
+      attributes:
+        type: fixed-container
+        componentRestricted: true&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;A &lt;em&gt;fixed-container&lt;/em&gt; should never be available as a selectable option unless specified (through a &lt;code&gt;WebCmsTypeSpecifierLink&lt;/code&gt;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_selectable_webcmscomponenttype_options"&gt;&lt;a class="anchor" href="#_selectable_webcmscomponenttype_options"&gt;&lt;/a&gt;Selectable WebCmsComponentType options&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;In the case where a component type may only contain other specific component types, the type should be provided by the &lt;code&gt;childComponentsRestricted&lt;/code&gt; attribute, with its value set to true. The provided component type options will then be equal to the specified &lt;code&gt;WebCmsTypeSpecifierLink&lt;/code&gt; links with link type &lt;em&gt;allowed-component&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Example&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-yaml hljs" data-lang="yaml"&gt;types:
+  component:
+    partner-container:
+      name: Partners
+      attributes:
+        type: container
+        childComponentsRestricted: true
+      wcm:types:
+        - typeSpecifier: "wcm:type:component:partner"
+          linkType: allowed-component&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;A &lt;em&gt;partner-container&lt;/em&gt; should only contain components of the type &lt;em&gt;partner&lt;/em&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect2"&gt;
+&lt;h3 id="components-custom-component-type"&gt;&lt;a class="anchor" href="#components-custom-component-type"&gt;&lt;/a&gt;Custom component type&lt;/h3&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Apart from extending one of the base types and using a custom template or metadata class, you can also pretty much customize any part of the component related infrastructure by providing specific interface implementations.
+This allows you to create a fully custom component type and read/write/render or manage it in whichever way you like.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The following list of the component related interfaces and their role:&lt;/p&gt;
+&lt;/div&gt;
+&lt;table class="tableblock frame-all grid-all spread"&gt;
+&lt;colgroup&gt;
+&lt;col style="width: 20%;"&gt;
+&lt;col style="width: 80%;"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th class="tableblock halign-left valign-top"&gt;Interface&lt;/th&gt;
+&lt;th class="tableblock halign-left valign-top"&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;WebCmsComponentModelReader&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Converts from a &lt;code&gt;WebCmsComponent&lt;/code&gt; to the relevant &lt;code&gt;WebCmsComponentModel&lt;/code&gt; implementation.
+If you want to have the default metadata support, consider extending &lt;code&gt;AbstractWebCmsComponentModelReader&lt;/code&gt;.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;WebCmsComponentModelWriter&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Saves a &lt;code&gt;WebCmsComponentModel&lt;/code&gt; to the backing repository.
+Provides the backing &lt;code&gt;WebCmsComponent&lt;/code&gt;.
+Consider extending &lt;code&gt;AbstractWebCmsComponentModelWriter&lt;/code&gt; if you want default metadata support.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;WebCmsComponentModelRenderer&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Renders a &lt;code&gt;WebCmsComponentModel&lt;/code&gt; in a Thymeleaf template.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;WebCmsComponentModelContentAdminRenderer&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Provides a &lt;code&gt;ViewElementBuilder&lt;/code&gt; for managing the content of a &lt;code&gt;WebCmsComponentModel&lt;/code&gt; in the administration UI.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;WebCmsComponentModelMetadataAdminRenderer&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Provides a &lt;code&gt;ViewElementBuilder&lt;/code&gt; for managing the metadata of a &lt;code&gt;WebCmsComponentModel&lt;/code&gt; in the administration UI.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;WebCmsComponentModelMembersAdminRenderer&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Provides a &lt;code&gt;ViewElementBuilder&lt;/code&gt; for managing child components (usually container members) of a &lt;code&gt;WebCmsComponentModel&lt;/code&gt; in the administration UI.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;WebCmsComponentAutoCreateStrategy&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Builds a &lt;code&gt;WebCmsComponentModel&lt;/code&gt; when it is being auto-created, for example during first render of a template.
+Gets the processed template markup as input parameters.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;All component related interfaces use the same processing approach:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;all beans of that type are detected and ordered&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;a &lt;code&gt;supports()&lt;/code&gt; method is used to check if the bean applies for a certain component&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;the first bean that applies will be used&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;As the implementations are always queried in order, customizing an implementation is a matter of:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;providing your implementation as a bean&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;implementing &lt;code&gt;supports()&lt;/code&gt; to match for all component types you want&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;ensure your bean is ordered (use &lt;code&gt;@Order&lt;/code&gt; or implement &lt;code&gt;Ordered&lt;/code&gt;) before any other that might also apply for that component type&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect2"&gt;
+&lt;h3 id="_customizing_the_components_administration_ui"&gt;&lt;a class="anchor" href="#_customizing_the_components_administration_ui"&gt;&lt;/a&gt;Customizing the components administration UI&lt;/h3&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;WebCmsModule provides a default administration UI built on AdminWebModule and EntityModule.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The default administration UI uses a form of tabs to display the different sections (eg. content, members, metadata) of a component.  Only sections relevant for the component type will be shown to the user.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_administration_ui_labels_and_descriptions"&gt;&lt;a class="anchor" href="#_administration_ui_labels_and_descriptions"&gt;&lt;/a&gt;Administration UI labels and descriptions&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The default administration UI for components supports configuring the labels.  See the &lt;a href="</mark>"&gt;{doc-appendix}.adoc#appendix-message-codes&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_creating_custom_component_forms"&gt;&lt;a class="anchor" href="#_creating_custom_component_forms"&gt;&lt;/a&gt;Creating custom component forms&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;You can customize the forms being rendered by providing custom &lt;code&gt;xAdminRenderer&lt;/code&gt; implementations.  This allows you to build&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="components-component-profiles"&gt;&lt;a class="anchor" href="#components-component-profiles"&gt;&lt;/a&gt;Configuring rich-text and markup components&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;WebCmsModule supports rich text components and HTML components out of the box, using TinyMCE and CodeMirror respectively.  Rich-text components are identified with the base type &lt;code&gt;rich-text&lt;/code&gt;, markup with &lt;code&gt;markup&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="title"&gt;YAML definition of default Rich text and HTML component types&lt;/div&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-yaml hljs" data-lang="yaml"&gt;rich-text:
+  objectId: "wcm:type:component:rich-text"
+  name: Rich text
+  description: Rich text component - supporting HTML markup and default assets if enabled by other modules.
+  attributes:
+    type: rich-text
+    profile: rich-text
+html:
+  objectId: "wcm:type:component:html"
+  name: HTML
+  description: A snippet of HTML.
+  attributes:
+    type: markup&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;In addition to the base type, a component type can define a &lt;strong&gt;profile&lt;/strong&gt; attribute value, denoting a custom profile that should be used to initialize the editor for that component type.
+The default rich-text component type uses a profile called &lt;code&gt;rich-text&lt;/code&gt; as well.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;You can customize the profile configuration using Javascript.  This is done by registering profiles on the &lt;code&gt;WebCmsComponentProfileRegistry&lt;/code&gt;.  A profile registration requires the following three attributes:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;componentType&lt;/strong&gt;: this is the base type of the component (eg. &lt;code&gt;rich-text&lt;/code&gt; or &lt;code&gt;markup&lt;/code&gt;)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;profileName&lt;/strong&gt;: a unique profile name&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;profile&lt;/strong&gt;: JSON object that holds the actual profile data (for example the TinyMCE configuration object)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Profiles can be inherited.  If your profile data has a &lt;strong&gt;_parentProfile&lt;/strong&gt; attribute, the value is expected to be the name of another profile for the same component type.  The final profile will be the data of the parent profile merged together with the requested profile.  Values from the parent will be replaced by values from the requested profile. Every profile can have a (optional) single parent.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="title"&gt;Example registration of custom rich-text type&lt;/div&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-javascript hljs" data-lang="javascript"&gt;(function ( $ ) {
+  /<strong>*
+   * Limited rich-text profile: inherit from the _base profile
+   * and only show bold/italic buttons.
+   */
+  WebCmsComponentProfileRegistry.registerProfileForComponentType(
+    'rich-text', /</strong> component type <strong>/
+    'limited', /</strong> profile name */
+    {
+      _parentProfile: '_base',
+      toolbar1: 'bold italic'
+    }
+  );
+})(jQuery);&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="admonitionblock note"&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td class="icon"&gt;
+&lt;i class="fa icon-note" title="Note"&gt;&lt;/i&gt;
+&lt;/td&gt;
+&lt;td class="content"&gt;
+Custom profiles must be registered in Javascript.  This usually happens before initialization of form elements (as the profiles should already be registered when that happens), but it must happen after the inclusion of the &lt;code&gt;TextWebCmsComponentAdminResources&lt;/code&gt; package and in the javascript page end phase. The reason for this is that the profile registry and the default profiles are defined during &lt;code&gt;JAVASCRIPT_PAGE_END&lt;/code&gt; of the WebCmsModule resources.
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="sect4"&gt;
+&lt;h5 id="_default_profiles"&gt;&lt;a class="anchor" href="#_default_profiles"&gt;&lt;/a&gt;Default profiles&lt;/h5&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The following default profiles are available:&lt;/p&gt;
+&lt;/div&gt;
+&lt;table class="tableblock frame-all grid-all spread"&gt;
+&lt;colgroup&gt;
+&lt;col style="width: 33.3333%;"&gt;
+&lt;col style="width: 33.3333%;"&gt;
+&lt;col style="width: 33.3334%;"&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th class="tableblock halign-left valign-top"&gt;Component type&lt;/th&gt;
+&lt;th class="tableblock halign-left valign-top"&gt;Profile name&lt;/th&gt;
+&lt;th class="tableblock halign-left valign-top"&gt;Usage&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;rich-text&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;_base&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Base profile for technical configuration of TinyMCE.  Sets up things like the image picket configuration, toolbar behaviour etc.  It&#8217;s probably best to have your custom profiles inherit from this one.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;rich-text&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;default&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Default profile for a TinyMCE editor: configures default plugins and toolbars.  Extends &lt;code&gt;_base&lt;/code&gt;.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;rich-text&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;rich-text&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Actual profile used by the default Rich text component.  Inherits from &lt;code&gt;default&lt;/code&gt; but adds no custom settings - as such is identical to &lt;code&gt;default&lt;/code&gt; out of the box.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;markup&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;&lt;code&gt;default&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class="tableblock halign-left valign-top"&gt;&lt;p class="tableblock"&gt;Default CodeMirror configuration used by the HTML component.  Inherits from a &lt;code&gt;_base&lt;/code&gt; profile even though no &lt;code&gt;_base&lt;/code&gt; is defined.  You can either replace &lt;code&gt;default&lt;/code&gt; with your custom settings or register the &lt;code&gt;_base&lt;/code&gt; profile to extend &lt;code&gt;default&lt;/code&gt; indirectly.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sect3"&gt;
+&lt;h4 id="_detecting_tab_switching"&gt;&lt;a class="anchor" href="#_detecting_tab_switching"&gt;&lt;/a&gt;Detecting tab switching&lt;/h4&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Sometimes tab switching needs to be detected in order to re-render the client-side interface.
+Any element that has data attribute &lt;strong&gt;data-wcm-component-refresh&lt;/strong&gt; set will receive the &lt;em&gt;wcm:componentRefresh&lt;/em&gt; event whenever a component tab is being activated.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="highlightjs highlight"&gt;&lt;code class="language-javascript hljs" data-lang="javascript"&gt;// Example refreshing the RTE when a component tab is being switched
+$( '[data-wcm-markup-type=markup]', node ).each( function () {
+    var cm = CodeMirror.fromTextArea( $( this )[0], {} );
+    $( this ).on( 'wcm:componentRefresh',
+                  function () {
+                      cm.refresh();
+                  } )
+            .attr( 'data-wcm-component-refresh', 'true' );  // ensure we receive the event
+} );&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="components-web-cms-component-import"><a class="anchor" href="#components-web-cms-component-import"></a>Importing components</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_single_value_importing"><a class="anchor" href="#_single_value_importing"></a>Single value importing</h3>
+<div class="paragraph">
+<p>The <code>TextWebCmsComponentModel</code> and <code>ImageWebCmsComponentModel</code> support updating existing components using a single attribute value.</p>
+</div>
+<div class="paragraph">
+<p>This is the same as assigning the following property:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 66.6666%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Component type</th>
+<th class="tableblock halign-left valign-top">Property</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>TextWebCmsComponentModel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>content</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ImageWebCmsComponentModel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>image</em></p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="title">Example: the following 2 import blocks would be equivalent</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">assets:
+  article:
+    - title: My article
+      wcm:components:
+        body:
+          content: Update the article body text</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">assets:
+  article:
+    - title: My article
+      wcm:components:
+        body: Update the article body text</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<aside class="article-aside hidden" role="navigation">
+  <h3 class="toc-title">Contents</h3>
+  <div id="article-toc"></div>
+</aside>
+  </main>
+</div>
+<footer class="footer">
+  <p>The Across documentation site is generated using <a href="https://antora.org" target="_blank">Antora</a>.</p>
+  <div class="footer-totop">
+    <!--srcset="/acrossWebsite/img/foreach-logo@2x.png 2x"-->
+    <a class="footer-partner" href="http://foreach.be/" target="_blank">
+      sponsored by <svg width="20" height="20" viewBox="0 0 277 311" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" fill-rule="evenodd">
+          <path d="M27 307.3V133.5H.9V92.7H27v-8.8c0-24.1 4.3-46.5 19.7-64.1C58.2 6.6 74.7.1 92.9.1c13.4 0 23.7 2.2 31.2 4.8l-5.9 44.8c-3.9-1.8-9.5-2.6-15.8-2.6-17.4 0-23.7 16.7-23.7 35.5v10.1h33.6v40.8H78.7v173.8H27z" fill="#FFCE01" fill-rule="nonzero"></path>
+          <path d="M229.2 181c0-27.6-6.3-49.1-21.7-49.1-17 0-23.7 27.7-24.1 49.1h45.8zM183 221.4c.8 33.4 18.2 45.6 41.1 45.6 14.6 0 27.6-3.5 36.7-7l7.1 41.2c-13.4 5.7-33.6 9.7-53.3 9.7-52.5 0-81.4-38.6-81.4-105.8 0-72 33.6-115 77.4-115 41.5 0 65.6 36.4 65.6 101.4 0 15.4-.4 23.7-1.6 29.8H183v.1z" fill="#FFF" fill-rule="nonzero"></path>
+        </g>
+      </svg>
+    </a>
+    <a href="#section-top">
+      <svg width="34" height="34" viewBox="0 0 62 62" xmlns="http://www.w3.org/2000/svg">
+        <title>icon</title>
+        <g transform="rotate(-90 30.5 30.5)" fill="none" fill-rule="evenodd">
+          <circle stroke="#ffffff" fill="#1D2A3A" transform="rotate(180 30.007 30.942)" cx="30.007" cy="30.942" r="30"></circle>
+          <path fill="#ffffff" d="M25 38.884h3.713l6.3-7.797-6.3-8.087-3.713.064 6.155 7.972"></path>
+        </g>
+      </svg>
+    </a>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.1.1/tocbot.min.js"></script>
+<script src="../../../_/js/site.js"></script>
+<script src="../../../_/js/vendor/highlight.js"></script>
+<script>hljs.initHighlighting()</script>
+<script>
+  tocbot.init( {
+                 tocSelector: '#article-toc',
+                 contentSelector: 'article',
+                 headingSelector: 'h2, h3, h4, h5',
+                 collapseDepth: 3,
+                 positionFixedSelector: '#article-toc',
+                 scrollSmooth: false
+               } );
+  var tocList = document.getElementById( 'article-toc' ).getElementsByClassName( 'toc-list' );
+  if ( tocList && tocList.length > 0 && tocList[0].childNodes.length > 0 ) {
+    document.getElementById( 'article-toc' ).parentNode.classList.remove( 'hidden' );
+  }
+</script>
+  </body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DynamicFormsModule :: Across</title>
+    <meta name="generator" content="Antora 1.0.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header" role="banner">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="../..">Across</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Resource A</a>
+            <a class="navbar-item" href="#">Resource B</a>
+            <a class="navbar-item" href="#">Resource C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="main-wrapper">
+<div class="navigation-container" data-component="dynamic-forms" data-version="0.0.1">
+  <aside class="navigation" role="navigation">
+    <div class="panels">
+<div class="navigation-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html">Dynamic Documents &amp; Forms</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <span class="nav-text">Creating a form</span>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="navigation-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Dynamic Documents &amp; Forms</span>
+    <span class="version">0.0.1</span>
+  </div>
+  <ul class="components">
+    <li class="component">
+      <span class="title">Across</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../across/dev/index.html">dev</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">Application Guides</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../guides/dev/index.html">dev</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component is-current">
+      <span class="title">Dynamic Documents & Forms</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">0.0.1</a>
+        </li>
+      </ul>
+    </li>
+    <li class="component">
+      <span class="title">Migration guides</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../migration/dev/index.html">dev</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+  <main class="main" role="main">
+<div class="toolbar" role="navigation">
+  <button class="navigation-toggle"></button>
+  <a href="../../across/dev/index.html" class="home-link"></a>
+<nav class="crumbs" role="navigation" aria-label="breadcrumbs">
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/ForeachOS/ax-docs-dynamic-forms-module/edit/master/docs/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+</div>
+<article class="doc">
+<h1>DynamicFormsModule</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_general_information">General information</a>
+<ul class="sectlevel2">
+<li><a href="#_artifact">1.1. Artifact</a></li>
+<li><a href="#_module_dependencies">1.2. Module dependencies</a></li>
+</ul>
+</li>
+<li><a href="#_about_the_dynamicformsmodule">About the DynamicFormsModule</a></li>
+<li><a href="#_documents">Documents</a>
+<ul class="sectlevel2">
+<li><a href="#document-definition">1.1. Document definition</a></li>
+<li><a href="#type-definition">1.2. Type definition</a></li>
+<li><a href="#document-data">1.3. Document data</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="sect1">
+<h2 id="_general_information"><a class="anchor" href="#_general_information"></a>General information</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_artifact"><a class="anchor" href="#_artifact"></a>1.1. Artifact</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependencies&gt;
+	&lt;dependency&gt;
+		&lt;groupId&gt;com.foreach.across.modules&lt;/groupId&gt;
+		&lt;artifactId&gt;dynamic-forms-module&lt;/artifactId&gt;
+		&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+	&lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_module_dependencies"><a class="anchor" href="#_module_dependencies"></a>1.2. Module dependencies</h3>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Module dependencies</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Module</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EntityModule</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enables the ability to define and render custom forms.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AcrossHibernateJpaModule</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">required</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Required for the JPA domain model.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_about_the_dynamicformsmodule"><a class="anchor" href="#_about_the_dynamicformsmodule"></a>About the DynamicFormsModule</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>DynamicFormsModule</code> enables users to manage custom documents, which can be used to create a custom form, or add additional fields to an existing form.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_documents"><a class="anchor" href="#_documents"></a>Documents</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Documents are the base building blocks to create manageable groups of fields.
+Documents are split up in various parts, being the <a href="#type-definition">types</a> that can be used in a document, a <a href="#document-definition">template</a> for a document and filled in <a href="#document-data">data</a> for a document.
+A document definition is a template defining the fields and sets of fields that the document represents.
+The document data holds the content for the various field for the document.</p>
+</div>
+<div class="sect2">
+<h3 id="document-definition"><a class="anchor" href="#document-definition"></a>1.1. Document definition</h3>
+<div class="paragraph">
+<p>Document definitions represent a group of fields belonging to a data set.
+Each definition is defined as a <code>RawDocumentDefinition</code>, which is the base representation of a document template in a <code>json</code>/<code>yaml</code> format.
+A <code>RawDocumentDefinition</code> can be converted to a <code>DynamicDocumentDefinition</code>, which represents a fully usable document.</p>
+</div>
+<div class="paragraph">
+<p>Conversion is done through the <code>DynamicDocumentDefinitionBuilder</code>, which creates property descriptors with the correct type and validation for the various fields defined in the document definition.
+Aside of creating the <code>DynamicDocumentDefinition</code>, it will also ensure that document definitions have a correct configuration.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example document definition</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="type-definition"><a class="anchor" href="#type-definition"></a>1.2. Type definition</h3>
+<div class="paragraph">
+<p>Type definitions enable documents to use typed fields, as well as provide the necessary configuration for a specific field.
+The default type definitions are the building blocks to create new custom types and have a java representation.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Default types</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Backing java type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>string</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String.class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Represents a field containing a single line of text.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>text</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String.class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">text represents a field containing multiple lines of text.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>boolean</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean.class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Represents true or false</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>date</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LocalDate.class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Represents a specific year, month and day.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>time</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LocalTime.class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Represents a combination of hours, minutes, seconds, millseconds and nanoseconds.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>datetime</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LocalDateTime.class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Represents a specific point in time. Per se <code>datetime</code> is a combination of <code>date</code> and <code>time</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>integer</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Long.class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Represents a whole number.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>decimal</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BigDecimal.class</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Represents a decimal number. Can optionally define a precision.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>currency</strong></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Represents a value in a specific currency.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>A type can also represent a group of fields.
+This enables the possibility to define custom data-types, without any code intervention.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example type definition</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="document-data"><a class="anchor" href="#document-data"></a>1.3. Document data</h3>
+<div class="paragraph">
+<p>Document data holds the content for a specified document definition.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example document data</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+  </main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../../_/js/site.js"></script>
+<script src="../../_/js/vendor/highlight.js"></script>
+<script>hljs.initHighlighting()</script>
+  </body>
+</html>
